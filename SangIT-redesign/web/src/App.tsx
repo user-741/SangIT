@@ -14,34 +14,102 @@ const ICON = {
 export default function App() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [view, setView] = useState<'home' | 'search' | 'library'>('home');
   
   const { currentTrack, isPlaying, progress, duration, togglePlay, playTrack, playNext, playPrev, seek } = usePlayer(tracks);
 
-  useEffect(() => {
-    // Direct fetch to your backend API, completely bypassing api.ts
-    fetch('/api/library/tracks')
+  const loadData = () => {
+    setLoading(true);
+    // credentials: 'include' is CRITICAL for sending the auth cookie
+    fetch('/api/library/tracks', { credentials: 'include' })
       .then(res => {
+        if (res.status === 401) {
+          setNeedsLogin(true);
+          throw new Error('Unauthorized');
+        }
         if (!res.ok) throw new Error('Network response was not ok');
         return res.json();
       })
       .then(data => {
         setTracks(Array.isArray(data) ? data : data.tracks || []);
+        setNeedsLogin(false);
         setLoading(false);
       })
       .catch(err => {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    // Assuming standard endpoint, we'll try /api/auth/login or /api/login
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password })
+    })
+    .then(res => {
+      if (!res.ok) throw new Error('Login failed');
+      loadData();
+    })
+    .catch(() => {
+      // Fallback to /api/login if the first one fails
+      fetch('/api/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
+        body: JSON.stringify({ email, password })
+      })
+      .then(res => {
+        if (!res.ok) throw new Error('Login failed');
+        loadData();
+      })
+      .catch(err => {
+        alert("Login failed. Please check your credentials.");
+        setLoading(false);
+      });
+    });
+  };
 
   const formatTime = (s: number) => {
     if (!isFinite(s)) return '0:00';
     return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2, '0');
   };
 
-  if (loading) return <div style={{color:'white', padding:'40px', background:'#000', height:'100vh'}}>Loading your library...</div>;
-  if (!tracks.length) return <div style={{color:'white', padding:'40px', background:'#000', height:'100vh'}}>No tracks found. Make sure you are logged in or check the GitHub release.</div>;
+  if (loading) return <div style={{color:'white', padding:'40px', background:'#050507', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>Loading...</div>;
+
+  if (needsLogin) {
+    return (
+      <div style={{background:'#050507', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center', color:'white'}}>
+        <form onSubmit={handleLogin} style={{background:'#101014', padding:'40px', borderRadius:'12px', border:'1px solid rgba(255,255,255,0.1)', width:'100%', maxWidth:'400px'}}>
+          <h1 style={{marginBottom:'24px', fontSize:'24px', fontWeight:'bold'}}>Sign in to SangIT</h1>
+          <input 
+            type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required
+            style={{width:'100%', padding:'12px', marginBottom:'16px', background:'#17171d', border:'1px solid #333', borderRadius:'6px', color:'white'}} 
+          />
+          <input 
+            type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required
+            style={{width:'100%', padding:'12px', marginBottom:'24px', background:'#17171d', border:'1px solid #333', borderRadius:'6px', color:'white'}} 
+          />
+          <button type="submit" style={{width:'100%', padding:'12px', background:'#c1a8ff', color:'#17101f', border:'none', borderRadius:'6px', fontWeight:'bold', cursor:'pointer'}}>
+            Log In
+          </button>
+        </form>
+      </div>
+    );
+  }
+
+  if (!tracks.length) return <div style={{color:'white', padding:'40px', background:'#050507', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center'}}>No tracks found. Check your GitHub release.</div>;
 
   return (
     <div className="app">
