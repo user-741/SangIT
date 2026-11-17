@@ -1,3 +1,5 @@
+import scanned from "./music.json";
+
 export interface Track {
   id: string;
   title: string;
@@ -42,10 +44,15 @@ const seed: Track[] = rows.map(([id, title, artist, album, duration, hue]) => ({
   src: null,
 }));
 
+const demoPlaylists: Playlist[] = [
+  { id: "p1", name: "Late night", trackIds: ["t1", "t3", "t7"] },
+  { id: "p2", name: "Focus", trackIds: ["t2", "t4", "t6", "t8"] },
+];
+
+// Real files (from `npm run scan-music`) replace the demo data once present.
+const hasMusic = scanned.tracks.length > 0;
+
 export const library: LibrarySource = {
-  tracks: async () => seed,
-  playlists: async () => [
-    { id: "p1", name: "Late night", trackIds: ["t1", "t3", "t7"] },
-    { id: "p2", name: "Focus", trackIds: ["t2", "t4", "t6", "t8"] },
-  ],
+  tracks: async () => (hasMusic ? (scanned.tracks as Track[]) : seed),
+  playlists: async () => (hasMusic ? (scanned.playlists as Playlist[]) : demoPlaylists),
 };

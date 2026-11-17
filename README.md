@@ -22,6 +22,14 @@ The client runs on http://localhost:5173 and proxies `/api` to the API on port 3
 | `AUTH_PASSWORD` | Password for that account, at least 8 characters |
 | `JWT_SECRET` | Signs the session cookie, at least 32 characters |
 
+## Add your music
+
+1. Put your `.m4a` (or `.mp3`, `.aac`, `.ogg`, `.flac`, `.wav`) files in `web/public/music/`. Name them `Artist - Title.m4a` if they have no tags.
+2. Run `npm run scan-music`. It reads the tags and writes `server/src/music.json`. Albums with two or more songs become playlists.
+3. Commit the files and `music.json`, then deploy.
+
+Files in `web/public` are served as static files, so anyone with a file's exact URL can download it. Keep large libraries (the Vercel upload limit is 100 MB per deployment) in object storage such as Vercel Blob and point `src` at those URLs.
+
 ## Deploy
 
 Import the repository in Vercel and set the same three variables. `api/index.ts` serves the API and `web/dist` serves the client.
