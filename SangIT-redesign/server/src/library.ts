@@ -10,7 +10,7 @@ export interface LibrarySource { tracks(): Promise<Track[]>; playlists(): Promis
 const REPO = process.env.GITHUB_REPO ?? "user-741/SangIT";
 const TAG = process.env.GITHUB_RELEASE_TAG ?? "v1.0";
 const TOKEN = process.env.GITHUB_TOKEN;
-const CACHE_MS = 10 * 60 * 1000;
+const CACHE_MS = 2 * 60 * 1000; // 2 mins
 
 const AUDIO = /\.(m4a|mp4|aac|mp3|ogg|opus|wav|flac)$/i;
 const MIME: Record<string, string> = { m4a: "audio/mp4", mp4: "audio/mp4", mp3: "audio/mpeg", aac: "audio/aac", ogg: "audio/ogg", wav: "audio/wav", flac: "audio/flac" };
@@ -35,7 +35,15 @@ async function gh<T>(path: string): Promise<T> {
 }
 
 async function fetchAssets(): Promise<Asset[]> {
-  const release = await gh<{ id: number }>(`/repos/${REPO}/releases/tags/${TAG}`);
+  let release;
+  try {
+    // Try the specified tag first
+    release = await gh<{ id: number }>(`/repos/${REPO}/releases/tags/${TAG}`);
+  } catch (e) {
+    // Fallback to the latest release if tag is missing or different
+    release = await gh<{ id: number }>(`/repos/${REPO}/releases/latest`);
+  }
+
   const all: Asset[] = [];
   for (let page = 1; page <= 30; page++) {
     const batch = await gh<Asset[]>(`/repos/${REPO}/releases/${release.id}/assets?per_page=100&page=${page}`);
@@ -53,7 +61,6 @@ function build(assets: Asset[]): Snapshot {
     sources.set(id, { url: a.browser_download_url, mime: MIME[ext] ?? "audio/mp4" });
 
     const stem = a.name.replace(AUDIO, "").trim();
-    // Try to parse "Artist - Title" or "Title - Artist"
     const parts = stem.split(" - ");
     let artist = "Unknown Artist";
     let title = stem;

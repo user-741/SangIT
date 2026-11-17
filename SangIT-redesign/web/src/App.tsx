@@ -1,10 +1,6 @@
 ﻿import { useEffect, useState } from 'react';
 import { usePlayer, Track } from './usePlayer';
 
-
-interface Playlist { id: string; name: string; trackIds: string[]; }
-
-// Procedural Album Art Generator
 const getArt = (seed: string, hue: number) => {
   const n = seed.split('').reduce((a, b) => a + b.charCodeAt(0), 0);
   const bg = `hsl(${hue}, 40%, 20%)`;
@@ -21,20 +17,25 @@ const ICONS = {
   plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>',
   home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>',
   search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>',
-  lib: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>',
   prev: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>',
   next: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zm-2.5 6L5 6v12z"/></svg>',
   shuffle: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>',
   repeat: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 1l4 4-4 4"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><path d="M7 23l-4-4 4-4"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg>'
 };
 
+interface Playlist { id: string; name: string; trackIds: string[]; }
+
 export default function App() {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [loading, setLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [needsLogin, setNeedsLogin] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  
   const [view, setView] = useState<'home' | 'search' | 'library' | 'playlist'>('home');
   const [searchQuery, setSearchQuery] = useState('');
   
-  // Local Storage Playlists & Likes
   const [playlists, setPlaylists] = useState<Playlist[]>(() => {
     const saved = localStorage.getItem('sangit_playlists');
     return saved ? JSON.parse(saved) : [];
@@ -47,18 +48,44 @@ export default function App() {
 
   const player = usePlayer();
 
-  useEffect(() => {
+  const loadData = () => {
+    setLoading(true);
+    setErrorMsg(null);
     fetch('/api/library/tracks', { credentials: 'include' })
-      .then(res => {
-        if (res.status === 401) throw new Error('Unauthorized');
-        if (!res.ok) throw new Error('Error');
+      .then(async res => {
+        if (res.status === 401) { setNeedsLogin(true); throw new Error('UNAUTHORIZED'); }
+        if (!res.ok) {
+          const data = await res.json().catch(() => ({}));
+          throw new Error(data.error || `Server Error ${res.status}`);
+        }
         return res.json();
       })
-      .then(data => { setTracks(data); setLoading(false); })
-      .catch(() => setLoading(false));
-  }, []);
+      .then(data => { setTracks(data); setNeedsLogin(false); setLoading(false); })
+      .catch(err => { 
+        if (err.message !== 'UNAUTHORIZED') setErrorMsg(err.message); 
+        setLoading(false); 
+      });
+  };
 
-  // Save to LocalStorage
+  useEffect(() => { loadData(); }, []);
+
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    fetch('/api/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ email, password })
+    }).then(res => {
+      if (!res.ok) throw new Error('Login failed');
+      loadData();
+    }).catch(() => {
+      alert("Login failed.");
+      setLoading(false);
+    });
+  };
+
   useEffect(() => { localStorage.setItem('sangit_playlists', JSON.stringify(playlists)); }, [playlists]);
   useEffect(() => { localStorage.setItem('sangit_liked', JSON.stringify([...liked])); }, [liked]);
 
@@ -76,6 +103,7 @@ export default function App() {
   };
 
   const addToPlaylist = (trackId: string, playlistId: string) => {
+    if (!playlistId) return;
     setPlaylists(playlists.map(p => {
       if (p.id === playlistId && !p.trackIds.includes(trackId)) {
         return { ...p, trackIds: [...p.trackIds, trackId] };
@@ -89,7 +117,30 @@ export default function App() {
 
   if (loading) return <div style={{color:'white', background:'#050507', height:'100vh', display:'flex', justifyContent:'center', alignItems:'center'}}>Loading SangIT...</div>;
 
-  // Filtering Logic
+  if (needsLogin) {
+    return (
+      <div style={{background:'#050507', height:'100vh', display:'flex', alignItems:'center', justifyContent:'center', color:'white'}}>
+        <form onSubmit={handleLogin} style={{background:'#101014', padding:'40px', borderRadius:'12px', border:'1px solid rgba(255,255,255,0.1)', width:'100%', maxWidth:'400px'}}>
+          <h1 style={{marginBottom:'24px', fontSize:'24px', fontWeight:'bold'}}>Sign in to SangIT</h1>
+          <input type="email" placeholder="Email" value={email} onChange={e => setEmail(e.target.value)} required style={{width:'100%', padding:'12px', marginBottom:'16px', background:'#17171d', border:'1px solid #333', borderRadius:'6px', color:'white'}} />
+          <input type="password" placeholder="Password" value={password} onChange={e => setPassword(e.target.value)} required style={{width:'100%', padding:'12px', marginBottom:'24px', background:'#17171d', border:'1px solid #333', borderRadius:'6px', color:'white'}} />
+          <button type="submit" style={{width:'100%', padding:'12px', background:'#c1a8ff', color:'#17101f', border:'none', borderRadius:'6px', fontWeight:'bold', cursor:'pointer'}}>Log In</button>
+        </form>
+      </div>
+    );
+  }
+
+  if (errorMsg) {
+    return (
+      <div style={{color:'white', padding:'40px', background:'#050507', height:'100vh', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center'}}>
+        <h2 style={{color:'#ff8888', marginBottom:'10px'}}>Backend Error</h2>
+        <p>{errorMsg}</p>
+        <p style={{fontSize:'12px', color:'#888', marginTop:'20px'}}>Make sure your GitHub release has .m4a files and your Vercel GITHUB_TOKEN is set.</p>
+        <button onClick={loadData} style={{marginTop:'20px', padding:'10px 20px', background:'#c1a8ff', border:'none', borderRadius:'6px', color:'black', fontWeight:'bold', cursor:'pointer'}}>Try Again</button>
+      </div>
+    );
+  }
+
   let displayTracks = tracks;
   if (view === 'search' && searchQuery) {
     displayTracks = tracks.filter(t => t.title.toLowerCase().includes(searchQuery.toLowerCase()) || t.artist.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -138,12 +189,7 @@ export default function App() {
 
         {view === 'search' && (
           <div className="view">
-            <input 
-              className="search-input" 
-              placeholder="Search songs or artists..." 
-              value={searchQuery} 
-              onChange={e => setSearchQuery(e.target.value)}
-            />
+            <input className="search-input" placeholder="Search songs or artists..." value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
           </div>
         )}
 
@@ -157,7 +203,7 @@ export default function App() {
                 <div className="t-artist">{t.artist}</div>
               </div>
               <div className="t-actions">
-                <button onClick={(e) => { e.stopPropagation(); toggleLike(t.id); }} dangerouslySetInnerHTML={{__html: liked.has(t.id) ? ICONS.heartFill : ICONS.heart}} />
+                <button onClick={(e) => { e.stopPropagation(); toggleLike(t.id); }} dangerouslySetInnerHTML={{__html: liked.has(t.id) ? ICONS.heartFill : ICONS.heart}} style={{color: liked.has(t.id) ? 'var(--accent)' : 'white'}} />
                 <select onChange={(e) => { e.stopPropagation(); addToPlaylist(t.id, e.target.value); e.target.value=""; }} onClick={e => e.stopPropagation()}>
                   <option value="">Add to...</option>
                   {playlists.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
@@ -206,4 +252,3 @@ export default function App() {
     </div>
   );
 }
-
