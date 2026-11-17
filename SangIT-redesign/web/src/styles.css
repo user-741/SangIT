@@ -121,3 +121,18 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
   .p-title{font-size:13px}
   .p-artist{font-size:11.5px}
 }
+
+/* Additions for new features */
+.search-input { width: 100%; max-width: 500px; padding: 14px 20px; border-radius: 8px; background: #17171d; border: 1px solid #333; color: white; font-size: 16px; margin-bottom: 24px; outline: none; }
+.search-input:focus { border-color: var(--accent); }
+.track { position: relative; }
+.t-actions { position: absolute; right: 16px; display: flex; gap: 10px; align-items: center; opacity: 0; transition: 0.2s; background: rgba(0,0,0,0.6); padding: 6px; border-radius: 8px; }
+.track:hover .t-actions { opacity: 1; }
+.t-actions button { width: 24px; height: 24px; color: white; cursor: pointer; }
+.t-actions button.active { color: var(--accent); }
+.t-actions select { background: #222; color: white; border: 1px solid #444; border-radius: 4px; padding: 4px; outline: none; font-size: 12px; cursor: pointer; }
+.side-head { display: flex; justify-content: space-between; align-items: center; color: #888; font-size: 12px; font-weight: bold; text-transform: uppercase; padding: 10px; margin-top: 20px; }
+.side-head button { color: #888; cursor: pointer; transition: 0.2s; }
+.side-head button:hover { color: white; }
+.side-pl.active { background: rgba(255,255,255,0.1); color: var(--accent); }
+.ctrl.active { color: var(--accent); }

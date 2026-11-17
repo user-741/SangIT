@@ -1,23 +1,16 @@
 ﻿import { useState, useRef, useEffect } from 'react';
+import { Track } from './App';
 
-export interface Track {
-  id: string;
-  title: string;
-  artist: string;
-  album: string;
-  duration: number;
-  hue: number;
-  src: string | null;
-  fallbackSrc?: string | null;
-}
-
-export function usePlayer(tracks: Track[]) {
+export function usePlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [queue, setQueue] = useState<Track[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(0.8);
+  const [shuffle, setShuffle] = useState(false);
+  const [repeat, setRepeat] = useState<'off' | 'all' | 'one'>('off');
 
   useEffect(() => {
     audioRef.current = new Audio();
@@ -26,22 +19,13 @@ export function usePlayer(tracks: Track[]) {
     const onTimeUpdate = () => setProgress(audio.currentTime);
     const onLoadedMetadata = () => {
       setDuration(audio.duration || 0);
-      if (audio.src) audio.play().catch(() => setIsPlaying(false));
-    };
-    const onEnded = () => {
-      if (queue.length > 0) {
-        const nextIdx = (currentIndex + 1) % queue.length;
-        setCurrentIndex(nextIdx);
-        audio.src = queue[nextIdx].src || queue[nextIdx].fallbackSrc || '';
-        audio.load();
-      }
+      audio.play().catch(() => setIsPlaying(false));
     };
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
 
     audio.addEventListener('timeupdate', onTimeUpdate);
     audio.addEventListener('loadedmetadata', onLoadedMetadata);
-    audio.addEventListener('ended', onEnded);
     audio.addEventListener('play', onPlay);
     audio.addEventListener('pause', onPause);
 
@@ -49,21 +33,21 @@ export function usePlayer(tracks: Track[]) {
       audio.pause();
       audio.removeEventListener('timeupdate', onTimeUpdate);
       audio.removeEventListener('loadedmetadata', onLoadedMetadata);
-      audio.removeEventListener('ended', onEnded);
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
     };
-  }, [queue, currentIndex]);
+  }, []);
+
+  useEffect(() => {
+    if (audioRef.current) audioRef.current.volume = volume;
+  }, [volume]);
 
   const currentTrack = queue[currentIndex] || null;
 
-  const playTrack = (track: Track, newQueue?: Track[]) => {
-    if (newQueue) setQueue(newQueue);
-    else if (queue.length === 0) setQueue([track]);
-    
-    const idx = newQueue ? newQueue.findIndex(t => t.id === track.id) : queue.findIndex(t => t.id === track.id);
-    setCurrentIndex(idx >= 0 ? idx : 0);
-    
+  const playTrack = (track: Track, newQueue: Track[]) => {
+    setQueue(newQueue);
+    const idx = newQueue.findIndex(t => t.id === track.id);
+    setCurrentIndex(idx);
     if (audioRef.current) {
       audioRef.current.src = track.src || track.fallbackSrc || '';
       audioRef.current.load();
@@ -76,19 +60,23 @@ export function usePlayer(tracks: Track[]) {
     else audioRef.current.play().catch(() => {});
   };
 
-  const playNext = () => {
-    if (queue.length === 0 || !audioRef.current) return;
-    const nextIdx = (currentIndex + 1) % queue.length;
+  const next = () => {
+    if (!queue.length || !audioRef.current) return;
+    let nextIdx = currentIndex + 1;
+    if (shuffle) nextIdx = Math.floor(Math.random() * queue.length);
+    else if (nextIdx >= queue.length) nextIdx = 0;
+
     setCurrentIndex(nextIdx);
-    audioRef.current.src = queue[nextIdx].src || queue[nextIdx].fallbackSrc || '';
+    audioRef.current.src = queue[nextIdx].src || '';
     audioRef.current.load();
   };
 
-  const playPrev = () => {
-    if (queue.length === 0 || !audioRef.current) return;
-    const prevIdx = (currentIndex - 1 + queue.length) % queue.length;
+  const prev = () => {
+    if (!queue.length || !audioRef.current) return;
+    let prevIdx = currentIndex - 1;
+    if (prevIdx < 0) prevIdx = queue.length - 1;
     setCurrentIndex(prevIdx);
-    audioRef.current.src = queue[prevIdx].src || queue[prevIdx].fallbackSrc || '';
+    audioRef.current.src = queue[prevIdx].src || '';
     audioRef.current.load();
   };
 
@@ -99,7 +87,7 @@ export function usePlayer(tracks: Track[]) {
   };
 
   return {
-    currentTrack, isPlaying, progress, duration,
-    playTrack, togglePlay, playNext, playPrev, seek
+    currentTrack, isPlaying, progress, duration, volume, shuffle, repeat,
+    playTrack, togglePlay, next, prev, seek, setVolume, setShuffle, setRepeat
   };
 }
