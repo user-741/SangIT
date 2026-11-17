@@ -23,15 +23,20 @@ export default function App() {
 
   const loadData = () => {
     setLoading(true);
-    // credentials: 'include' is CRITICAL for sending the auth cookie
-    fetch('/api/library/tracks', { credentials: 'include' })
-      .then(res => {
-        if (res.status === 401) {
-          setNeedsLogin(true);
-          throw new Error('Unauthorized');
-        }
-        if (!res.ok) throw new Error('Network response was not ok');
+    
+    // Try /api/library/tracks first, then fallback to /library/tracks if Vercel stripped the prefix
+    const tryFetch = (url: string): Promise<any> => {
+      return fetch(url, { credentials: 'include' }).then(res => {
+        if (res.status === 401) throw new Error('UNAUTHORIZED');
+        if (!res.ok) throw new Error('404');
         return res.json();
+      });
+    };
+
+    tryFetch('/api/library/tracks')
+      .catch(err => {
+        if (err.message === 'UNAUTHORIZED') throw err;
+        return tryFetch('/library/tracks');
       })
       .then(data => {
         setTracks(Array.isArray(data) ? data : data.tracks || []);
@@ -39,7 +44,11 @@ export default function App() {
         setLoading(false);
       })
       .catch(err => {
-        console.error("Fetch Error:", err);
+        if (err.message === 'UNAUTHORIZED') {
+          setNeedsLogin(true);
+        } else {
+          console.error("Fetch Error:", err);
+        }
         setLoading(false);
       });
   };
@@ -51,7 +60,6 @@ export default function App() {
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Assuming standard endpoint, we'll try /api/auth/login or /api/login
     fetch('/api/auth/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -63,7 +71,6 @@ export default function App() {
       loadData();
     })
     .catch(() => {
-      // Fallback to /api/login if the first one fails
       fetch('/api/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
