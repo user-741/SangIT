@@ -1,6 +1,5 @@
 ﻿import { useEffect, useState } from 'react';
 import { usePlayer, Track } from './usePlayer';
-import * as api from './api';
 
 const ICON = {
   play: '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a.8.8 0 0 0 1.22.68l11-6.8a.8.8 0 0 0 0-1.36l-11-6.8A.8.8 0 0 0 8 5.2Z"/></svg>',
@@ -20,29 +19,20 @@ export default function App() {
   const { currentTrack, isPlaying, progress, duration, togglePlay, playTrack, playNext, playPrev, seek } = usePlayer(tracks);
 
   useEffect(() => {
-    // Safely try different possible fetch function names from your api.ts
-    const fetchFn = (api as any).fetchTracks || (api as any).getTracks || (api as any).fetchLibrary || (api as any).getLibrary || (api as any).default;
-    
-    if (fetchFn && typeof fetchFn === 'function') {
-      fetchFn().then((data: any) => {
+    // Direct fetch to your backend API, completely bypassing api.ts
+    fetch('/api/library/tracks')
+      .then(res => {
+        if (!res.ok) throw new Error('Network response was not ok');
+        return res.json();
+      })
+      .then(data => {
         setTracks(Array.isArray(data) ? data : data.tracks || []);
         setLoading(false);
-      }).catch((err: any) => {
-        console.error("API Error:", err);
+      })
+      .catch(err => {
+        console.error("Fetch Error:", err);
         setLoading(false);
       });
-    } else {
-      // Fallback: direct fetch to the backend route if api.ts has a weird export
-      fetch('/api/library/tracks', { headers: { 'Accept': 'application/json' } })
-        .then(res => res.json())
-        .then(data => {
-          setTracks(Array.isArray(data) ? data : data.tracks || []);
-          setLoading(false);
-        }).catch(err => {
-          console.error("Fetch Error:", err);
-          setLoading(false);
-        });
-    }
   }, []);
 
   const formatTime = (s: number) => {
@@ -51,7 +41,7 @@ export default function App() {
   };
 
   if (loading) return <div style={{color:'white', padding:'40px', background:'#000', height:'100vh'}}>Loading your library...</div>;
-  if (!tracks.length) return <div style={{color:'white', padding:'40px', background:'#000', height:'100vh'}}>No tracks found. Check your GitHub release.</div>;
+  if (!tracks.length) return <div style={{color:'white', padding:'40px', background:'#000', height:'100vh'}}>No tracks found. Make sure you are logged in or check the GitHub release.</div>;
 
   return (
     <div className="app">
