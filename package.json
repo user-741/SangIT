@@ -11,13 +11,16 @@
   ],
   "scripts": {
     "dev": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w web\"",
-    "typecheck": "npm run typecheck -w server && npm run typecheck -w web",
+    "typecheck": "npm run typecheck -w server",
     "build": "npm run build -w web",
-    "scan-music": "node scripts/scan-music.mjs"
+    "scan-music": "node scripts/scan-music.mjs",
+    "sync-mega": "node scripts/sync-mega.mjs"
   },
   "devDependencies": {
+    "@vercel/blob": "^2.9.0",
     "concurrently": "^9.1.0",
-    "typescript": "^5.7.2",
-    "music-metadata": "^10.6.0"
+    "megajs": "^1.3.10",
+    "music-metadata": "^10.6.0",
+    "typescript": "^5.7.2"
   }
 }
