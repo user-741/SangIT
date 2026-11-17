@@ -8,44 +8,57 @@ const api = express.Router();
 api.use(express.json());
 api.use(cookieParser());
 
-const wrap = (fn: (req: Request, res: Response) => Promise<unknown>) => (req: Request, res: Response, next: NextFunction) => {
-  fn(req, res).catch(next);
-};
+// Health check endpoint to test if Vercel is working
+api.get("/health", (req, res) => {
+  res.json({ 
+    status: "ok", 
+    hasToken: !!process.env.GITHUB_TOKEN,
+    hasRepo: !!process.env.GITHUB_REPO,
+    hasSecret: !!process.env.JWT_SECRET
+  });
+});
 
 api.post("/login", login);
-api.post("/auth/login", login); // fallback
+api.post("/auth/login", login);
 
-api.get("/library/tracks", requireAuth, wrap(async (_req, res) => res.json(await library.tracks())));
-api.get("/library/playlists", requireAuth, wrap(async (_req, res) => res.json(await library.playlists())));
+api.get("/library/tracks", requireAuth, async (req, res, next) => {
+  try { res.json(await library.tracks()); } catch (e) { next(e); }
+});
 
-api.get("/stream/:id", requireAuth, wrap(async (req, res) => {
-  const source = await sourceFor(String(req.params.id));
-  if (!source) return void res.status(404).json({ error: "Track not found" });
+api.get("/library/playlists", requireAuth, async (req, res, next) => {
+  try { res.json(await library.playlists()); } catch (e) { next(e); }
+});
 
-  const ctrl = new AbortController();
-  res.on("close", () => ctrl.abort());
-  const upstream = await fetch(source.url, {
-    headers: req.headers.range ? { Range: req.headers.range } : {},
-    signal: ctrl.signal,
-  });
-  
-  if (!upstream.body || (!upstream.ok && upstream.status !== 206)) {
-    return void res.status(502).json({ error: "Could not fetch file" });
-  }
+api.get("/stream/:id", requireAuth, async (req, res, next) => {
+  try {
+    const source = await sourceFor(String(req.params.id));
+    if (!source) return void res.status(404).json({ error: "Track not found" });
 
-  res.status(upstream.status);
-  res.setHeader("Content-Type", "audio/mp4"); // Force audio type
-  res.setHeader("Accept-Ranges", "bytes");
-  res.setHeader("Cache-Control", "public, max-age=3600");
-  for (const h of ["content-length", "content-range"]) {
-    const v = upstream.headers.get(h);
-    if (v) res.setHeader(h, v);
-  }
-  pipeline(Readable.fromWeb(upstream.body as never), res, () => {});
-}));
+    const ctrl = new AbortController();
+    res.on("close", () => ctrl.abort());
+    const upstream = await fetch(source.url, {
+      headers: req.headers.range ? { Range: req.headers.range } : {},
+      signal: ctrl.signal,
+    });
+    
+    if (!upstream.body || (!upstream.ok && upstream.status !== 206)) {
+      return void res.status(502).json({ error: "Could not fetch file" });
+    }
 
+    res.status(upstream.status);
+    res.setHeader("Content-Type", "audio/mp4");
+    res.setHeader("Accept-Ranges", "bytes");
+    for (const h of ["content-length", "content-range"]) {
+      const v = upstream.headers.get(h);
+      if (v) res.setHeader(h, v);
+    }
+    pipeline(Readable.fromWeb(upstream.body as never), res, () => {});
+  } catch (e) { next(e); }
+});
+
+// Global error handler (returns JSON instead of crashing)
 api.use((err: any, req: Request, res: Response, next: NextFunction) => {
-  console.error(err);
+  console.error("API Error:", err);
   res.status(500).json({ error: err.message || "Internal Server Error" });
 });
 
