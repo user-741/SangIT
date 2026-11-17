@@ -7,14 +7,14 @@
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="Sonora" />
-<title>Sonora — Your music, privately</title>
+<title>Sonora â€” Your music, privately</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    DESIGN TOKENS
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 :root{
   --bg:        #050507;
   --bg-1:      #0a0a0d;
@@ -61,7 +61,7 @@ body{
   overscroll-behavior:none;
 }
 
-/* Film grain overlay — subtle premium texture */
+/* Film grain overlay â€” subtle premium texture */
 body::after{
   content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
@@ -80,9 +80,9 @@ svg{width:100%;height:100%;display:block}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:99px;border:4px solid transparent;background-clip:content-box}
 ::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.16);background-clip:content-box}
 
-/* ═══════════════════════════════════════════════════════════════
-   ALBUM ART — procedurally generated with picsum + duotone
-   ═══════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   ALBUM ART â€” procedurally generated with picsum + duotone
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .art{
   position:relative;overflow:hidden;flex:none;
   background:hsl(var(--h,265) 30% 12%);
@@ -109,9 +109,9 @@ svg{width:100%;height:100%;display:block}
   background:radial-gradient(120% 90% at 15% 0%, rgba(255,255,255,.09), transparent 55%);
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SHELL
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .app{
   display:grid;
   grid-template-columns:var(--sidebar-w) minmax(0,1fr);
@@ -119,7 +119,7 @@ svg{width:100%;height:100%;display:block}
   position:relative;
 }
 
-/* ─────────────── Sidebar ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Sidebar â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .sidebar{
   display:flex;flex-direction:column;
   background:var(--bg);
@@ -197,7 +197,7 @@ svg{width:100%;height:100%;display:block}
 .mock-note{margin-top:12px;font-size:10.5px;color:var(--text-4);display:flex;align-items:center;gap:7px;line-height:1.3}
 .mock-note::before{content:'';width:5px;height:5px;border-radius:50%;background:#d4a158;flex:none;box-shadow:0 0 8px #d4a158}
 
-/* ─────────────── Main ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Main â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .main{
   overflow-y:auto;overflow-x:hidden;position:relative;min-width:0;
   background:var(--bg-1);
@@ -250,9 +250,9 @@ svg{width:100%;height:100%;display:block}
 .icon-btn[disabled]{opacity:.32;cursor:not-allowed}
 .icon-btn[disabled]:hover{background:none;color:var(--text-2)}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    VIEWS
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .view{
   padding:14px 32px 56px;
   animation:viewIn .38s var(--ease-out) both;
@@ -263,7 +263,7 @@ svg{width:100%;height:100%;display:block}
 h1{font-size:32px;font-weight:750;letter-spacing:-.032em;line-height:1.08;margin-bottom:22px}
 h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 
-/* ─────────────── Quick grid (home top) ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Quick grid (home top) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .quick-grid{
   display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
   gap:10px;margin-bottom:42px;
@@ -293,7 +293,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .quick:hover .q-play,.quick:focus-within .q-play{opacity:1;transform:none}
 .quick .q-play .icon{width:15px;height:15px}
 
-/* ─────────────── Shelf ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Shelf â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .shelf{margin-bottom:44px}
 .shelf-head{
   display:flex;align-items:baseline;justify-content:space-between;
@@ -350,7 +350,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .card-play .icon{width:17px;height:17px}
 .card:hover .card-play,.card:focus-within .card-play{opacity:1;transform:none}
 
-/* ─────────────── Track list ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Track list â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .track-list{display:flex;flex-direction:column;gap:0}
 .track{
   display:grid;
@@ -417,7 +417,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .track.playing .t-idx .idx-num,
 .track.playing .t-idx .idx-play{display:none}
 
-/* ─────────────── Album hero ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Album hero â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .album-hero{
   display:flex;align-items:flex-end;gap:26px;margin-bottom:32px;
   position:relative;
@@ -468,7 +468,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 }
 .btn-ghost:hover{background:rgba(255,255,255,.06);border-color:var(--text-3)}
 
-/* ─────────────── Search ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Search â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .search-field{
   display:flex;align-items:center;gap:12px;
   background:rgba(255,255,255,.055);
@@ -528,7 +528,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .browse-tile:hover::after{transform:rotate(40deg) scale(1.1)}
 .browse-tile span{position:relative;z-index:1;text-shadow:0 1px 3px rgba(0,0,0,.3)}
 
-/* ─────────────── Tabs ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Tabs â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .tabs{display:flex;gap:8px;margin-bottom:28px;flex-wrap:wrap}
 .tab{
   font-size:12.5px;font-weight:600;padding:7px 16px;border-radius:99px;
@@ -538,7 +538,7 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .tab:hover{color:var(--text);border-color:var(--text-3)}
 .tab.active{background:var(--text);color:var(--bg-1);border-color:var(--text);font-weight:650}
 
-/* ─────────────── Empty state ─────────────── */
+/* â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ */
 .empty{
   text-align:center;padding:60px 20px;color:var(--text-3);
   border-radius:12px;
@@ -550,9 +550,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .empty-title{font-size:15px;font-weight:600;color:var(--text-2);margin-bottom:6px}
 .empty-sub{font-size:13px;line-height:1.5;max-width:320px;margin:0 auto}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PLAYER BAR
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .player{
   position:fixed;left:0;right:0;bottom:0;z-index:60;
   height:var(--player-h);
@@ -670,9 +670,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .p-mini-play:hover{transform:scale(1.05)}
 .p-mini-play .icon{width:15px;height:15px}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MOBILE NAV
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .mobile-nav{
   display:none;position:fixed;left:0;right:0;bottom:0;z-index:70;
   height:calc(var(--nav-h) + var(--safe));
@@ -693,9 +693,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .mnav.active{color:var(--text)}
 .mnav.active .icon{color:var(--accent);filter:drop-shadow(0 0 8px rgba(193,168,255,.4))}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    NOW PLAYING
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .np{
   position:fixed;inset:0;z-index:100;
   display:flex;flex-direction:column;
@@ -772,9 +772,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 }
 .np-foot .icon-btn .icon{width:20px;height:20px}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    QUEUE PANEL
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .queue{
   position:fixed;top:0;right:0;bottom:var(--player-h);
   width:400px;z-index:90;
@@ -823,9 +823,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
   background:rgba(193,168,255,.06);
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CONTEXT MENU
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .ctx{
   position:fixed;z-index:300;
   background:var(--bg-4);border:1px solid var(--border-2);
@@ -850,9 +850,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .ctx button.danger .icon{color:var(--danger)}
 .ctx-sep{height:1px;background:var(--border);margin:4px 8px}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TOAST
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .toast{
   position:fixed;left:50%;
   bottom:calc(var(--player-h) + 24px);
@@ -870,9 +870,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 .toast.show{opacity:1;transform:translate(-50%,0)}
 .toast .icon{width:16px;height:16px;color:var(--success);flex:none}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SKELETON LOADING
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .skeleton-overlay{
   position:fixed;inset:0;z-index:500;
   background:var(--bg);
@@ -889,9 +889,9 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
 }
 @keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    RESPONSIVE
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 @media (max-width:1160px){
   .track{grid-template-columns:24px 42px minmax(0,2.5fr) minmax(0,1fr) 56px 30px;gap:12px}
 }
@@ -995,7 +995,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 @media(max-width:900px){:root{--player-h:0}.view{padding:18px 18px 35px}.topbar{padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}.home-split{display:flex;flex-direction:column;gap:0}.home-shortcuts{border:0;padding:0}.home-albums .card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.quick{height:55px}.collection-heading h1{font-size:29px}.card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card-name{font-size:12px}.card-sub{font-size:11px}.player{left:0;right:0;bottom:calc(var(--nav-h) + var(--safe));border-radius:0;background:#282c30}.mobile-nav{background:#17191b;border-top:1px solid var(--border)}.album-hero{padding:0 0 18px}.track{grid-template-columns:20px 38px minmax(0,1fr) 36px 28px}.np .art{width:min(330px,80vw,43vh)}}
 @media(max-width:480px){.home-albums .card-row,.card-row{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-heading span{font-size:11px}.quick .q-name{font-size:12px}}
 
-/* ── Sign in / empty library gate ── */
+/* â”€â”€ Sign in / empty library gate â”€â”€ */
 .signout{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;margin-top:12px;font-size:11px;color:var(--text-3);text-align:left}
 .signout span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
 .signout b{font-weight:600;color:var(--accent);flex:none}.signout:hover b{text-decoration:underline}
@@ -1040,7 +1040,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 </div>
 
 <div class="app">
-  <!-- ═══════════════ SIDEBAR ═══════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• SIDEBAR â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <aside class="sidebar">
     <div class="brand">
       <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
@@ -1080,7 +1080,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     </div>
   </aside>
 
-  <!-- ═══════════════ MAIN ═══════════════ -->
+  <!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MAIN â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
   <main class="main" id="main">
     <header class="topbar" id="topbar">
       <div class="topbar-left">
@@ -1093,7 +1093,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
       </div>
       <span class="mobile-brand">Sonora.</span><div class="topbar-center"> <button class="global-search" data-nav="search"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span> Search collection <kbd>Ctrl K</kbd></button>
         <div class="playing-from" id="playingFrom">
-          <span>Playing from</span><strong id="playingFromName">—</strong>
+          <span>Playing from</span><strong id="playingFromName">â€”</strong>
         </div>
       </div>
       <div class="topbar-right">
@@ -1102,7 +1102,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     </header>
 
     <div id="views">
-      <!-- ───────────── HOME ───────────── -->
+      <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ HOME â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <section class="view" data-view="home">
         <div class="collection-heading"><h1 id="greeting">Music</h1><span id="heroCount"></span></div>
 <div class="home-split"><section class="shelf home-albums"><div class="shelf-head"><h2>Albums</h2><button class="text-btn" data-action="show-all" data-for="recent">View all</button></div><div class="card-row" id="recentRow"></div></section><section class="shelf home-shortcuts"><div class="shelf-head"><h2>Quick access</h2></div><div class="quick-grid" id="quickGrid"></div></section></div>
@@ -1120,13 +1120,13 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
         </section>
       </section>
 
-      <!-- ───────────── SEARCH ───────────── -->
+      <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ SEARCH â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <section class="view" data-view="search" hidden>
         <h1>Search</h1>
         <div class="search-field">
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg></span>
           <input id="searchInput" type="search" placeholder="Songs, artists or albums" autocomplete="off" spellcheck="false" />
-          <span class="kbd" id="searchKbd">⌘K</span>
+          <span class="kbd" id="searchKbd">âŒ˜K</span>
         </div>
         <div class="chip-row" id="searchChips"></div>
         <div id="searchResults"></div>
@@ -1136,7 +1136,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
         </div>
       </section>
 
-      <!-- ───────────── LIBRARY ───────────── -->
+      <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ LIBRARY â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <section class="view" data-view="library" hidden>
         <h1>Your Library</h1>
         <div class="tabs" id="libTabs">
@@ -1148,7 +1148,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
         <div id="libraryContent"></div>
       </section>
 
-      <!-- ───────────── ALBUM / PLAYLIST ───────────── -->
+      <!-- â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ ALBUM / PLAYLIST â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€ -->
       <section class="view" data-view="album" hidden>
         <div id="albumContent"></div>
       </section>
@@ -1156,15 +1156,15 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
   </main>
 </div>
 
-<!-- ═══════════════ PLAYER ═══════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• PLAYER â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="player" id="player">
   <div class="mini-progress"><i id="miniFill"></i></div>
 
   <div class="p-left">
     <div class="art" id="pCover" style="--h:265" data-action="expand"></div>
     <div class="p-meta">
-      <div class="p-title" id="pTitle" data-action="expand">—</div>
-      <div class="p-artist" id="pArtist">—</div>
+      <div class="p-title" id="pTitle" data-action="expand">â€”</div>
+      <div class="p-artist" id="pArtist">â€”</div>
     </div>
     <button class="p-like" id="pLike" aria-label="Like" title="Like">
       <span class="icon"></span>
@@ -1214,7 +1214,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
   </button>
 </div>
 
-<!-- ═══════════════ MOBILE NAV ═══════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• MOBILE NAV â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <nav class="mobile-nav">
   <button class="mnav active" data-nav="home">
     <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1Z"/></svg></span>
@@ -1230,7 +1230,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
   </button>
 </nav>
 
-<!-- ═══════════════ NOW PLAYING ═══════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• NOW PLAYING â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="np" id="np" style="--h:265">
   <header class="np-head">
     <button class="icon-btn" id="npClose" aria-label="Close player">
@@ -1247,8 +1247,8 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 
     <div class="np-meta">
       <div class="np-meta-text">
-        <div class="np-title" id="npTitle">—</div>
-        <div class="np-artist" id="npArtist">—</div>
+        <div class="np-title" id="npTitle">â€”</div>
+        <div class="np-artist" id="npArtist">â€”</div>
       </div>
       <button class="p-like" id="npLike" aria-label="Like">
         <span class="icon"></span>
@@ -1289,7 +1289,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
   </div>
 </div>
 
-<!-- ═══════════════ QUEUE ═══════════════ -->
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• QUEUE â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <aside class="queue" id="queue">
   <div class="queue-head">
     <h3>Play queue</h3>
@@ -1327,9 +1327,9 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 <audio id="audio" preload="none"></audio>
 
 <script>
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    MOCK DATA
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let TRACKS = [];
 let PLAYLISTS = [];
 
@@ -1370,9 +1370,9 @@ function artMarkup(item, opts={}){
     </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ICONS
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const ICON = {
   play:  '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a.8.8 0 0 0 1.22.68l11-6.8a.8.8 0 0 0 0-1.36l-11-6.8A.8.8 0 0 0 8 5.2Z"/></svg>',
   pause: '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6.5" y="4.5" width="3.6" height="15" rx="1.2"/><rect x="13.9" y="4.5" width="3.6" height="15" rx="1.2"/></svg>',
@@ -1390,9 +1390,9 @@ const ICON = {
   volMute:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 9.5v5h3.5L12 18V6L7.5 9.5H4Z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>'
 };
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    STATE
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const state = {
   view:'home',
   history:['home'],
@@ -1406,7 +1406,7 @@ const state = {
   volume:0.72,
   muted:false,
   loadedDuration:null,   // real duration of currently loaded track
-  playingFrom:null,      // 'Album · Half Light' style
+  playingFrom:null,      // 'Album Â· Half Light' style
   sourceArt:null,
   seeking:false
 };
@@ -1418,9 +1418,9 @@ audio.volume = state.volume;
 
 const current = () => byId(state.queue[state.qIndex]);
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    RENDER HELPERS
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function trackRow(t, i, opts={}){
   const liked = state.liked.has(t.id);
   const isCurrent = current() && current().id === t.id;
@@ -1457,9 +1457,9 @@ function card(item, opts={}){
     </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    HOME
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function buildHome(){
   $('#greeting').textContent = 'Music';
 
@@ -1500,9 +1500,9 @@ function greeting(){
   return 'Good evening';
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SIDEBAR
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function buildSidebar(){
   const liked = `
     <button class="side-pl" data-action="liked-songs">
@@ -1517,9 +1517,9 @@ function buildSidebar(){
   $('#sidePlaylists').innerHTML = liked + items;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    SEARCH
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 const BROWSE = [
   { name:'Electronic', hue:265 }, { name:'Indie',      hue:22 },
   { name:'Ambient',    hue:195 }, { name:'Soul',       hue:35 },
@@ -1576,9 +1576,9 @@ function runSearch(){
        </div>`;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    LIBRARY
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function buildLibrary(tab='playlists'){
   const box = $('#libraryContent');
   if (tab === 'playlists'){
@@ -1613,9 +1613,9 @@ function buildLibrary(tab='playlists'){
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    ALBUM VIEW
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function openAlbum(albumName){
   const tracks = TRACKS.filter(t => t.album === albumName);
   if (!tracks.length) return;
@@ -1653,9 +1653,9 @@ function openAlbum(albumName){
   go('album');
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    QUEUE
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function buildQueue(){
   const items = state.queue.map((id, i) => {
     const t = byId(id);
@@ -1676,9 +1676,9 @@ function buildQueue(){
   $('#queueSub').textContent = upNext > 0 ? `${upNext} track${upNext>1?'s':''} up next` : 'End of queue';
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PLAYER RENDER
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function renderPlayer(){
   const t = current();
   if (!t) return;
@@ -1768,9 +1768,9 @@ function updateVolumeIcon(){
   $('#volFill').style.width = (state.muted ? 0 : state.volume * 100) + '%';
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    PLAYBACK LOGIC
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let loadToken = 0;
 
 function playTrackById(id, ctx={}){
@@ -1820,7 +1820,13 @@ function loadCurrent(){
 
   audio.onerror = () => {
     if (token !== loadToken) return;
-    toast('Stream unavailable — skipping', 'error');
+    if (t.fallback && !t.triedFallback) {   // GitHub refused to stream: retry through /api/stream
+      t.triedFallback = true;
+      audio.src = t.fallback;
+      audio.load();
+      return;
+    }
+    toast('Stream unavailable â€” skipping', 'error');
     state.playing = false;
     renderPlayer();
   };
@@ -1832,7 +1838,7 @@ function loadCurrent(){
 
 function togglePlay(){
   if (!audio.src){
-    // Nothing loaded yet — load first track
+    // Nothing loaded yet â€” load first track
     loadCurrent();
     return;
   }
@@ -1895,7 +1901,7 @@ function seekTo(fraction){
   renderProgress();
 }
 
-/* ─── Audio element events ─── */
+/* â”€â”€â”€ Audio element events â”€â”€â”€ */
 audio.addEventListener('timeupdate', () => {
   if (state.seeking) return;
   state.time = audio.currentTime;
@@ -1910,9 +1916,9 @@ audio.addEventListener('volumechange', () => {
   updateVolumeIcon();
 });
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    NAVIGATION
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function go(view, opts={}){
   if (view === state.view && !opts.force) return;
   if (!opts.fromHistory){
@@ -1937,9 +1943,9 @@ function updateBackFwd(){
   $('#fwdBtn').disabled = state.histIdx >= state.history.length - 1;
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    CONTEXT MENU
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function showContextMenu(x, y, trackId){
   const t = byId(trackId);
   if (!t) return;
@@ -1975,9 +1981,9 @@ document.addEventListener('click', e => {
   if (!e.target.closest('#ctx')) hideContextMenu();
 });
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TOAST
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 let toastTimer;
 function toast(msg, kind='ok'){
   const el = $('#toast');
@@ -1988,16 +1994,16 @@ function toast(msg, kind='ok'){
   toastTimer = setTimeout(() => el.classList.remove('show'), 2400);
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    UTIL
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 function escapeHtml(s){
   return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    EVENT DELEGATION
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 document.addEventListener('click', e => {
   /* Context menu item */
   const ctxBtn = e.target.closest('[data-ctx-action]');
@@ -2077,7 +2083,7 @@ document.addEventListener('click', e => {
     return;
   }
 
-  /* Card → open album / playlist / artist */
+  /* Card â†’ open album / playlist / artist */
   const cardEl = e.target.closest('.card');
   if (cardEl){
     if (cardEl.dataset.album) openAlbum(cardEl.dataset.album);
@@ -2221,9 +2227,9 @@ function openArtist(name){
   go('album');
 }
 
-/* ═══════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    TRANSPORT CONTROLS
-   ═══════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 $('#btnPlay').onclick      = togglePlay;
 $('#miniPlay').onclick     = e => { e.stopPropagation(); togglePlay(); };
 $('#npPlay').onclick       = togglePlay;
@@ -2364,9 +2370,9 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape'){ hideContextMenu(); $('#queue').classList.remove('open'); $('#np').classList.remove('open'); }
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   BOOT — sign in, load the real library, build the UI
-   ═══════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   BOOT â€” sign in, load the real library, build the UI
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 async function api(path, opts = {}){
   const res = await fetch('/api' + path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts });
   if (!res.ok){
@@ -2384,12 +2390,12 @@ async function loadLibrary(){
   const idOf = new Map();
   TRACKS = tracks.filter(t => t.src).map((t, i) => {
     idOf.set(t.id, i + 1);
-    return { id:i + 1, key:t.id, title:t.title, artist:clean(t.artist), album:clean(t.album), dur:t.duration || 0, hue:t.hue, src:t.src };
+    return { id:i + 1, key:t.id, title:t.title, artist:clean(t.artist), album:clean(t.album), dur:t.duration || 0, hue:t.hue, src:t.src, fallback:t.fallbackSrc };
   });
   PLAYLISTS = playlists.map(p => {
     const ids = p.trackIds.map(k => idOf.get(k)).filter(Boolean);
     const first = byId(ids[0]);
-    return { name:clean(p.name), sub:`Playlist · ${ids.length} song${ids.length === 1 ? '' : 's'}`, hue:first ? first.hue : 265, ids };
+    return { name:clean(p.name), sub:`Playlist Â· ${ids.length} song${ids.length === 1 ? '' : 's'}`, hue:first ? first.hue : 265, ids };
   }).filter(p => p.ids.length);
   state.queue = TRACKS.map(t => t.id);
   try {
@@ -2411,7 +2417,7 @@ function startApp(email){
   $('#whoAmI').textContent = email;
   const count = `${TRACKS.length} track${TRACKS.length === 1 ? '' : 's'}`;
   $('#libCount').textContent = count;
-  $('#heroCount').textContent = `Your library · ${count}`;
+  $('#heroCount').textContent = `Your library Â· ${count}`;
   buildSidebar();
   buildHome();
   buildSearch();
