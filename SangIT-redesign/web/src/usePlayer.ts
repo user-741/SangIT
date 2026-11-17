@@ -1,5 +1,9 @@
 ﻿import { useState, useRef, useEffect } from 'react';
-import { Track } from './App';
+
+export interface Track {
+  id: string; title: string; artist: string; album: string;
+  duration: number; hue: number; src: string | null; fallbackSrc?: string | null;
+}
 
 export function usePlayer() {
   const audioRef = useRef<HTMLAudioElement | null>(null);

@@ -1,10 +1,7 @@
 ﻿import { useEffect, useState } from 'react';
-import { usePlayer } from './usePlayer';
+import { usePlayer, Track } from './usePlayer';
 
-export interface Track {
-  id: string; title: string; artist: string; album: string;
-  duration: number; hue: number; src: string | null; fallbackSrc?: string | null;
-}
+
 interface Playlist { id: string; name: string; trackIds: string[]; }
 
 // Procedural Album Art Generator
@@ -209,3 +206,4 @@ export default function App() {
     </div>
   );
 }
+
