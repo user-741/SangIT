@@ -6,6 +6,7 @@ export interface Track {
   duration: number;
   hue: number;
   src: string | null;
+  fallbackSrc?: string | null;
 }
 
 export interface Playlist {
