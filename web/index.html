@@ -1489,7 +1489,14 @@ function buildHome(){
   ).join('');
 
   // Tracks
-  $('#recentTracks').innerHTML = TRACKS.map((t,i)=>trackRow(t,i)).join('');
+  const recentBox = $('#recentTracks');
+  const showSongs = n => {
+    recentBox.innerHTML = TRACKS.slice(0, n).map((t,i)=>trackRow(t,i)).join('') +
+      (n < TRACKS.length ? `<button class="chip" id="showMoreSongs" style="margin:16px">Show more (${TRACKS.length - n} left)</button>` : '');
+    const more = $('#showMoreSongs');
+    if (more) more.onclick = () => showSongs(n + 100);
+  };
+  showSongs(100);
 }
 
 function greeting(){
