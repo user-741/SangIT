@@ -1,5 +1,15 @@
-﻿import { useState, useRef, useEffect, useCallback } from 'react';
-import { Track } from './api';
+﻿import { useState, useRef, useEffect } from 'react';
+
+export interface Track {
+  id: string;
+  title: string;
+  artist: string;
+  album: string;
+  duration: number;
+  hue: number;
+  src: string | null;
+  fallbackSrc?: string | null;
+}
 
 export function usePlayer(tracks: Track[]) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -8,8 +18,6 @@ export function usePlayer(tracks: Track[]) {
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [volume, setVolume] = useState(0.72);
-  const [isMuted, setIsMuted] = useState(false);
 
   useEffect(() => {
     audioRef.current = new Audio();
@@ -20,7 +28,14 @@ export function usePlayer(tracks: Track[]) {
       setDuration(audio.duration || 0);
       if (audio.src) audio.play().catch(() => setIsPlaying(false));
     };
-    const onEnded = () => playNext();
+    const onEnded = () => {
+      if (queue.length > 0) {
+        const nextIdx = (currentIndex + 1) % queue.length;
+        setCurrentIndex(nextIdx);
+        audio.src = queue[nextIdx].src || queue[nextIdx].fallbackSrc || '';
+        audio.load();
+      }
+    };
     const onPlay = () => setIsPlaying(true);
     const onPause = () => setIsPlaying(false);
 
@@ -38,7 +53,7 @@ export function usePlayer(tracks: Track[]) {
       audio.removeEventListener('play', onPlay);
       audio.removeEventListener('pause', onPause);
     };
-  }, []);
+  }, [queue, currentIndex]);
 
   const currentTrack = queue[currentIndex] || null;
 
@@ -62,23 +77,19 @@ export function usePlayer(tracks: Track[]) {
   };
 
   const playNext = () => {
-    if (queue.length === 0) return;
+    if (queue.length === 0 || !audioRef.current) return;
     const nextIdx = (currentIndex + 1) % queue.length;
     setCurrentIndex(nextIdx);
-    if (audioRef.current) {
-      audioRef.current.src = queue[nextIdx].src || queue[nextIdx].fallbackSrc || '';
-      audioRef.current.load();
-    }
+    audioRef.current.src = queue[nextIdx].src || queue[nextIdx].fallbackSrc || '';
+    audioRef.current.load();
   };
 
   const playPrev = () => {
-    if (queue.length === 0) return;
+    if (queue.length === 0 || !audioRef.current) return;
     const prevIdx = (currentIndex - 1 + queue.length) % queue.length;
     setCurrentIndex(prevIdx);
-    if (audioRef.current) {
-      audioRef.current.src = queue[prevIdx].src || queue[prevIdx].fallbackSrc || '';
-      audioRef.current.load();
-    }
+    audioRef.current.src = queue[prevIdx].src || queue[prevIdx].fallbackSrc || '';
+    audioRef.current.load();
   };
 
   const seek = (fraction: number) => {
@@ -87,13 +98,8 @@ export function usePlayer(tracks: Track[]) {
     }
   };
 
-  const changeVolume = (val: number) => {
-    setVolume(val);
-    if (audioRef.current) audioRef.current.volume = val;
-  };
-
   return {
-    currentTrack, isPlaying, progress, duration, volume, isMuted,
-    playTrack, togglePlay, playNext, playPrev, seek, changeVolume, queue
+    currentTrack, isPlaying, progress, duration,
+    playTrack, togglePlay, playNext, playPrev, seek
   };
 }
