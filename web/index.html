@@ -2135,7 +2135,7 @@ document.addEventListener('click', e => {
   const cardEl = e.target.closest('.card');
   if (cardEl){
     if (cardEl.dataset.album) openAlbum(cardEl.dataset.album);
-    else if (cardEl.dataset.playlist) toast(`Opening "${cardEl.dataset.playlist}"`);
+    else if (cardEl.dataset.playlist) openPlaylist(cardEl.dataset.playlist);
     else if (cardEl.dataset.artist) openArtist(cardEl.dataset.artist);
     return;
   }
@@ -2179,7 +2179,7 @@ document.addEventListener('click', e => {
   /* Sidebar playlist */
   const sidePl = e.target.closest('[data-playlist]');
   if (sidePl){
-    toast(`Opening "${sidePl.dataset.playlist}"`);
+    openPlaylist(sidePl.dataset.playlist);
     return;
   }
 
@@ -2515,6 +2515,53 @@ function copyToAdd(){
   const text = toAddList.map(m => m.artist + ' - ' + m.title).join('\n');
   (navigator.clipboard ? navigator.clipboard.writeText(text) : Promise.reject())
     .then(() => toast('Copied ' + toAddList.length + ' songs'), () => toast('Could not copy', 'error'));
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PLAYLIST PAGE
+   ═══════════════════════════════════════════════════════════════ */
+function openPlaylist(name){
+  const p = PLAYLISTS.find(x => x.name === name);
+  if (!p) return;
+  const tracks = p.ids.map(byId).filter(Boolean);
+  const mins = Math.round(tracks.reduce((a, t) => a + (t.dur || 0), 0) / 60);
+  $('#albumContent').innerHTML = `
+    <div class="album-hero">
+      ${artMarkup({ name:p.name, hue:p.hue, cover:p.cover }, { size:600, style:'width:216px;height:216px;border-radius:10px' })}
+      <div class="album-info">
+        <div class="eyebrow">Playlist</div>
+        <h1>${esc(p.name)}</h1>
+        <div class="album-meta">
+          <span>${esc(p.sub.replace('Playlist · ', ''))}</span>
+          ${mins ? `<span class="dot"></span><span>${mins} min</span>` : ''}
+        </div>
+      </div>
+    </div>
+    <div class="album-actions">
+      <button class="btn-primary" data-action="play-context" data-context-type="playlist" data-context-id="${esc(p.name)}">
+        <span class="icon">${ICON.play}</span> Play
+      </button>
+      <button class="btn-ghost" data-action="shuffle-context" data-context-type="playlist" data-context-id="${esc(p.name)}">Shuffle</button>
+    </div>
+    <div class="track-list">${tracks.map((t, i) => trackRow(t, i)).join('')}</div>
+    <div id="plMissing"></div>`;
+  go('album');
+
+  // Songs that are in the original Spotify playlist but have no file yet
+  api('/library/missing').then(list => {
+    const m = list.filter(x => x.playlists.includes(p.name));
+    const box = $('#plMissing');
+    if (!m.length || !box) return;
+    box.innerHTML = `
+      <h2 style="margin:30px 0 4px">Not in your library yet</h2>
+      <div style="color:var(--text-3);font-size:13px;margin-bottom:10px">${m.length} songs from this playlist</div>
+      ${m.map((x, i) => `
+        <div class="toadd-row" style="opacity:.62">
+          <span class="toadd-n">${i + 1}</span>
+          ${artMarkup({ name:x.album, cover:x.cover, hue:(i * 47) % 360 }, { size:120, style:'width:42px;height:42px' })}
+          <div class="t-meta"><div class="t-title">${esc(x.title)}</div><div class="t-artist">${esc(x.artist)}</div></div>
+        </div>`).join('')}`;
+  }).catch(() => {});
 }
 
 /* ═══════════════════════════════════════════════════════════════
