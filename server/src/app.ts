@@ -42,6 +42,7 @@ const wrap = (fn: (req: Request, res: Response) => Promise<unknown>) => (req: Re
 
 api.get("/library/tracks", requireAuth, wrap(async (_req, res) => res.json(await library.tracks())));
 api.get("/library/playlists", requireAuth, wrap(async (_req, res) => res.json(await library.playlists())));
+api.get("/library/missing", requireAuth, wrap(async (_req, res) => res.json(await library.missing())));
 
 // Streams a GitHub release file through this server with audio headers and Range support.
 // Only URLs that came from the release listing can be fetched, so this is not an open proxy.

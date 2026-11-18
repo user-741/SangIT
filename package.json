@@ -13,7 +13,8 @@
     "dev": "concurrently -n api,web -c blue,green \"npm run dev -w server\" \"npm run dev -w web\"",
     "typecheck": "npm run typecheck -w server",
     "build": "npm run build -w web",
-    "scan-music": "node scripts/scan-music.mjs"
+    "scan-music": "node scripts/scan-music.mjs",
+    "import-playlists": "node scripts/import-playlists.mjs"
   },
   "devDependencies": {
     "concurrently": "^9.1.0",

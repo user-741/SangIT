@@ -1,4 +1,5 @@
 import { createHash } from "node:crypto";
+import catalog from "./catalog.json";
 
 export interface Track {
   id: string;
@@ -11,17 +12,34 @@ export interface Track {
   src: string | null;
   /** Used automatically if `src` fails (the other one of direct / proxy). */
   fallbackSrc: string | null;
+  cover: string | null;
+  year: number | null;
+  explicit: boolean;
 }
 
 export interface Playlist {
   id: string;
   name: string;
   trackIds: string[];
+  /** Songs in the original playlist, including ones you don't have yet. */
+  total: number;
+}
+
+/** A song that is in one of your imported playlists but has no file in the release yet. */
+export interface MissingTrack {
+  id: string;
+  title: string;
+  artist: string;
+  album: string;
+  cover: string | null;
+  popularity: number;
+  playlists: string[];
 }
 
 export interface LibrarySource {
   tracks(): Promise<Track[]>;
   playlists(): Promise<Playlist[]>;
+  missing(): Promise<MissingTrack[]>;
 }
 
 // ---- Settings (all optional; the defaults match your repo) -----------------
@@ -32,7 +50,7 @@ const STREAM_MODE = process.env.STREAM_MODE === "proxy" ? "proxy" : "direct";
 // Optional read-only token. Only needed if GitHub's 60 requests/hour anonymous limit bites.
 const TOKEN = process.env.GITHUB_TOKEN;
 const CACHE_MS = 10 * 60 * 1000;
-const MIN_ARTIST_PLAYLIST = 5; // artists with this many songs get an auto playlist
+const MIN_ARTIST_PLAYLIST = 5; // artists with this many unmatched songs get an auto playlist
 
 const AUDIO = /\.(m4a|mp4|aac|mp3|ogg|opus|wav|flac)$/i;
 const MIME: Record<string, string> = {
@@ -56,10 +74,23 @@ export interface Source {
   mime: string;
 }
 
+interface CatalogTrack {
+  k: string;
+  t: string;
+  a: string[];
+  al: string;
+  c: string | null;
+  d: number;
+  y: number | null;
+  e: number;
+  p: number;
+}
+
 interface Snapshot {
   at: number;
   tracks: Track[];
   playlists: Playlist[];
+  missing: MissingTrack[];
   sources: Map<string, Source>;
 }
 
@@ -109,37 +140,130 @@ function parseName(fileName: string): { artist: string; title: string } {
   return { artist: clean(first), title: clean(rest.join(sep)) };
 }
 
+// ---- Matching files to the Spotify catalog ---------------------------------
+const squash = (s: string) =>
+  s
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}]+/gu, "");
+
+/** "Work from Home (feat. Ty Dolla $ign) - Remix" and "Work from Home feat Ty Dolla ign" -> "workfromhome" */
+const titleKey = (s: string) =>
+  squash(
+    s
+      .replace(/\([^)]*\)|\[[^\]]*\]/g, " ")
+      .replace(/\s(feat\.?|ft\.?|featuring)(\s|$).*$/i, "")
+      .replace(/\s-\s.*$/, ""),
+  );
+
+function distance(a: string, b: string): number {
+  const row = Array.from({ length: b.length + 1 }, (_, i) => i);
+  for (let i = 1; i <= a.length; i++) {
+    let prev = row[0] ?? 0;
+    row[0] = i;
+    for (let j = 1; j <= b.length; j++) {
+      const tmp = row[j] ?? 0;
+      row[j] = Math.min((row[j] ?? 0) + 1, (row[j - 1] ?? 0) + 1, prev + (a[i - 1] === b[j - 1] ? 0 : 1));
+      prev = tmp;
+    }
+  }
+  return row[b.length] ?? 0;
+}
+
+const entries = catalog.tracks as CatalogTrack[];
+const byArtist = new Map<string, { entry: CatalogTrack; key: string }[]>();
+for (const entry of entries) {
+  const key = titleKey(entry.t);
+  for (const artist of entry.a) {
+    const ak = squash(artist);
+    byArtist.set(ak, [...(byArtist.get(ak) ?? []), { entry, key }]);
+  }
+}
+
+function matchCatalog(artist: string, title: string): CatalogTrack | undefined {
+  const pool = byArtist.get(squash(artist));
+  const key = titleKey(title);
+  if (!pool || key.length < 2) return undefined;
+  return (
+    pool.find((c) => c.key === key) ??
+    pool.find((c) => key.length >= 4 && c.key.length >= 4 && (c.key.startsWith(key) || key.startsWith(c.key))) ??
+    pool.find((c) => key.length >= 6 && distance(c.key, key) <= Math.max(1, Math.floor(key.length * 0.2)))
+  )?.entry;
+}
+
 function build(assets: Asset[]): Snapshot {
   const sources = new Map<string, Source>();
-  const tracks = assets.map((a): Track => {
+  const bySpotifyId = new Map<string, string>(); // catalog track id -> our track id
+  const tracks: Track[] = [];
+
+  for (const a of [...assets].sort((x, y) => x.name.localeCompare(y.name))) {
     const id = md5(a.name).slice(0, 10); // same id scheme as before, so saved likes keep working
     const ext = (a.name.match(AUDIO)?.[1] ?? "m4a").toLowerCase();
+    const parsed = parseName(a.name);
+    const hit = matchCatalog(parsed.artist, parsed.title);
+
+    // The same song twice (e.g. it was in both playlists): keep the first file only.
+    if (hit && bySpotifyId.has(hit.k)) continue;
+    if (hit) bySpotifyId.set(hit.k, id);
+
     sources.set(id, { url: a.browser_download_url, mime: MIME[ext] ?? "audio/mp4" });
-
-    const { artist, title } = parseName(a.name);
-
-    const direct = a.browser_download_url;
     const proxied = `/api/stream/${id}`;
-    return {
+    const direct = a.browser_download_url;
+    const artist = hit?.a[0] ?? parsed.artist;
+    const album = hit?.al ?? "Singles";
+    tracks.push({
       id,
-      title,
+      title: hit?.t ?? parsed.title,
       artist,
-      album: "Singles",
-      duration: 0, // GitHub doesn't know durations; the player reads it from the audio once loaded
-      hue: hueOf(artist),
+      album,
+      duration: hit?.d ?? 0, // unmatched files: the player reads the real length once audio loads
+      hue: hueOf(hit ? album : artist),
       src: STREAM_MODE === "proxy" ? proxied : direct,
       fallbackSrc: STREAM_MODE === "proxy" ? direct : proxied,
-    };
-  });
-  tracks.sort((a, b) => a.artist.localeCompare(b.artist) || a.title.localeCompare(b.title));
+      cover: hit?.c ?? null,
+      year: hit?.y ?? null,
+      explicit: Boolean(hit?.e),
+    });
+  }
+  tracks.sort((a, b) => a.artist.localeCompare(b.artist) || a.album.localeCompare(b.album) || a.title.localeCompare(b.title));
 
-  const byArtist = new Map<string, string[]>();
-  for (const t of tracks) byArtist.set(t.artist, [...(byArtist.get(t.artist) ?? []), t.id]);
-  const playlists: Playlist[] = [...byArtist]
-    .filter(([name, ids]) => ids.length >= MIN_ARTIST_PLAYLIST && name !== "Unknown artist")
-    .map(([name, trackIds]) => ({ id: md5(name).slice(0, 8), name, trackIds }));
+  // Playlists from your imported Spotify exports ...
+  const playlists: Playlist[] = catalog.playlists
+    .map((p) => ({
+      id: md5(`pl:${p.name}`).slice(0, 8),
+      name: p.name,
+      trackIds: p.ids.map((k) => bySpotifyId.get(k)).filter((v): v is string => Boolean(v)),
+      total: p.ids.length,
+    }))
+    .filter((p) => p.trackIds.length);
 
-  return { at: Date.now(), tracks, playlists, sources };
+  // ... plus automatic ones for artists whose files didn't match any export.
+  const unmatched = new Map<string, string[]>();
+  for (const t of tracks) {
+    if (t.album === "Singles" && t.artist !== "Unknown artist") unmatched.set(t.artist, [...(unmatched.get(t.artist) ?? []), t.id]);
+  }
+  for (const [name, trackIds] of unmatched) {
+    if (trackIds.length >= MIN_ARTIST_PLAYLIST) playlists.push({ id: md5(name).slice(0, 8), name, trackIds, total: trackIds.length });
+  }
+
+  // Songs you listed on Spotify but don't have a file for yet.
+  const inPlaylists = new Map<string, string[]>();
+  for (const p of catalog.playlists) for (const k of p.ids) inPlaylists.set(k, [...(inPlaylists.get(k) ?? []), p.name]);
+  const missing: MissingTrack[] = entries
+    .filter((e) => !bySpotifyId.has(e.k))
+    .map((e) => ({
+      id: e.k,
+      title: e.t,
+      artist: e.a.join(", "),
+      album: e.al,
+      cover: e.c,
+      popularity: e.p,
+      playlists: inPlaylists.get(e.k) ?? [],
+    }))
+    .sort((a, b) => b.popularity - a.popularity);
+
+  return { at: Date.now(), tracks, playlists, missing, sources };
 }
 
 // ---- Cache: one GitHub round trip per warm serverless instance per 10 minutes ----
@@ -164,6 +288,7 @@ async function snapshot(): Promise<Snapshot> {
 export const library: LibrarySource = {
   tracks: async () => (await snapshot()).tracks,
   playlists: async () => (await snapshot()).playlists,
+  missing: async () => (await snapshot()).missing,
 };
 
 /** Look up the GitHub URL for a track id (used by the /api/stream proxy; only known URLs are ever fetched). */
