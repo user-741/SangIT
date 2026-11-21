@@ -190,13 +190,18 @@ function matchCatalog(artist: string, title: string): CatalogTrack | undefined {
   const pool = byArtist.get(squash(artist)) ?? byArtist.get(squash(ascii(artist)));
   const key = titleKey(title);
   const full = squash(title);
-  if (!pool || key.length < 2) return undefined;
+  if (!pool || !key) return undefined;
   return (
     pool.find((c) => c.key === key) ??
     pool.find((c) => c.full === full || c.asciiKey === key) ?? // "D T B Interlude" = "D.T.B. (Interlude)"
     pool.find((c) => key.length >= 4 && c.key.length >= 4 && (c.key.startsWith(key) || key.startsWith(c.key))) ??
     pool.find((c) => key.length >= 6 && distance(c.key, key) <= Math.max(1, Math.floor(key.length * 0.2)))
   )?.entry;
+}
+
+function sameSong(hit: CatalogTrack, key: string): CatalogTrack[] {
+  const artist = squash(hit.a[0] ?? "");
+  return (byArtist.get(artist) ?? []).filter((c) => c.key === key && squash(c.entry.a[0] ?? "") === artist).map((c) => c.entry);
 }
 
 function build(assets: Asset[]): Snapshot {
@@ -212,7 +217,12 @@ function build(assets: Asset[]): Snapshot {
 
     // The same song twice (e.g. it was in both playlists): keep the first file only.
     if (hit && bySpotifyId.has(hit.k)) continue;
-    if (hit) bySpotifyId.set(hit.k, id);
+    if (hit) {
+      // Playlists can hold the same song under several Spotify entries (single vs album version):
+      // point all of them at this file.
+      const key = titleKey(hit.t);
+      for (const twin of sameSong(hit, key)) if (!bySpotifyId.has(twin.k)) bySpotifyId.set(twin.k, id);
+    }
 
     sources.set(id, { url: a.browser_download_url, mime: MIME[ext] ?? "audio/mp4" });
     const proxied = `/api/stream/${id}`;
