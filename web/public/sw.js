@@ -1,7 +1,7 @@
 /* SangIT service worker: keeps the app shell, fonts and cover art available offline.
    Songs themselves are stored by the page in IndexedDB (see "OFFLINE" in index.html),
    and /api requests always go to the network (the page keeps its own offline copy). */
-const SHELL = 'sangit-shell-v1';
+const SHELL = 'sangit-shell-v2';
 const ASSETS = 'sangit-assets-v1';
 const SHELL_URLS = ['/', '/manifest.webmanifest', '/icons/icon-192.png', '/icons/icon-512.png', '/icons/apple-touch-icon.png', '/icons/icon.svg'];
 

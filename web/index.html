@@ -2,13 +2,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-<meta name="theme-color" content="#08080a" />
+<meta name="theme-color" content="#0b0a12" />
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 <meta name="apple-mobile-web-app-title" content="SangIT" />
 <link rel="manifest" href="/manifest.webmanifest" />
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
-<title>Sonora — Your music, privately</title>
+<title>Sonora — Your music library</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -977,25 +977,6 @@ h2{font-size:19px;font-weight:650;letter-spacing:-.02em;line-height:1.2}
   }
 }
 
-/* SONORA / editorial listening interface */
-:root{--bg:#101113;--bg-1:#151619;--bg-2:#1b1c20;--bg-3:#24262a;--bg-4:#292b30;--text:#f4f3ef;--text-2:#b5b6bf;--text-3:#92949e;--text-4:#727580;--accent:#d5c5ff;--accent-ink:#201831;--sidebar-w:246px;--player-h:94px;--border:rgba(255,255,255,.08)}
-body::after{display:none}body{font-size:14px;background:var(--bg)}
-.app{padding:10px 10px 0 0;gap:0}.sidebar{padding:24px 16px 16px;border:0}.brand{font-size:23px;letter-spacing:-.06em;gap:12px;padding:0 10px 34px}.brand .logo{width:32px;height:32px;background:var(--accent);color:#211a2e;padding:5px;border-radius:9px;filter:none}.brand small{display:none}.side-nav{gap:5px}.side-link{padding:12px;border-radius:9px;font-size:14px}.side-link.active{background:#28262f;color:var(--accent)}.side-link.active .icon{filter:none}.side-sep{margin:24px 10px}.side-head{font-size:11px;color:var(--text-2);letter-spacing:.08em}.side-pl{padding:9px 10px;gap:12px}.side-pl .art,.liked-tile{width:38px!important;height:38px!important;border-radius:6px}.side-foot{padding:18px 10px}.mock-note{color:var(--text-3)}
-.main{border:1px solid var(--border);border-radius:16px 16px 0 0;background:var(--bg-1)}.topbar{padding:17px 30px;background:rgba(21,22,25,.92);gap:20px}.topbar.scrolled{background:rgba(21,22,25,.96)}.topbar-center{justify-content:flex-start;padding:0}.topbar .icon-btn{border:1px solid var(--border);background:transparent;width:36px;height:36px}.avatar{width:38px;height:38px;background:#34303e;color:var(--accent)}.global-search{display:flex;align-items:center;gap:10px;color:var(--text-2);background:#222328;border:1px solid var(--border);border-radius:8px;padding:9px 14px;text-align:left;min-width:220px}.global-search .icon{width:17px;height:17px}.global-search kbd{margin-left:auto;font:11px inherit;color:var(--text-3)}
-.view{padding:20px 32px 60px;max-width:1600px}h1{font-size:36px;letter-spacing:-.045em;font-weight:700;margin-bottom:24px}h2{font-size:22px;letter-spacing:-.035em}.home-kicker{font-size:10px;letter-spacing:.19em;text-transform:uppercase;color:var(--accent);font-weight:650;margin-bottom:9px}.home-intro{color:var(--text-2);margin:-14px 0 25px}.feature{position:relative;isolation:isolate;overflow:hidden;min-height:230px;border-radius:16px;margin-bottom:32px;background:linear-gradient(105deg,#282339 0%,#29263c 46%,#51436c 100%);padding:30px 32px;display:flex;align-items:center;border:1px solid #ffffff12}.feature-copy{position:relative;z-index:3;max-width:62%}.feature-tag{font-size:10px;letter-spacing:.16em;color:#e4d9ff;font-weight:600;margin-bottom:12px}.feature-title{font-size:clamp(30px,4vw,56px);font-weight:750;letter-spacing:-.06em;line-height:.98;margin-bottom:12px}.feature-desc{color:#dfd8e9;font-size:13px;margin-bottom:22px}.feature .btn-primary{padding:11px 20px;box-shadow:none}.feature-art{position:absolute;inset:0 0 0 43%;z-index:0;overflow:hidden;opacity:.95;mask-image:linear-gradient(90deg,transparent,#000 24%)}.feature-art svg{width:100%;height:100%}.quick-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:34px}.quick{height:58px;background:#222328;border:1px solid var(--border);border-radius:8px;gap:12px}.quick .art{width:58px!important;height:58px!important}.quick .q-name{font-size:13px}.quick .q-play{box-shadow:none;width:34px;height:34px}.shelf{margin-bottom:36px}.shelf-head{margin-bottom:17px}.text-btn{font-size:12px;text-transform:none;letter-spacing:0;color:var(--text-2)}.card-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:16px}.card{padding:0;border-radius:9px;min-width:0}.card:hover{background:transparent}.card .art{border-radius:9px;margin-bottom:11px;box-shadow:none;border:1px solid #ffffff12}.card:hover .art{transform:translateY(-3px);box-shadow:0 12px 26px #0005}.card-name{font-size:14px}.card-sub{font-size:12px;line-height:1.5}.card-play{right:9px;bottom:57px;width:40px;height:40px;box-shadow:0 5px 20px #0006}.art::after,.art::before{display:none}.art img{opacity:1}.art{background:linear-gradient(135deg,hsl(var(--h) 35% 40%),hsl(var(--h) 24% 12%))}.track{border-radius:8px;padding:9px 12px;min-height:60px}.track+.track{border-top:1px solid #ffffff08}.track.playing{background:#d5c5ff0a}.t-like{opacity:.7}.t-title{font-weight:600}.track .art{border-radius:6px}.t-dur{color:var(--text-2)}.album-hero{padding:26px;background:linear-gradient(120deg,#282832,#191a1d);border-radius:14px;align-items:center}.album-hero .art{box-shadow:none}.album-info h1{letter-spacing:-.055em}.btn-primary,.btn-ghost{box-shadow:none}.btn-primary:hover{box-shadow:none}.search-field{border:1px solid var(--border);background:#222328}.search-field input{min-width:0}.browse-tile{border-radius:12px;box-shadow:none}.browse-tile::after{border-radius:12px;transform:rotate(-25deg);width:110px;height:110px}.player{background:#101113;border-top:1px solid var(--border);padding:0 24px;gap:24px}.p-left .art{width:56px;height:56px;box-shadow:none}.p-title{font-size:14px}.p-artist{font-size:12px}.ctrl.play{background:var(--accent);color:var(--accent-ink);width:44px;height:44px;box-shadow:none}.bar-fill,.vol i{background:var(--accent)}.bar,.vol{height:4px}.np{background:#16161a}.np::after{background:linear-gradient(180deg,transparent,#16161a 90%)}.np .art{animation:none;border-radius:12px;box-shadow:0 24px 70px #0006}.queue{border-radius:14px 0 0 0;background:#1c1d21}.ctx,.toast{border-radius:10px}.storage-caption{color:var(--text-3);font-size:11px;margin-top:6px}.mobile-brand{display:none}button:focus-visible,[role=button]:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
-@media(min-width:901px) and (max-width:1250px){.card-row{grid-template-columns:repeat(4,minmax(0,1fr))}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.global-search{min-width:170px}.view{padding-inline:24px}}
-@media(max-width:900px){:root{--player-h:0}.app{padding:0}.main{border:0;border-radius:0}.topbar{padding:calc(12px + env(safe-area-inset-top,0px)) 18px 10px}.topbar-center{display:none}.mobile-brand{display:inline;font-size:21px;font-weight:750;letter-spacing:-.055em;margin-left:9px}.topbar .icon-btn{width:30px;height:30px}.view{padding:14px 18px 36px}h1{font-size:30px}h2{font-size:20px}.home-intro{font-size:13px}.feature{min-height:204px;padding:23px 20px;margin-bottom:25px}.feature-copy{max-width:75%}.feature-title{font-size:35px}.feature-desc{font-size:12px}.feature-art{left:35%;opacity:.6}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:29px}.quick{height:54px;gap:9px}.quick .art{width:50px!important;height:54px!important}.quick .q-name{font-size:12px}.card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.card-name{font-size:12px}.card-sub{font-size:11px}.shelf{margin-bottom:30px}.album-hero{padding:20px;align-items:flex-start}.player{bottom:calc(var(--nav-h) + var(--safe) + 5px);left:8px;right:8px;border:1px solid #ffffff14;border-radius:11px;background:#292730;padding:0 10px;gap:10px;overflow:hidden}.p-left .art{width:46px;height:46px}.p-mini-play{background:var(--accent);color:var(--accent-ink)}.mobile-nav{background:#101113;border:0}.mnav{font-size:11px;gap:5px}.mnav.active .icon{filter:none}.track{grid-template-columns:20px 42px minmax(0,1fr) 40px 28px;gap:8px;padding:8px 3px}.track .t-like{display:grid;position:static;transform:none;opacity:.75}.t-album{display:none}.np-head{padding-top:calc(16px + env(safe-area-inset-top,0px))}.np-body{padding-bottom:calc(20px + var(--safe))}}
-@media(max-width:480px){.card-row{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.feature-title{font-size:32px}.feature-copy{max-width:85%}.quick-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.quick .q-name{white-space:normal;line-height:1.18}.mnav{padding-inline:12px}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-
-
-/* Record library: flat surfaces, compact utility-first layout. */
-:root{--bg:#17191b;--bg-1:#202224;--bg-2:#26282b;--bg-3:#2c2e31;--bg-4:#303337;--text:#eeeeeb;--text-2:#b4b7b8;--text-3:#93989c;--text-4:#777d81;--accent:#87b9e0;--accent-2:#87b9e0;--accent-3:#87b9e0;--accent-ink:#15212c;--border:#ffffff12;--border-2:#ffffff20;--sidebar-w:230px;--player-h:88px}
-body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{padding:0;gap:0}.main{border:0;border-radius:0;background:var(--bg-1)}.sidebar{padding:22px 12px;background:#17191b;border-right:1px solid #ffffff12}.brand{font-size:23px;letter-spacing:-1px;padding:4px 13px 30px}.brand .logo{filter:none;color:var(--text);width:25px}.side-link{border-radius:3px;padding:11px 12px}.side-link.active{background:#30383e;border-left:3px solid var(--accent);padding-left:9px}.side-link.active .icon,.mnav.active .icon{filter:none}.side-head{color:var(--text-2);text-transform:none;letter-spacing:0;font-size:12px}.side-pl{border-radius:3px;padding:8px 10px}.side-foot{padding:14px 10px}.mock-note{color:var(--text-3)}.mock-note::before{display:none}.topbar,.topbar.scrolled{background:#202224;backdrop-filter:none;border-bottom:1px solid var(--border);padding:12px 30px}.icon-btn.ghost{background:transparent}.avatar{display:none}.view{padding:28px 32px 48px;max-width:1500px}.collection-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:1px solid var(--border);margin-bottom:25px;padding-bottom:15px}.collection-heading h1{margin:0;font-size:34px;letter-spacing:-1.2px}.collection-heading span{color:var(--text-3);font-size:12px}h2{font-size:19px;letter-spacing:-.4px}.home-split{display:grid;grid-template-columns:minmax(0,1fr) 225px;gap:34px}.home-albums .card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:20px 18px}.home-shortcuts{border-left:1px solid var(--border);padding-left:22px}.quick-grid{display:flex;flex-direction:column;gap:0;margin:0}.quick{background:none;border:0;border-bottom:1px solid var(--border);border-radius:0;height:63px;padding:7px 4px;gap:10px}.quick .art{width:44px!important;height:44px!important;border-radius:2px!important}.quick:hover{background:#ffffff09}.quick .q-name{font-size:13px;font-weight:500}.quick .q-play{right:4px}.card-row{grid-template-columns:repeat(6,minmax(0,1fr));gap:18px}.card,.card .art,.art{border-radius:3px;box-shadow:none}.card .art{border:0}.card:hover .art{transform:none;box-shadow:none;filter:brightness(.9)}.card-name{font-size:14px;font-weight:600}.card-sub{font-size:12px}.card-play,.q-play{box-shadow:none;background:#eeeeeb;color:#202224}.shelf{margin-bottom:34px}.shelf-head{margin-bottom:14px}.text-btn{color:var(--accent);font-size:12px}.track-list{border-top:1px solid var(--border)}.track{border-radius:0;min-height:53px;padding:6px 9px}.track:nth-child(even){background:#ffffff03}.track:hover{background:#ffffff09}.track.playing{background:#87b9e014}.track .art{width:38px;height:38px;border-radius:2px}.t-title{font-weight:500}.t-like{opacity:.8}.album-hero{background:none;border-radius:0;padding:0 0 22px;border-bottom:1px solid var(--border)}.album-hero .art{border-radius:3px}.album-info h1{letter-spacing:-1.5px}.btn-primary,.btn-ghost,.tab,.chip{border-radius:4px}.search-field{border-radius:4px;background:#17191b}.browse-tile{border-radius:3px;aspect-ratio:2.4}.browse-tile::after{display:none}.player{background:#17191b;backdrop-filter:none;border-top:1px solid #ffffff20}.ctrl.play,.p-mini-play{background:#eeeeeb;color:#17191b;box-shadow:none}.p-left .art{border-radius:3px}.np::before,.np::after{display:none}.np,.queue{background:#202224;border-radius:0}.np .art{border-radius:3px;box-shadow:none}.ctx,.toast{border-radius:4px}.liked-tile{background:#394b59}.side-link:hover,.ctrl:hover{background:#ffffff0a}.bar-fill,.vol i{background:var(--accent)}
-@media(min-width:901px) and (max-width:1100px){.home-split{grid-template-columns:minmax(0,1fr) 190px;gap:20px}.home-shortcuts{padding-left:14px}.card-row{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media(max-width:900px){:root{--player-h:0}.view{padding:18px 18px 35px}.topbar{padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px}.home-split{display:flex;flex-direction:column;gap:0}.home-shortcuts{border:0;padding:0}.home-albums .card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.quick-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 12px}.quick{height:55px}.collection-heading h1{font-size:29px}.card-row{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.card-name{font-size:12px}.card-sub{font-size:11px}.player{left:0;right:0;bottom:calc(var(--nav-h) + var(--safe));border-radius:0;background:#282c30}.mobile-nav{background:#17191b;border-top:1px solid var(--border)}.album-hero{padding:0 0 18px}.track{grid-template-columns:20px 38px minmax(0,1fr) 36px 28px}.np .art{width:min(330px,80vw,43vh)}}
-@media(max-width:480px){.home-albums .card-row,.card-row{grid-template-columns:repeat(2,minmax(0,1fr))}.collection-heading span{font-size:11px}.quick .q-name{font-size:12px}}
-
 /* ── Sign in / empty library gate ── */
 .signout{display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;margin-top:12px;font-size:11px;color:var(--text-3);text-align:left}
 .signout span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
@@ -1038,9 +1019,361 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 .dl-actions{display:flex;gap:10px;flex-wrap:wrap}
 .off-badge{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;transform:translateX(-50%);z-index:90;background:#2b2f33;color:var(--text);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12px;pointer-events:none;box-shadow:0 6px 20px #0006}
 .off-badge[hidden]{display:none}
+/* ═══════════════════════════════════════════════════════════════
+   SONORA — night violet theme (moon & mountains)
+   ═══════════════════════════════════════════════════════════════ */
+:root{
+  --bg:#09080f; --bg-1:#0c0a14; --bg-2:#13101d; --bg-3:#1a1626; --bg-4:#221d31;
+  --panel:rgba(20,17,31,.72); --panel-solid:#14111f;
+  --border:rgba(255,255,255,.07); --border-2:rgba(255,255,255,.1); --border-3:rgba(255,255,255,.16);
+  --text:#f4f2fa; --text-2:#aaa5bd; --text-3:#7d7891; --text-4:#575269;
+  --accent:#a78bfa; --accent-2:#8b5cf6; --accent-3:#7c3aed; --accent-ink:#fff;
+  --violet:linear-gradient(135deg,#9d6bff,#7c3aed);
+  --sidebar-w:300px; --player-h:104px; --nav-h:68px; --mini-h:76px;
+}
+body{background:var(--bg);font-size:14px}
+body::after{display:none}
+.app{background:var(--bg)}
+.art::after,.art::before{display:none}
+.art{background:linear-gradient(140deg,hsl(var(--h) 40% 34%),hsl(var(--h) 34% 12%))}
+.art img{opacity:1}
+
+/* ── Sidebar ── */
+.sidebar{background:#0d0b15;border-right:1px solid var(--border);padding:26px 18px 16px;transition:width .25s var(--ease)}
+.brand{font-size:27px;font-weight:700;letter-spacing:-.04em;gap:12px;padding:0 10px 30px;align-items:center}
+.brand .logo,.mobile-brand .logo{width:38px;height:38px;color:#a77cff;filter:drop-shadow(0 0 10px rgba(157,107,255,.45))}
+.side-collapse{margin-left:auto;width:34px;height:34px;display:grid;place-items:center;border-radius:8px;color:var(--text-2)}
+.side-collapse:hover{background:rgba(255,255,255,.06);color:var(--text)}
+.side-collapse .icon{width:20px;height:20px}
+.side-nav{gap:6px}
+.side-link{padding:13px 16px;border-radius:12px;font-size:16px;font-weight:500;color:var(--text-2);gap:16px;border:1px solid transparent}
+.side-link .icon{width:22px;height:22px;color:var(--text-2)}
+.side-link:hover{background:rgba(255,255,255,.04);color:var(--text)}
+.side-link.active{background:linear-gradient(135deg,rgba(124,58,237,.55),rgba(91,33,182,.45));border-color:rgba(167,139,250,.55);color:#fff;box-shadow:0 8px 26px -10px rgba(124,58,237,.7)}
+.side-link.active .icon{color:#fff;filter:none}
+.side-sep{margin:22px 8px 18px;background:var(--border)}
+.side-head{font-size:17px;text-transform:none;letter-spacing:-.01em;font-weight:650;color:var(--text);padding:0 10px 12px}
+.side-head button{width:30px;height:30px;color:var(--text-2)}
+.side-head .icon{width:18px;height:18px}
+.side-playlists{gap:4px}
+.side-pl{padding:8px 10px;border-radius:12px;gap:14px;color:var(--text)}
+.side-pl .art,.side-pl .liked-tile{width:44px!important;height:44px!important;border-radius:9px}
+.side-pl .lbl{display:flex;flex-direction:column;min-width:0;gap:2px}
+.side-pl .lbl span{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.side-pl small{font-size:12.5px;color:var(--text-3)}
+.side-pl:hover{background:rgba(255,255,255,.045)}
+.liked-tile{background:linear-gradient(140deg,#8b5cf6,#6d28d9);display:grid;place-items:center}
+.liked-tile .icon{width:20px;height:20px}
+.side-foot{border-top:1px solid var(--border);padding:18px 10px 4px;margin-top:14px}
+.storage{font-size:13px;color:var(--text-2);margin-bottom:12px;align-items:center}
+.storage .lbl{display:flex;align-items:center;gap:8px}
+.storage #libCount{color:var(--text);font-size:13px}
+.mini-logo{width:20px;height:20px;color:#a77cff}
+.mini-logo .logo{width:20px;height:20px}
+.meter{height:5px;background:rgba(255,255,255,.08)}
+.meter i{background:var(--violet);box-shadow:none;transition:width .4s var(--ease)}
+.storage-caption{color:var(--text-3);font-size:12.5px;margin-top:10px}
+.side-tools{display:flex;gap:6px;margin-top:12px;margin-left:-6px}
+.side-tools .icon-btn{width:36px;height:36px}
+.side-tools .icon-btn .icon{width:21px;height:21px}
+
+/* collapsed sidebar (desktop) */
+body.side-mini{--sidebar-w:88px}
+body.side-mini .sidebar{padding-inline:14px}
+body.side-mini .brand>span,body.side-mini .lbl,body.side-mini .side-foot,body.side-mini .side-head>.lbl{display:none}
+body.side-mini .brand{flex-direction:column;gap:14px;padding-inline:0}
+body.side-mini .side-collapse{margin:0;transform:rotate(180deg)}
+body.side-mini .side-link{justify-content:center;padding:13px 0}
+body.side-mini .side-head{justify-content:center;padding:0 0 10px}
+body.side-mini .side-pl{justify-content:center;padding:6px 0}
+
+/* ── Main + top bar ── */
+.main{background:radial-gradient(90% 60% at 70% -10%,rgba(98,58,190,.28),transparent 60%),var(--bg-1);scroll-behavior:auto}
+.topbar,.topbar.scrolled{background:transparent;backdrop-filter:none;-webkit-backdrop-filter:none;border:0;padding:20px 32px 6px;gap:18px;transition:background .2s}
+.topbar.scrolled{background:rgba(12,10,20,.86);backdrop-filter:blur(22px);-webkit-backdrop-filter:blur(22px);border-bottom:1px solid var(--border)}
+.topbar-left{gap:12px}
+.icon-btn.ghost{background:rgba(255,255,255,.05);border:1px solid var(--border);width:44px;height:44px}
+.icon-btn.ghost:hover{background:rgba(255,255,255,.1)}
+.icon-btn.ghost .icon{width:20px;height:20px}
+.topbar-center{justify-content:flex-start;padding:0 0 0 12px}
+.global-search{display:flex;align-items:center;gap:14px;width:min(640px,100%);height:50px;padding:0 10px 0 20px;border-radius:99px;background:rgba(20,17,31,.7);border:1px solid var(--border-2);color:var(--text-3);font-size:15.5px;text-align:left;transition:.18s}
+.global-search:hover{border-color:rgba(167,139,250,.45);color:var(--text-2)}
+.global-search .icon{width:22px;height:22px;color:var(--text-2)}
+.global-search .gs-text{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.global-search kbd{font:500 13px Inter,sans-serif;color:var(--text-2);border:1px solid var(--border-3);border-radius:8px;padding:4px 9px;background:rgba(255,255,255,.04)}
+.playing-from{display:none}
+.topbar-right{gap:14px}
+.avatar-btn{display:flex;align-items:center;gap:8px;color:var(--text-2)}
+.avatar{width:46px;height:46px;font-size:17px;font-weight:600;background:linear-gradient(140deg,#3b2a63,#241a3d);border:1px solid rgba(167,139,250,.3);color:#e9e1ff}
+.avatar-btn .chev{width:18px;height:18px}
+.m-search,.mobile-brand{display:none}
+.acct-menu{position:fixed;z-index:310;min-width:230px;background:var(--bg-4);border:1px solid var(--border-2);border-radius:14px;padding:6px;box-shadow:0 18px 50px rgba(0,0,0,.6)}
+.acct-email{font-size:12px;color:var(--text-3);padding:10px 12px 8px;border-bottom:1px solid var(--border);margin-bottom:4px;overflow:hidden;text-overflow:ellipsis}
+.acct-menu button{display:block;width:100%;text-align:left;padding:10px 12px;border-radius:9px;font-size:14px}
+.acct-menu button:hover{background:rgba(255,255,255,.07)}
+.acct-menu .danger{color:var(--danger)}
+
+/* ── Views ── */
+.view{padding:6px 32px 60px;max-width:1700px}
+h1{font-weight:750;letter-spacing:-.035em}
+.view[data-view="home"]{position:relative;padding-top:0}
+.hero{position:absolute;left:0;right:0;top:-96px;height:360px;pointer-events:none;z-index:0;overflow:hidden;
+  -webkit-mask:linear-gradient(180deg,#000 55%,transparent);mask:linear-gradient(180deg,#000 55%,transparent)}
+.hero-mtn{position:absolute;left:0;right:0;bottom:0;width:100%;height:100%;opacity:.95}
+.hero-mtn path[fill^="url(#m1)"]{opacity:.9}
+.moon{position:absolute;top:58px;right:27%;width:92px;height:92px;border-radius:50%;
+  background:radial-gradient(circle at 38% 36%,#f4efff 0%,#d8ccf6 38%,#a796d8 70%,#7d6ab8 100%);
+  box-shadow:0 0 40px 14px rgba(167,139,250,.35),0 0 120px 50px rgba(124,58,237,.18)}
+.moon::before{content:"";position:absolute;inset:0;border-radius:50%;opacity:.55;
+  background:radial-gradient(circle at 30% 60%,rgba(120,100,170,.55) 0 9%,transparent 10%),radial-gradient(circle at 62% 30%,rgba(120,100,170,.45) 0 7%,transparent 8%),radial-gradient(circle at 66% 68%,rgba(120,100,170,.4) 0 12%,transparent 13%),radial-gradient(circle at 45% 45%,rgba(120,100,170,.3) 0 5%,transparent 6%)}
+.home-head,.home-tabs-row,.home-grid,.m-lib{position:relative;z-index:1}
+.home-head{padding:18px 0 26px}
+.home-head h1{font-size:64px;line-height:1;margin:0 0 10px;letter-spacing:-.045em}
+.home-sub{color:var(--text-2);font-size:18px}
+.home-tabs-row{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:24px}
+.home-tabs{display:flex;gap:12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.home-tabs::-webkit-scrollbar{display:none}
+.htab{flex:none;padding:10px 24px;border-radius:99px;font-size:16px;font-weight:500;color:var(--text-2);background:rgba(255,255,255,.04);border:1px solid var(--border-2);transition:.16s}
+.htab:hover{color:var(--text);border-color:var(--border-3)}
+.htab.active{background:var(--violet);border-color:rgba(196,170,255,.7);color:#fff;font-weight:600;box-shadow:0 8px 24px -8px rgba(124,58,237,.8)}
+.lib-pill{display:flex;align-items:center;gap:10px;color:var(--text-2);font-size:15px;white-space:nowrap}
+.lib-pill .icon{width:22px;height:22px;color:#a77cff}
+.lib-pill b{color:var(--text);font-weight:600;margin-left:8px}
+
+.home-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:22px;padding:22px 22px 26px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:20px}
+.panel-head h2{font-size:27px;font-weight:650;letter-spacing:-.03em;display:flex;align-items:center;gap:10px}
+.panel-tools{display:flex;align-items:center;gap:14px}
+.view-all{display:flex;align-items:center;gap:8px;color:var(--accent);font-size:15px;font-weight:500}
+.view-all .icon{width:18px;height:18px}
+.view-all:hover{color:#c8b5ff}
+.layout-toggle{display:flex;gap:4px}
+.lt{width:44px;height:38px;border-radius:10px;display:grid;place-items:center;color:var(--text-2)}
+.lt .icon{width:22px;height:22px}
+.lt.on{background:rgba(139,92,246,.28);color:#c8b5ff}
+.lt:hover{color:var(--text)}
+
+.acard-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:26px 24px}
+.card.acard{padding:0;background:none;border-radius:0}
+.card.acard:hover{background:none}
+.acard-art{position:relative;border-radius:14px;border:1px solid var(--border);transition:border-color .2s,transform .25s var(--ease),box-shadow .25s}
+.acard-art .art{width:100%!important;height:auto!important;aspect-ratio:1/.8;border-radius:13px;margin:0;box-shadow:none}
+.acard.artist .acard-art{border-radius:50%}
+.acard.artist .acard-art .art{aspect-ratio:1;border-radius:50%}
+.card.acard:hover .acard-art{border-color:rgba(167,139,250,.7);box-shadow:0 14px 34px -14px rgba(124,58,237,.7);transform:translateY(-2px)}
+.card.acard:hover .art{transform:none;box-shadow:none}
+.acard .card-play{right:14px;bottom:14px;width:48px;height:48px;background:rgba(124,58,237,.92);color:#fff;box-shadow:0 8px 22px rgba(0,0,0,.45)}
+.acard .card-play:hover{background:#9d6bff}
+.acard .card-play .icon{width:18px;height:18px;margin-left:2px}
+.acard-meta{display:flex;align-items:flex-start;gap:8px;padding:14px 4px 0 12px}
+.acard-text{flex:1;min-width:0}
+.acard .card-name{font-size:17px;font-weight:600}
+.acard .card-sub{font-size:14px;color:var(--text-2);margin-top:4px}
+.acard .card-sub.d-only{color:var(--text-3);font-size:13.5px}
+.m-only{display:none}
+.acard-more{width:30px;height:30px;display:grid;place-items:center;color:var(--text-2);border-radius:8px;flex:none;margin-top:2px}
+.acard-more svg{width:18px;height:18px}
+.acard-more:hover{background:rgba(255,255,255,.07);color:var(--text)}
+
+.arow-list{display:flex;flex-direction:column}
+.arow{display:grid;grid-template-columns:28px 48px minmax(0,1fr) auto 40px;gap:14px;align-items:center;padding:8px 10px;border-radius:12px;cursor:pointer}
+.arow:hover{background:rgba(255,255,255,.04)}
+.arow .art{border-radius:8px}
+.arow-n{color:var(--text-3);text-align:right;font-variant-numeric:tabular-nums}
+.arow-text{display:flex;flex-direction:column;min-width:0}
+.arow-text b{font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.arow-text span,.arow-info{color:var(--text-2);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.show-more{display:block;margin:22px auto 0;padding:10px 22px;border-radius:99px;border:1px solid var(--border-2);color:var(--text-2);font-size:14px}
+.show-more:hover{color:var(--text);border-color:var(--border-3)}
+
+.quick-panel{position:sticky;top:90px}
+.quick-panel .panel-head{padding-bottom:16px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.quick-panel h2{font-size:22px}
+.bolt{width:24px;height:24px;color:#a77cff}
+.quick-list{display:flex;flex-direction:column}
+.quick{display:flex;align-items:center;gap:14px;height:auto;padding:8px 4px;background:none;border:0;border-radius:12px;overflow:visible}
+.quick:hover{background:rgba(255,255,255,.04);border:0}
+.quick .art{border-radius:6px!important;flex:none}
+.q-text{flex:1;min-width:0}
+.quick .q-name{font-size:15px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.q-sub{font-size:13px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+.q-playbtn{width:36px;height:36px;flex:none;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.08);color:#fff;transition:.16s}
+.q-playbtn:hover{background:var(--accent-2);transform:scale(1.06)}
+.q-playbtn .icon{width:14px;height:14px;margin-left:2px}
+.m-lib{display:none}
+
+/* ── Shared pieces ── */
+.tab{font-size:14px;padding:9px 20px;background:rgba(255,255,255,.04)}
+.tab.active{background:var(--violet);color:#fff;border-color:rgba(196,170,255,.7)}
+.btn-primary{background:var(--violet);color:#fff;box-shadow:0 10px 26px -10px rgba(124,58,237,.9)}
+.btn-primary:hover{background:linear-gradient(135deg,#ad84ff,#8b5cf6);box-shadow:0 12px 30px -10px rgba(124,58,237,1)}
+.btn-ghost{border-color:var(--border-3)}
+.card-play{background:var(--accent-2);color:#fff}
+.track.playing .t-title{color:var(--accent)}
+.track:hover{background:rgba(255,255,255,.04)}
+.album-hero .art{border-radius:16px}
+.search-field{background:rgba(20,17,31,.8);border:1px solid var(--border-2);border-radius:99px}
+.chip.active,.chip.on{background:var(--violet);color:#fff}
+.browse-tile{border-radius:16px}
+.ctx{background:var(--bg-4);border-radius:12px}
+.toast{background:var(--bg-4);border-radius:12px}
+.queue{background:var(--bg-2)}
+.q-item.active .q-title{color:var(--accent)}
+.empty .empty-icon{color:var(--accent-2)}
+.gate{background:radial-gradient(60% 50% at 70% 10%,rgba(124,58,237,.3),transparent 70%),var(--bg)}
+.gate-card .go{background:var(--violet);color:#fff}
+.off-badge{background:#241c3a;border-color:rgba(167,139,250,.35)}
+
+/* ── Player bar ── */
+.player{background:#0d0b15;border-top:1px solid var(--border);backdrop-filter:none;grid-template-columns:minmax(260px,1fr) minmax(360px,1.6fr) minmax(260px,1fr);padding:0 28px;gap:24px}
+.p-left{gap:18px}
+.p-left .art{width:78px;height:78px;border-radius:10px;box-shadow:none}
+.p-meta{min-width:0}
+.p-title{font-size:18px;font-weight:650}
+.p-artist{font-size:15px;color:var(--text-2);margin-top:4px}
+.p-like{width:40px;height:40px;color:var(--text)}
+.p-like .icon{width:22px;height:22px}
+.p-like.on{color:#c084fc}
+.p-more{color:var(--text-2)}
+.p-more .icon{width:22px;height:22px}
+.p-center{gap:10px}
+.p-controls{gap:22px}
+.ctrl{color:var(--text)}
+.ctrl .icon{width:21px;height:21px}
+.ctrl.active{color:var(--accent)}
+.ctrl.play,.np-controls .ctrl.play{background:var(--violet);color:#fff;width:52px;height:52px;margin:0 6px;box-shadow:0 8px 24px -6px rgba(124,58,237,.9)}
+.ctrl.play:hover{background:linear-gradient(135deg,#ad84ff,#8b5cf6)}
+.ctrl.play .icon{width:20px;height:20px}
+.p-bar{max-width:640px;gap:16px}
+.time{font-size:13px;color:var(--text-2)}
+.bar.wave{height:30px;border-radius:0;background:rgba(255,255,255,.22);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
+.bar.wave:hover{height:30px}
+.bar.wave .bar-fill{border-radius:0;background:linear-gradient(90deg,#7c3aed,#b794ff)}
+.bar.wave:hover .bar-fill{background:linear-gradient(90deg,#8b5cf6,#c8b5ff)}
+.bar-fill{background:var(--accent-2)}
+.bar:hover .bar-fill{background:var(--accent)}
+.p-right{gap:10px}
+.p-right .icon-btn{color:var(--text)}
+.p-right .icon-btn .icon{width:22px;height:22px}
+.p-right .pill-btn{display:none}
+.vol{width:130px;height:5px;margin-right:12px}
+.vol i{background:var(--violet);position:relative}
+.vol i::after{content:"";position:absolute;right:-7px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#c8b5ff;box-shadow:0 2px 8px rgba(0,0,0,.5)}
+.vol:hover i{background:var(--violet)}
+.p-mini-like{display:none}
+
+/* now playing + queue */
+.np{background:#0b0912}
+.np::after{background:linear-gradient(180deg,transparent 0%,#0b0912 80%)}
+.np .art{border-radius:18px}
+.np-foot .pill-btn{display:inline-block}
+
+/* ── Medium screens ── */
+@media (max-width:1380px){
+  .home-grid{grid-template-columns:minmax(0,1fr) 290px}
+  .player{grid-template-columns:minmax(220px,1fr) minmax(320px,1.5fr) minmax(200px,1fr)}
+  .vol{width:90px}
+}
+@media (max-width:1150px) and (min-width:901px){
+  :root{--sidebar-w:250px}
+  .home-grid{grid-template-columns:1fr}
+  .quick-panel{position:static}
+  .quick-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:4px 16px}
+  .lib-pill{display:none}
+  .p-more{display:none}
+}
+
+/* ── Phones ── */
+@media (max-width:900px){
+  :root{--player-h:0;--nav-h:72px;--mini-h:82px}
+  .app{height:100dvh}
+  .main{padding-bottom:calc(var(--nav-h) + var(--mini-h) + var(--safe) + 18px)}
+  .topbar,.topbar.scrolled{padding:calc(env(safe-area-inset-top,0px) + 14px) 20px 8px}
+  .topbar-center{display:none}
+  .mobile-brand{display:flex;align-items:center;gap:10px;font-size:26px;font-weight:700;letter-spacing:-.04em;margin-right:auto}
+  .mobile-brand .logo{width:34px;height:34px}
+  body[data-view="home"] .topbar-left{display:none}
+  body:not([data-view="home"]) .mobile-brand{display:none}
+  body:not([data-view="home"]) .topbar-left{margin-right:auto}
+  .icon-btn.ghost{width:40px;height:40px}
+  .m-search{display:grid;width:48px;height:48px;background:rgba(255,255,255,.06);border:1px solid var(--border)}
+  .m-search .icon{width:22px;height:22px}
+  .avatar{width:48px;height:48px}
+  .avatar-btn .chev{display:none}
+  .view{padding:0 20px 30px}
+  .hero{top:-82px;height:300px}
+  .moon{top:70px;right:auto;left:50%;width:84px;height:84px}
+  .home-head{padding:22px 0 26px}
+  .home-head h1{font-size:52px;margin-bottom:6px}
+  .home-sub{font-size:17px}
+  .home-tabs-row{margin:0 -20px 30px;padding:0 20px}
+  .home-tabs{gap:10px;padding-right:20px}
+  .htab{padding:11px 24px;font-size:16px}
+  .lib-pill{display:none}
+  .m-lib{display:block;margin-bottom:30px}
+  .m-lib-head{display:flex;width:100%;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .m-lib-head h2{font-size:24px;font-weight:650;letter-spacing:-.02em}
+  .m-lib-head>span{display:flex;align-items:center;gap:8px;color:var(--text-2);font-size:15px}
+  .m-lib-head b{font-weight:500}
+  .m-lib-head .icon{width:20px;height:20px}
+  .m-lib-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .m-card{display:flex;align-items:center;gap:8px;padding:10px;border-radius:18px;background:var(--panel);border:1px solid var(--border);cursor:pointer;min-width:0}
+  .m-card-ico{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:rgba(139,92,246,.28);color:#c8b5ff;flex:none}
+  .m-card-ico.liked{background:var(--violet);color:#fff}
+  .m-card-ico .icon{width:24px;height:24px}
+  .m-card-text{display:flex;flex-direction:column;min-width:0;flex:1}
+  .m-card-text b{font-weight:500;font-size:14.5px;letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .m-card-text span{font-size:13px;color:var(--text-2);white-space:nowrap}
+  .m-card-play{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.08);display:grid;place-items:center;flex:none}
+  .m-card-play .icon{width:13px;height:13px;margin-left:2px}
+  .m-card-go{width:22px;height:22px;color:var(--text-2)}
+  .home-grid{display:block}
+  .panel{background:none;border:0;padding:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .panel-head h2{font-size:24px}
+  .layout-toggle{display:none}
+  .view-all{font-size:16px}
+  .quick-panel{display:none}
+  .acard-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 14px}
+  .acard-art .art{aspect-ratio:1/.72}
+  .acard .card-play{opacity:1;transform:none;display:grid;width:40px;height:40px;right:10px;bottom:10px;background:rgba(10,8,18,.7);backdrop-filter:blur(6px)}
+  .acard .card-play .icon{width:15px;height:15px}
+  .acard-meta{padding:10px 0 0 6px}
+  .acard .card-name{font-size:16px}
+  .acard .card-sub{font-size:14px}
+  .d-only{display:none}
+  .m-only{display:inline}
+  .arow{grid-template-columns:48px minmax(0,1fr) 40px}
+  .arow-n,.arow-info{display:none}
+
+  /* floating mini player */
+  .player{left:14px;right:14px;bottom:calc(var(--nav-h) + var(--safe) + 6px);height:var(--mini-h);border-radius:20px;padding:0 12px 6px 12px;gap:10px;
+    background:linear-gradient(135deg,#2b1d4d,#181228);border:1px solid rgba(167,139,250,.22);box-shadow:0 18px 40px -12px rgba(0,0,0,.8);
+    grid-template-columns:minmax(0,1fr) auto auto;overflow:hidden}
+  .p-left .art{width:56px;height:56px;border-radius:10px}
+  .p-title{font-size:16.5px}
+  .p-artist{font-size:14px}
+  .p-left .p-like,.p-more{display:none}
+  .p-mini-like{display:grid}
+  .p-mini-play{width:52px;height:52px;background:var(--violet);color:#fff;box-shadow:0 6px 18px -4px rgba(124,58,237,.9)}
+  .p-mini-play .icon{width:19px;height:19px}
+  .mini-progress{display:block;top:auto;bottom:8px;left:24px;right:24px;height:4px;border-radius:99px;background:rgba(255,255,255,.14);overflow:hidden}
+  .mini-progress i{background:var(--violet);border-radius:99px}
+  .mobile-nav{height:calc(var(--nav-h) + var(--safe));background:rgba(11,9,18,.97);border-top:1px solid var(--border)}
+  .mnav{font-size:13px;font-weight:500;gap:6px;color:var(--text-2);padding:8px 14px}
+  .mnav .icon{width:26px;height:26px}
+  .mnav.active{color:#b794ff}
+  .mnav.active .icon{color:#b794ff;filter:none}
+  .toast{bottom:calc(var(--nav-h) + var(--mini-h) + var(--safe) + 22px)}
+  .track{grid-template-columns:22px 44px minmax(0,1fr) 44px 30px}
+}
+@media (max-width:380px){
+  .home-head h1{font-size:44px}
+  .m-lib-cards{grid-template-columns:1fr}
+}
 </style>
 </head>
-<body>
+<body data-view="home">
 
 <!-- Skeleton bootstrap -->
 <div class="skeleton-overlay" id="skeleton">
@@ -1069,33 +1402,33 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 
 <div class="app">
   <!-- ═══════════════ SIDEBAR ═══════════════ -->
-  <aside class="sidebar">
+  <aside class="sidebar" id="sidebar">
     <div class="brand">
-      <svg class="logo" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-        <path d="M3 12h1.5M8 6.5v11M12 3.5v17M16 8v8M20 11h1"/>
-      </svg>
+      <svg class="logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h3l2.5-6 3 13 3.5-19 3.5 22 3-15 2.5 8 2-3h4"/></svg>
       <span>Sonora</span>
-      
+      <button class="side-collapse" id="sideCollapse" aria-label="Collapse sidebar" title="Collapse sidebar">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m11 17-5-5 5-5M18 17l-5-5 5-5"/></svg></span>
+      </button>
     </div>
 
     <nav class="side-nav">
-      <button class="side-link active" data-nav="home">
+      <button class="side-link active" data-nav="home" title="Home">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 10.5 12 4l8 6.5V20a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1Z"/></svg></span>
-        Home
+        <span class="lbl">Home</span>
       </button>
-      <button class="side-link" data-nav="search">
+      <button class="side-link" data-nav="search" title="Search">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.6-3.6"/></svg></span>
-        Search
+        <span class="lbl">Search</span>
       </button>
-      <button class="side-link" data-nav="library">
-        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="4.5" width="4" height="15" rx="1"/><rect x="10" y="4.5" width="4" height="15" rx="1"/><path d="m17.4 5.6 3.4 13.2-2.2.6L15.2 6.2z"/></svg></span>
-        Your Library
+      <button class="side-link" data-nav="library" title="Your Library">
+        <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4v16M9.5 4v16M14 4.5l4.5 15.2"/></svg></span>
+        <span class="lbl">Your Library</span>
       </button>
     </nav>
 
     <div class="side-sep"></div>
     <div class="side-head">
-      Your playlists
+      <span class="lbl">Playlists</span>
       <button aria-label="Create playlist" data-action="new-playlist">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
       </button>
@@ -1103,8 +1436,18 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     <div class="side-playlists" id="sidePlaylists"></div>
 
     <div class="side-foot">
-      <div class="storage"><span>Your library</span><span id="libCount"></span></div>
-      <button class="signout" id="btnSignOut" title="Sign out"><span id="whoAmI"></span><b>Sign out</b></button>
+      <div class="storage"><span class="lbl"><span class="icon mini-logo"><svg class="logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h3l2.5-6 3 13 3.5-19 3.5 22 3-15 2.5 8 2-3h4"/></svg></span>Your library</span><span id="libCount"></span></div>
+      <div class="meter"><i id="offMeter" style="width:0"></i></div>
+      <div class="storage-caption" id="offCaption">No songs downloaded yet</div>
+      <div class="side-tools">
+        <button class="icon-btn" id="btnSettings" aria-label="Account and settings" title="Account">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></span>
+        </button>
+        <button class="icon-btn" data-action="open-downloads" aria-label="Downloads" title="Downloads">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7.5v8M8.5 12l3.5 3.5 3.5-3.5"/></svg></span>
+        </button>
+      </div>
+      <button class="signout" id="btnSignOut" title="Sign out" hidden><span id="whoAmI"></span><b>Sign out</b></button>
     </div>
   </aside>
 
@@ -1119,33 +1462,97 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
           <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 5 7 7-7 7"/></svg></span>
         </button>
       </div>
-      <span class="mobile-brand">Sonora.</span><div class="topbar-center"> <button class="global-search" data-nav="search"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span> Search collection <kbd>Ctrl K</kbd></button>
-        <div class="playing-from" id="playingFrom">
-          <span>Playing from</span><strong id="playingFromName">—</strong>
-        </div>
+      <div class="mobile-brand"><svg class="logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h3l2.5-6 3 13 3.5-19 3.5 22 3-15 2.5 8 2-3h4"/></svg><span>Sonora</span></div>
+      <div class="topbar-center">
+        <button class="global-search" data-nav="search">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span>
+          <span class="gs-text">Search your music, albums, or artists...</span><kbd>Ctrl K</kbd>
+        </button>
+        <div class="playing-from" id="playingFrom" hidden><span>Playing from</span><strong id="playingFromName">—</strong></div>
       </div>
       <div class="topbar-right">
-        <button class="avatar" aria-label="Account" title="Account">A</button>
+        <button class="icon-btn m-search" data-nav="search" aria-label="Search">
+          <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></span>
+        </button>
+        <button class="avatar-btn" id="avatarBtn" aria-label="Account" title="Account">
+          <span class="avatar" id="avatar">L</span>
+          <span class="icon chev"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg></span>
+        </button>
       </div>
     </header>
+    <div class="acct-menu" id="acctMenu" hidden>
+      <div class="acct-email" id="acctEmail"></div>
+      <button data-action="open-downloads">Downloads &amp; offline</button>
+      <button data-action="sign-out" class="danger">Sign out</button>
+    </div>
 
     <div id="views">
       <!-- ───────────── HOME ───────────── -->
       <section class="view" data-view="home">
-        <div class="collection-heading"><h1 id="greeting">Music</h1><span id="heroCount"></span></div>
-<div class="home-split"><section class="shelf home-albums"><div class="shelf-head"><h2>Albums</h2><button class="text-btn" data-action="show-all" data-for="recent">View all</button></div><div class="card-row" id="recentRow"></div></section><section class="shelf home-shortcuts"><div class="shelf-head"><h2>Quick access</h2></div><div class="quick-grid" id="quickGrid"></div></section></div>
+        <div class="hero" aria-hidden="true">
+          <div class="moon"></div>
+          <svg class="hero-mtn" viewBox="0 0 1600 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<defs>
+<linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#5a4a86"/><stop offset=".5" stop-color="#2a2142"/><stop offset="1" stop-color="#0d0b14"/></linearGradient>
+<linearGradient id="m2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#3f3266"/><stop offset=".6" stop-color="#1a1429"/><stop offset="1" stop-color="#0d0b14"/></linearGradient>
+<linearGradient id="m3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#271f40"/><stop offset="1" stop-color="#0d0b14"/></linearGradient>
+<radialGradient id="mist" cx=".65" cy=".55" r=".6"><stop offset="0" stop-color="#8b6cf0" stop-opacity=".22"/><stop offset="1" stop-color="#8b6cf0" stop-opacity="0"/></radialGradient>
+</defs>
+<circle cx="577" cy="42" r="1" fill="#fff" opacity="0.34"/><circle cx="204" cy="6" r="1.2" fill="#fff" opacity="0.51"/><circle cx="907" cy="13" r="1.2" fill="#fff" opacity="0.42"/><circle cx="1252" cy="79" r="0.6" fill="#fff" opacity="0.43"/><circle cx="691" cy="78" r="1.2" fill="#fff" opacity="0.49"/><circle cx="504" cy="190" r="1.2" fill="#fff" opacity="0.36"/><circle cx="392" cy="109" r="0.6" fill="#fff" opacity="0.51"/><circle cx="359" cy="30" r="0.6" fill="#fff" opacity="0.57"/><circle cx="599" cy="180" r="1" fill="#fff" opacity="0.20"/><circle cx="1105" cy="188" r="1.2" fill="#fff" opacity="0.45"/><circle cx="1174" cy="115" r="0.6" fill="#fff" opacity="0.52"/><circle cx="1147" cy="97" r="0.8" fill="#fff" opacity="0.50"/><circle cx="71" cy="23" r="0.6" fill="#fff" opacity="0.45"/><circle cx="601" cy="165" r="1" fill="#fff" opacity="0.53"/><circle cx="194" cy="170" r="1.2" fill="#fff" opacity="0.53"/><circle cx="1524" cy="118" r="0.6" fill="#fff" opacity="0.17"/><circle cx="1228" cy="105" r="0.8" fill="#fff" opacity="0.20"/><circle cx="1198" cy="187" r="0.6" fill="#fff" opacity="0.40"/><circle cx="1391" cy="40" r="0.6" fill="#fff" opacity="0.26"/><circle cx="288" cy="54" r="1.2" fill="#fff" opacity="0.26"/><circle cx="959" cy="188" r="1.2" fill="#fff" opacity="0.58"/><circle cx="601" cy="51" r="1.2" fill="#fff" opacity="0.53"/><circle cx="1547" cy="86" r="1.2" fill="#fff" opacity="0.22"/><circle cx="642" cy="178" r="0.8" fill="#fff" opacity="0.19"/><circle cx="1197" cy="184" r="1.2" fill="#fff" opacity="0.41"/><circle cx="1373" cy="32" r="0.8" fill="#fff" opacity="0.22"/><circle cx="825" cy="187" r="1" fill="#fff" opacity="0.45"/><circle cx="1368" cy="121" r="1" fill="#fff" opacity="0.55"/><circle cx="492" cy="57" r="1.2" fill="#fff" opacity="0.24"/><circle cx="912" cy="52" r="1.2" fill="#fff" opacity="0.50"/><circle cx="230" cy="198" r="1.2" fill="#fff" opacity="0.47"/><circle cx="329" cy="118" r="0.6" fill="#fff" opacity="0.37"/><circle cx="1153" cy="172" r="1.2" fill="#fff" opacity="0.50"/><circle cx="1411" cy="14" r="0.8" fill="#fff" opacity="0.55"/><circle cx="1037" cy="157" r="0.6" fill="#fff" opacity="0.58"/><circle cx="1366" cy="52" r="0.8" fill="#fff" opacity="0.50"/><circle cx="220" cy="126" r="0.6" fill="#fff" opacity="0.55"/><circle cx="408" cy="174" r="1" fill="#fff" opacity="0.23"/><circle cx="146" cy="161" r="0.6" fill="#fff" opacity="0.19"/><circle cx="1334" cy="62" r="1" fill="#fff" opacity="0.35"/><circle cx="1175" cy="71" r="0.6" fill="#fff" opacity="0.30"/><circle cx="698" cy="100" r="0.8" fill="#fff" opacity="0.44"/><circle cx="1188" cy="101" r="0.8" fill="#fff" opacity="0.39"/><circle cx="191" cy="59" r="1.2" fill="#fff" opacity="0.20"/><circle cx="1420" cy="182" r="0.6" fill="#fff" opacity="0.39"/><circle cx="1121" cy="137" r="1" fill="#fff" opacity="0.49"/><circle cx="473" cy="137" r="1" fill="#fff" opacity="0.20"/><circle cx="1511" cy="71" r="0.6" fill="#fff" opacity="0.45"/><circle cx="814" cy="17" r="1" fill="#fff" opacity="0.46"/><circle cx="906" cy="40" r="0.8" fill="#fff" opacity="0.23"/><circle cx="1424" cy="133" r="0.6" fill="#fff" opacity="0.20"/><circle cx="896" cy="185" r="1.2" fill="#fff" opacity="0.40"/><circle cx="1036" cy="94" r="1" fill="#fff" opacity="0.50"/><circle cx="1129" cy="26" r="0.8" fill="#fff" opacity="0.49"/><circle cx="869" cy="149" r="1" fill="#fff" opacity="0.19"/><circle cx="433" cy="15" r="0.8" fill="#fff" opacity="0.17"/><circle cx="808" cy="53" r="1" fill="#fff" opacity="0.54"/><circle cx="1512" cy="92" r="0.6" fill="#fff" opacity="0.31"/><circle cx="1355" cy="27" r="1" fill="#fff" opacity="0.42"/><circle cx="1090" cy="115" r="0.6" fill="#fff" opacity="0.23"/><circle cx="303" cy="86" r="1.2" fill="#fff" opacity="0.52"/><circle cx="1198" cy="120" r="0.8" fill="#fff" opacity="0.54"/><circle cx="1277" cy="111" r="0.8" fill="#fff" opacity="0.41"/><circle cx="323" cy="54" r="1" fill="#fff" opacity="0.16"/><circle cx="1285" cy="179" r="1.2" fill="#fff" opacity="0.29"/><circle cx="1450" cy="65" r="1.2" fill="#fff" opacity="0.59"/><circle cx="1099" cy="63" r="1.2" fill="#fff" opacity="0.16"/><circle cx="305" cy="129" r="0.6" fill="#fff" opacity="0.50"/><circle cx="1059" cy="101" r="1.2" fill="#fff" opacity="0.24"/><circle cx="1251" cy="46" r="1.2" fill="#fff" opacity="0.20"/>
+<rect width="1600" height="420" fill="url(#mist)"/>
+<path d="M0 420 L0.0 241.2 L6.2 241.3 L12.5 241.1 L18.8 241.0 L25.0 241.2 L31.2 240.8 L37.5 241.4 L43.8 241.1 L50.0 241.5 L56.2 240.9 L62.5 240.2 L68.8 238.5 L75.0 237.6 L81.2 236.8 L87.5 236.5 L93.8 236.2 L100.0 235.3 L106.2 235.5 L112.5 235.7 L118.8 235.9 L125.0 236.6 L131.2 237.8 L137.5 239.1 L143.8 239.8 L150.0 241.6 L156.2 241.4 L162.5 241.4 L168.8 242.2 L175.0 243.2 L181.2 242.0 L187.5 241.6 L193.8 241.3 L200.0 242.0 L206.2 242.7 L212.5 242.5 L218.8 242.3 L225.0 242.1 L231.2 242.1 L237.5 242.9 L243.8 242.4 L250.0 241.6 L256.2 243.1 L262.5 243.8 L268.8 244.0 L275.0 245.5 L281.2 245.4 L287.5 246.6 L293.8 246.9 L300.0 248.1 L306.2 247.1 L312.5 245.5 L318.8 244.6 L325.0 244.4 L331.2 244.4 L337.5 243.8 L343.8 243.7 L350.0 243.2 L356.2 244.6 L362.5 245.8 L368.8 245.7 L375.0 246.2 L381.2 246.9 L387.5 246.4 L393.8 246.2 L400.0 245.3 L406.2 245.6 L412.5 245.6 L418.8 245.1 L425.0 245.2 L431.2 244.7 L437.5 243.8 L443.8 242.0 L450.0 240.5 L456.2 238.9 L462.5 237.1 L468.8 235.6 L475.0 234.6 L481.2 234.0 L487.5 232.9 L493.8 231.5 L500.0 231.1 L506.2 230.4 L512.5 230.1 L518.8 229.2 L525.0 227.1 L531.2 226.9 L537.5 225.7 L543.8 224.6 L550.0 223.9 L556.2 222.7 L562.5 220.6 L568.8 218.8 L575.0 217.4 L581.2 215.6 L587.5 212.6 L593.8 211.0 L600.0 208.7 L606.2 207.1 L612.5 205.7 L618.8 203.8 L625.0 205.9 L631.2 208.2 L637.5 211.7 L643.8 214.0 L650.0 215.3 L656.2 217.4 L662.5 220.5 L668.8 224.6 L675.0 227.8 L681.2 230.9 L687.5 232.8 L693.8 234.7 L700.0 236.5 L706.2 238.1 L712.5 240.5 L718.8 242.1 L725.0 242.2 L731.2 243.6 L737.5 243.5 L743.8 243.2 L750.0 242.3 L756.2 242.8 L762.5 243.3 L768.8 242.9 L775.0 242.7 L781.2 242.0 L787.5 241.5 L793.8 239.6 L800.0 238.4 L806.2 237.1 L812.5 235.2 L818.8 233.3 L825.0 231.3 L831.2 228.5 L837.5 226.2 L843.8 222.4 L850.0 219.2 L856.2 215.8 L862.5 212.0 L868.8 208.3 L875.0 205.0 L881.2 201.2 L887.5 197.5 L893.8 194.4 L900.0 191.7 L906.2 189.4 L912.5 186.1 L918.8 183.0 L925.0 178.8 L931.2 174.8 L937.5 171.9 L943.8 167.9 L950.0 164.6 L956.2 161.8 L962.5 159.4 L968.8 157.9 L975.0 155.3 L981.2 154.0 L987.5 158.0 L993.8 162.0 L1000.0 166.5 L1006.2 169.5 L1012.5 173.2 L1018.8 176.7 L1025.0 179.8 L1031.2 182.6 L1037.5 184.6 L1043.8 187.8 L1050.0 189.9 L1056.2 192.8 L1062.5 196.1 L1068.8 199.9 L1075.0 202.8 L1081.2 206.2 L1087.5 209.1 L1093.8 212.1 L1100.0 215.1 L1106.2 218.7 L1112.5 221.1 L1118.8 223.4 L1125.0 225.5 L1131.2 227.0 L1137.5 227.7 L1143.8 227.6 L1150.0 228.3 L1156.2 227.7 L1162.5 227.8 L1168.8 227.9 L1175.0 226.8 L1181.2 226.1 L1187.5 225.9 L1193.8 226.6 L1200.0 226.5 L1206.2 225.2 L1212.5 223.4 L1218.8 222.5 L1225.0 220.6 L1231.2 218.6 L1237.5 216.5 L1243.8 213.8 L1250.0 211.2 L1256.2 207.9 L1262.5 205.1 L1268.8 202.2 L1275.0 198.4 L1281.2 195.0 L1287.5 191.3 L1293.8 187.4 L1300.0 182.4 L1306.2 178.8 L1312.5 174.1 L1318.8 168.8 L1325.0 170.2 L1331.2 173.4 L1337.5 176.5 L1343.8 178.5 L1350.0 181.4 L1356.2 184.0 L1362.5 187.7 L1368.8 189.5 L1375.0 192.3 L1381.2 195.8 L1387.5 198.3 L1393.8 202.2 L1400.0 205.2 L1406.2 208.9 L1412.5 211.7 L1418.8 214.0 L1425.0 216.5 L1431.2 219.4 L1437.5 222.0 L1443.8 224.6 L1450.0 226.5 L1456.2 228.9 L1462.5 231.6 L1468.8 235.1 L1475.0 238.3 L1481.2 239.7 L1487.5 241.7 L1493.8 243.8 L1500.0 246.8 L1506.2 248.1 L1512.5 249.7 L1518.8 252.2 L1525.0 252.8 L1531.2 253.1 L1537.5 253.3 L1543.8 253.6 L1550.0 252.8 L1556.2 253.0 L1562.5 253.4 L1568.8 253.9 L1575.0 255.1 L1581.2 255.8 L1587.5 255.8 L1593.8 257.5 L1600.0 258.3 L1600 420 Z" fill="url(#m1)"/><path d="M0.0 241.2 L6.2 241.3 L12.5 241.1 L18.8 241.0 L25.0 241.2 L31.2 240.8 L37.5 241.4 L43.8 241.1 L50.0 241.5 L56.2 240.9 L62.5 240.2 L68.8 238.5 L75.0 237.6 L81.2 236.8 L87.5 236.5 L93.8 236.2 L100.0 235.3 L106.2 235.5 L112.5 235.7 L118.8 235.9 L125.0 236.6 L131.2 237.8 L137.5 239.1 L143.8 239.8 L150.0 241.6 L156.2 241.4 L162.5 241.4 L168.8 242.2 L175.0 243.2 L181.2 242.0 L187.5 241.6 L193.8 241.3 L200.0 242.0 L206.2 242.7 L212.5 242.5 L218.8 242.3 L225.0 242.1 L231.2 242.1 L237.5 242.9 L243.8 242.4 L250.0 241.6 L256.2 243.1 L262.5 243.8 L268.8 244.0 L275.0 245.5 L281.2 245.4 L287.5 246.6 L293.8 246.9 L300.0 248.1 L306.2 247.1 L312.5 245.5 L318.8 244.6 L325.0 244.4 L331.2 244.4 L337.5 243.8 L343.8 243.7 L350.0 243.2 L356.2 244.6 L362.5 245.8 L368.8 245.7 L375.0 246.2 L381.2 246.9 L387.5 246.4 L393.8 246.2 L400.0 245.3 L406.2 245.6 L412.5 245.6 L418.8 245.1 L425.0 245.2 L431.2 244.7 L437.5 243.8 L443.8 242.0 L450.0 240.5 L456.2 238.9 L462.5 237.1 L468.8 235.6 L475.0 234.6 L481.2 234.0 L487.5 232.9 L493.8 231.5 L500.0 231.1 L506.2 230.4 L512.5 230.1 L518.8 229.2 L525.0 227.1 L531.2 226.9 L537.5 225.7 L543.8 224.6 L550.0 223.9 L556.2 222.7 L562.5 220.6 L568.8 218.8 L575.0 217.4 L581.2 215.6 L587.5 212.6 L593.8 211.0 L600.0 208.7 L606.2 207.1 L612.5 205.7 L618.8 203.8 L625.0 205.9 L631.2 208.2 L637.5 211.7 L643.8 214.0 L650.0 215.3 L656.2 217.4 L662.5 220.5 L668.8 224.6 L675.0 227.8 L681.2 230.9 L687.5 232.8 L693.8 234.7 L700.0 236.5 L706.2 238.1 L712.5 240.5 L718.8 242.1 L725.0 242.2 L731.2 243.6 L737.5 243.5 L743.8 243.2 L750.0 242.3 L756.2 242.8 L762.5 243.3 L768.8 242.9 L775.0 242.7 L781.2 242.0 L787.5 241.5 L793.8 239.6 L800.0 238.4 L806.2 237.1 L812.5 235.2 L818.8 233.3 L825.0 231.3 L831.2 228.5 L837.5 226.2 L843.8 222.4 L850.0 219.2 L856.2 215.8 L862.5 212.0 L868.8 208.3 L875.0 205.0 L881.2 201.2 L887.5 197.5 L893.8 194.4 L900.0 191.7 L906.2 189.4 L912.5 186.1 L918.8 183.0 L925.0 178.8 L931.2 174.8 L937.5 171.9 L943.8 167.9 L950.0 164.6 L956.2 161.8 L962.5 159.4 L968.8 157.9 L975.0 155.3 L981.2 154.0 L987.5 158.0 L993.8 162.0 L1000.0 166.5 L1006.2 169.5 L1012.5 173.2 L1018.8 176.7 L1025.0 179.8 L1031.2 182.6 L1037.5 184.6 L1043.8 187.8 L1050.0 189.9 L1056.2 192.8 L1062.5 196.1 L1068.8 199.9 L1075.0 202.8 L1081.2 206.2 L1087.5 209.1 L1093.8 212.1 L1100.0 215.1 L1106.2 218.7 L1112.5 221.1 L1118.8 223.4 L1125.0 225.5 L1131.2 227.0 L1137.5 227.7 L1143.8 227.6 L1150.0 228.3 L1156.2 227.7 L1162.5 227.8 L1168.8 227.9 L1175.0 226.8 L1181.2 226.1 L1187.5 225.9 L1193.8 226.6 L1200.0 226.5 L1206.2 225.2 L1212.5 223.4 L1218.8 222.5 L1225.0 220.6 L1231.2 218.6 L1237.5 216.5 L1243.8 213.8 L1250.0 211.2 L1256.2 207.9 L1262.5 205.1 L1268.8 202.2 L1275.0 198.4 L1281.2 195.0 L1287.5 191.3 L1293.8 187.4 L1300.0 182.4 L1306.2 178.8 L1312.5 174.1 L1318.8 168.8 L1325.0 170.2 L1331.2 173.4 L1337.5 176.5 L1343.8 178.5 L1350.0 181.4 L1356.2 184.0 L1362.5 187.7 L1368.8 189.5 L1375.0 192.3 L1381.2 195.8 L1387.5 198.3 L1393.8 202.2 L1400.0 205.2 L1406.2 208.9 L1412.5 211.7 L1418.8 214.0 L1425.0 216.5 L1431.2 219.4 L1437.5 222.0 L1443.8 224.6 L1450.0 226.5 L1456.2 228.9 L1462.5 231.6 L1468.8 235.1 L1475.0 238.3 L1481.2 239.7 L1487.5 241.7 L1493.8 243.8 L1500.0 246.8 L1506.2 248.1 L1512.5 249.7 L1518.8 252.2 L1525.0 252.8 L1531.2 253.1 L1537.5 253.3 L1543.8 253.6 L1550.0 252.8 L1556.2 253.0 L1562.5 253.4 L1568.8 253.9 L1575.0 255.1 L1581.2 255.8 L1587.5 255.8 L1593.8 257.5 L1600.0 258.3" fill="none" stroke="#b9a6ff" stroke-opacity=".45" stroke-width="1.2"/><path d="M0 420 L0.0 309.3 L6.2 309.5 L12.5 309.1 L18.8 310.0 L25.0 310.1 L31.2 310.1 L37.5 309.6 L43.8 308.6 L50.0 307.6 L56.2 306.9 L62.5 306.9 L68.8 307.1 L75.0 307.0 L81.2 306.8 L87.5 306.9 L93.8 305.7 L100.0 305.3 L106.2 303.9 L112.5 302.4 L118.8 301.5 L125.0 299.7 L131.2 298.7 L137.5 298.4 L143.8 296.9 L150.0 295.1 L156.2 294.1 L162.5 293.2 L168.8 291.9 L175.0 290.4 L181.2 288.2 L187.5 286.6 L193.8 285.1 L200.0 282.6 L206.2 280.5 L212.5 278.9 L218.8 277.2 L225.0 275.1 L231.2 272.8 L237.5 270.5 L243.8 267.4 L250.0 265.3 L256.2 263.7 L262.5 262.1 L268.8 259.9 L275.0 258.4 L281.2 255.6 L287.5 253.7 L293.8 251.2 L300.0 249.7 L306.2 250.0 L312.5 250.9 L318.8 251.7 L325.0 253.2 L331.2 253.5 L337.5 253.6 L343.8 253.7 L350.0 253.8 L356.2 256.0 L362.5 257.3 L368.8 258.7 L375.0 259.2 L381.2 260.6 L387.5 261.1 L393.8 261.5 L400.0 262.4 L406.2 263.0 L412.5 263.7 L418.8 264.9 L425.0 266.5 L431.2 267.3 L437.5 268.0 L443.8 268.2 L450.0 268.1 L456.2 269.8 L462.5 270.8 L468.8 271.9 L475.0 272.5 L481.2 273.8 L487.5 275.6 L493.8 276.1 L500.0 276.6 L506.2 277.1 L512.5 277.5 L518.8 278.1 L525.0 279.6 L531.2 279.3 L537.5 279.9 L543.8 279.5 L550.0 279.3 L556.2 279.2 L562.5 280.0 L568.8 281.4 L575.0 282.4 L581.2 282.3 L587.5 282.7 L593.8 282.1 L600.0 282.4 L606.2 281.2 L612.5 280.8 L618.8 280.1 L625.0 279.4 L631.2 277.8 L637.5 276.6 L643.8 275.4 L650.0 274.1 L656.2 272.9 L662.5 271.8 L668.8 269.6 L675.0 267.8 L681.2 265.4 L687.5 262.6 L693.8 260.3 L700.0 258.7 L706.2 256.9 L712.5 254.4 L718.8 252.6 L725.0 249.8 L731.2 247.7 L737.5 245.0 L743.8 241.8 L750.0 238.8 L756.2 236.0 L762.5 233.2 L768.8 231.0 L775.0 228.5 L781.2 225.2 L787.5 222.8 L793.8 220.3 L800.0 218.0 L806.2 216.2 L812.5 214.3 L818.8 211.4 L825.0 213.6 L831.2 216.4 L837.5 220.1 L843.8 223.7 L850.0 226.7 L856.2 229.4 L862.5 232.3 L868.8 234.7 L875.0 237.0 L881.2 239.5 L887.5 241.0 L893.8 244.0 L900.0 246.8 L906.2 249.6 L912.5 252.5 L918.8 255.1 L925.0 256.3 L931.2 256.4 L937.5 256.6 L943.8 256.6 L950.0 257.4 L956.2 258.0 L962.5 258.0 L968.8 257.3 L975.0 257.3 L981.2 256.3 L987.5 255.5 L993.8 255.5 L1000.0 254.7 L1006.2 254.9 L1012.5 254.5 L1018.8 252.6 L1025.0 250.8 L1031.2 247.8 L1037.5 244.8 L1043.8 242.5 L1050.0 240.4 L1056.2 237.9 L1062.5 235.5 L1068.8 232.2 L1075.0 229.6 L1081.2 226.6 L1087.5 223.5 L1093.8 220.9 L1100.0 219.1 L1106.2 215.7 L1112.5 212.7 L1118.8 209.7 L1125.0 207.0 L1131.2 204.0 L1137.5 200.1 L1143.8 195.5 L1150.0 191.8 L1156.2 196.4 L1162.5 200.5 L1168.8 205.1 L1175.0 210.3 L1181.2 213.9 L1187.5 217.3 L1193.8 221.3 L1200.0 225.5 L1206.2 229.1 L1212.5 232.8 L1218.8 236.3 L1225.0 239.3 L1231.2 242.5 L1237.5 245.9 L1243.8 248.9 L1250.0 252.8 L1256.2 256.0 L1262.5 259.9 L1268.8 263.9 L1275.0 268.6 L1281.2 273.2 L1287.5 276.9 L1293.8 280.3 L1300.0 283.2 L1306.2 286.1 L1312.5 288.0 L1318.8 291.1 L1325.0 293.1 L1331.2 292.7 L1337.5 292.9 L1343.8 293.4 L1350.0 293.4 L1356.2 293.9 L1362.5 293.5 L1368.8 293.8 L1375.0 293.3 L1381.2 292.4 L1387.5 291.1 L1393.8 288.4 L1400.0 285.7 L1406.2 283.4 L1412.5 281.1 L1418.8 278.6 L1425.0 275.3 L1431.2 272.1 L1437.5 269.2 L1443.8 266.8 L1450.0 264.3 L1456.2 261.6 L1462.5 258.9 L1468.8 256.9 L1475.0 253.9 L1481.2 252.7 L1487.5 255.8 L1493.8 260.5 L1500.0 264.2 L1506.2 267.0 L1512.5 268.9 L1518.8 271.1 L1525.0 273.7 L1531.2 276.2 L1537.5 279.2 L1543.8 281.4 L1550.0 283.6 L1556.2 285.9 L1562.5 288.7 L1568.8 290.6 L1575.0 292.6 L1581.2 295.0 L1587.5 296.9 L1593.8 298.5 L1600.0 299.2 L1600 420 Z" fill="url(#m2)"/><path d="M0.0 309.3 L6.2 309.5 L12.5 309.1 L18.8 310.0 L25.0 310.1 L31.2 310.1 L37.5 309.6 L43.8 308.6 L50.0 307.6 L56.2 306.9 L62.5 306.9 L68.8 307.1 L75.0 307.0 L81.2 306.8 L87.5 306.9 L93.8 305.7 L100.0 305.3 L106.2 303.9 L112.5 302.4 L118.8 301.5 L125.0 299.7 L131.2 298.7 L137.5 298.4 L143.8 296.9 L150.0 295.1 L156.2 294.1 L162.5 293.2 L168.8 291.9 L175.0 290.4 L181.2 288.2 L187.5 286.6 L193.8 285.1 L200.0 282.6 L206.2 280.5 L212.5 278.9 L218.8 277.2 L225.0 275.1 L231.2 272.8 L237.5 270.5 L243.8 267.4 L250.0 265.3 L256.2 263.7 L262.5 262.1 L268.8 259.9 L275.0 258.4 L281.2 255.6 L287.5 253.7 L293.8 251.2 L300.0 249.7 L306.2 250.0 L312.5 250.9 L318.8 251.7 L325.0 253.2 L331.2 253.5 L337.5 253.6 L343.8 253.7 L350.0 253.8 L356.2 256.0 L362.5 257.3 L368.8 258.7 L375.0 259.2 L381.2 260.6 L387.5 261.1 L393.8 261.5 L400.0 262.4 L406.2 263.0 L412.5 263.7 L418.8 264.9 L425.0 266.5 L431.2 267.3 L437.5 268.0 L443.8 268.2 L450.0 268.1 L456.2 269.8 L462.5 270.8 L468.8 271.9 L475.0 272.5 L481.2 273.8 L487.5 275.6 L493.8 276.1 L500.0 276.6 L506.2 277.1 L512.5 277.5 L518.8 278.1 L525.0 279.6 L531.2 279.3 L537.5 279.9 L543.8 279.5 L550.0 279.3 L556.2 279.2 L562.5 280.0 L568.8 281.4 L575.0 282.4 L581.2 282.3 L587.5 282.7 L593.8 282.1 L600.0 282.4 L606.2 281.2 L612.5 280.8 L618.8 280.1 L625.0 279.4 L631.2 277.8 L637.5 276.6 L643.8 275.4 L650.0 274.1 L656.2 272.9 L662.5 271.8 L668.8 269.6 L675.0 267.8 L681.2 265.4 L687.5 262.6 L693.8 260.3 L700.0 258.7 L706.2 256.9 L712.5 254.4 L718.8 252.6 L725.0 249.8 L731.2 247.7 L737.5 245.0 L743.8 241.8 L750.0 238.8 L756.2 236.0 L762.5 233.2 L768.8 231.0 L775.0 228.5 L781.2 225.2 L787.5 222.8 L793.8 220.3 L800.0 218.0 L806.2 216.2 L812.5 214.3 L818.8 211.4 L825.0 213.6 L831.2 216.4 L837.5 220.1 L843.8 223.7 L850.0 226.7 L856.2 229.4 L862.5 232.3 L868.8 234.7 L875.0 237.0 L881.2 239.5 L887.5 241.0 L893.8 244.0 L900.0 246.8 L906.2 249.6 L912.5 252.5 L918.8 255.1 L925.0 256.3 L931.2 256.4 L937.5 256.6 L943.8 256.6 L950.0 257.4 L956.2 258.0 L962.5 258.0 L968.8 257.3 L975.0 257.3 L981.2 256.3 L987.5 255.5 L993.8 255.5 L1000.0 254.7 L1006.2 254.9 L1012.5 254.5 L1018.8 252.6 L1025.0 250.8 L1031.2 247.8 L1037.5 244.8 L1043.8 242.5 L1050.0 240.4 L1056.2 237.9 L1062.5 235.5 L1068.8 232.2 L1075.0 229.6 L1081.2 226.6 L1087.5 223.5 L1093.8 220.9 L1100.0 219.1 L1106.2 215.7 L1112.5 212.7 L1118.8 209.7 L1125.0 207.0 L1131.2 204.0 L1137.5 200.1 L1143.8 195.5 L1150.0 191.8 L1156.2 196.4 L1162.5 200.5 L1168.8 205.1 L1175.0 210.3 L1181.2 213.9 L1187.5 217.3 L1193.8 221.3 L1200.0 225.5 L1206.2 229.1 L1212.5 232.8 L1218.8 236.3 L1225.0 239.3 L1231.2 242.5 L1237.5 245.9 L1243.8 248.9 L1250.0 252.8 L1256.2 256.0 L1262.5 259.9 L1268.8 263.9 L1275.0 268.6 L1281.2 273.2 L1287.5 276.9 L1293.8 280.3 L1300.0 283.2 L1306.2 286.1 L1312.5 288.0 L1318.8 291.1 L1325.0 293.1 L1331.2 292.7 L1337.5 292.9 L1343.8 293.4 L1350.0 293.4 L1356.2 293.9 L1362.5 293.5 L1368.8 293.8 L1375.0 293.3 L1381.2 292.4 L1387.5 291.1 L1393.8 288.4 L1400.0 285.7 L1406.2 283.4 L1412.5 281.1 L1418.8 278.6 L1425.0 275.3 L1431.2 272.1 L1437.5 269.2 L1443.8 266.8 L1450.0 264.3 L1456.2 261.6 L1462.5 258.9 L1468.8 256.9 L1475.0 253.9 L1481.2 252.7 L1487.5 255.8 L1493.8 260.5 L1500.0 264.2 L1506.2 267.0 L1512.5 268.9 L1518.8 271.1 L1525.0 273.7 L1531.2 276.2 L1537.5 279.2 L1543.8 281.4 L1550.0 283.6 L1556.2 285.9 L1562.5 288.7 L1568.8 290.6 L1575.0 292.6 L1581.2 295.0 L1587.5 296.9 L1593.8 298.5 L1600.0 299.2" fill="none" stroke="#b9a6ff" stroke-opacity=".10" stroke-width="1.2"/><path d="M0 420 L0.0 345.9 L6.2 345.9 L12.5 345.5 L18.8 345.6 L25.0 345.9 L31.2 345.8 L37.5 345.7 L43.8 345.3 L50.0 344.9 L56.2 344.6 L62.5 344.4 L68.8 343.7 L75.0 343.1 L81.2 342.5 L87.5 342.0 L93.8 341.7 L100.0 341.5 L106.2 341.8 L112.5 342.0 L118.8 341.9 L125.0 342.0 L131.2 341.7 L137.5 341.5 L143.8 341.4 L150.0 341.1 L156.2 340.8 L162.5 341.0 L168.8 341.2 L175.0 341.4 L181.2 341.2 L187.5 340.8 L193.8 340.6 L200.0 340.5 L206.2 340.8 L212.5 341.4 L218.8 341.7 L225.0 341.8 L231.2 342.5 L237.5 343.4 L243.8 343.8 L250.0 344.4 L256.2 344.3 L262.5 344.3 L268.8 344.7 L275.0 345.0 L281.2 345.2 L287.5 345.4 L293.8 345.1 L300.0 344.9 L306.2 343.9 L312.5 342.9 L318.8 342.3 L325.0 341.4 L331.2 340.7 L337.5 340.0 L343.8 339.2 L350.0 338.1 L356.2 336.9 L362.5 336.0 L368.8 335.0 L375.0 334.1 L381.2 332.9 L387.5 331.5 L393.8 330.0 L400.0 328.2 L406.2 326.7 L412.5 325.1 L418.8 323.1 L425.0 321.2 L431.2 319.3 L437.5 317.7 L443.8 315.9 L450.0 314.1 L456.2 312.8 L462.5 311.6 L468.8 310.1 L475.0 308.3 L481.2 306.8 L487.5 304.9 L493.8 303.3 L500.0 301.8 L506.2 302.8 L512.5 304.0 L518.8 305.5 L525.0 306.7 L531.2 308.1 L537.5 309.5 L543.8 310.8 L550.0 312.0 L556.2 312.7 L562.5 313.6 L568.8 314.6 L575.0 315.9 L581.2 316.6 L587.5 317.5 L593.8 318.6 L600.0 319.5 L606.2 320.8 L612.5 322.3 L618.8 323.7 L625.0 325.2 L631.2 326.7 L637.5 328.2 L643.8 329.6 L650.0 331.0 L656.2 332.0 L662.5 333.1 L668.8 334.5 L675.0 335.6 L681.2 336.4 L687.5 337.5 L693.8 338.6 L700.0 340.0 L706.2 341.0 L712.5 341.5 L718.8 341.9 L725.0 341.5 L731.2 341.5 L737.5 341.1 L743.8 340.8 L750.0 340.1 L756.2 339.9 L762.5 339.1 L768.8 338.2 L775.0 337.0 L781.2 336.0 L787.5 335.2 L793.8 334.0 L800.0 332.6 L806.2 331.7 L812.5 330.5 L818.8 329.5 L825.0 328.4 L831.2 326.9 L837.5 325.4 L843.8 323.8 L850.0 322.4 L856.2 321.4 L862.5 320.5 L868.8 319.4 L875.0 318.5 L881.2 317.2 L887.5 316.2 L893.8 315.0 L900.0 313.6 L906.2 312.5 L912.5 311.6 L918.8 310.6 L925.0 309.4 L931.2 307.7 L937.5 306.5 L943.8 305.1 L950.0 303.4 L956.2 302.1 L962.5 300.5 L968.8 299.1 L975.0 297.3 L981.2 295.8 L987.5 294.0 L993.8 292.1 L1000.0 289.8 L1006.2 292.0 L1012.5 294.0 L1018.8 295.9 L1025.0 298.2 L1031.2 299.9 L1037.5 301.4 L1043.8 302.9 L1050.0 304.6 L1056.2 306.5 L1062.5 308.6 L1068.8 310.4 L1075.0 312.0 L1081.2 313.6 L1087.5 315.1 L1093.8 316.8 L1100.0 318.6 L1106.2 320.2 L1112.5 321.4 L1118.8 323.0 L1125.0 324.5 L1131.2 326.3 L1137.5 328.2 L1143.8 329.5 L1150.0 331.1 L1156.2 332.6 L1162.5 333.9 L1168.8 335.2 L1175.0 336.6 L1181.2 337.7 L1187.5 338.6 L1193.8 339.5 L1200.0 340.5 L1206.2 340.9 L1212.5 341.3 L1218.8 341.8 L1225.0 342.1 L1231.2 341.8 L1237.5 341.1 L1243.8 340.4 L1250.0 339.7 L1256.2 338.9 L1262.5 337.5 L1268.8 336.0 L1275.0 334.1 L1281.2 331.9 L1287.5 329.5 L1293.8 327.7 L1300.0 325.6 L1306.2 323.9 L1312.5 322.7 L1318.8 321.1 L1325.0 319.5 L1331.2 318.0 L1337.5 316.2 L1343.8 314.3 L1350.0 312.7 L1356.2 310.6 L1362.5 308.7 L1368.8 306.9 L1375.0 305.3 L1381.2 303.3 L1387.5 301.3 L1393.8 299.1 L1400.0 296.9 L1406.2 299.1 L1412.5 301.4 L1418.8 303.7 L1425.0 305.8 L1431.2 308.1 L1437.5 310.7 L1443.8 312.8 L1450.0 315.3 L1456.2 317.0 L1462.5 319.1 L1468.8 320.9 L1475.0 323.1 L1481.2 324.6 L1487.5 326.4 L1493.8 328.1 L1500.0 329.4 L1506.2 331.3 L1512.5 332.9 L1518.8 334.3 L1525.0 335.9 L1531.2 337.2 L1537.5 338.4 L1543.8 340.0 L1550.0 341.6 L1556.2 342.7 L1562.5 343.8 L1568.8 345.2 L1575.0 346.6 L1581.2 347.9 L1587.5 349.1 L1593.8 350.1 L1600.0 350.7 L1600 420 Z" fill="url(#m3)"/><path d="M0.0 345.9 L6.2 345.9 L12.5 345.5 L18.8 345.6 L25.0 345.9 L31.2 345.8 L37.5 345.7 L43.8 345.3 L50.0 344.9 L56.2 344.6 L62.5 344.4 L68.8 343.7 L75.0 343.1 L81.2 342.5 L87.5 342.0 L93.8 341.7 L100.0 341.5 L106.2 341.8 L112.5 342.0 L118.8 341.9 L125.0 342.0 L131.2 341.7 L137.5 341.5 L143.8 341.4 L150.0 341.1 L156.2 340.8 L162.5 341.0 L168.8 341.2 L175.0 341.4 L181.2 341.2 L187.5 340.8 L193.8 340.6 L200.0 340.5 L206.2 340.8 L212.5 341.4 L218.8 341.7 L225.0 341.8 L231.2 342.5 L237.5 343.4 L243.8 343.8 L250.0 344.4 L256.2 344.3 L262.5 344.3 L268.8 344.7 L275.0 345.0 L281.2 345.2 L287.5 345.4 L293.8 345.1 L300.0 344.9 L306.2 343.9 L312.5 342.9 L318.8 342.3 L325.0 341.4 L331.2 340.7 L337.5 340.0 L343.8 339.2 L350.0 338.1 L356.2 336.9 L362.5 336.0 L368.8 335.0 L375.0 334.1 L381.2 332.9 L387.5 331.5 L393.8 330.0 L400.0 328.2 L406.2 326.7 L412.5 325.1 L418.8 323.1 L425.0 321.2 L431.2 319.3 L437.5 317.7 L443.8 315.9 L450.0 314.1 L456.2 312.8 L462.5 311.6 L468.8 310.1 L475.0 308.3 L481.2 306.8 L487.5 304.9 L493.8 303.3 L500.0 301.8 L506.2 302.8 L512.5 304.0 L518.8 305.5 L525.0 306.7 L531.2 308.1 L537.5 309.5 L543.8 310.8 L550.0 312.0 L556.2 312.7 L562.5 313.6 L568.8 314.6 L575.0 315.9 L581.2 316.6 L587.5 317.5 L593.8 318.6 L600.0 319.5 L606.2 320.8 L612.5 322.3 L618.8 323.7 L625.0 325.2 L631.2 326.7 L637.5 328.2 L643.8 329.6 L650.0 331.0 L656.2 332.0 L662.5 333.1 L668.8 334.5 L675.0 335.6 L681.2 336.4 L687.5 337.5 L693.8 338.6 L700.0 340.0 L706.2 341.0 L712.5 341.5 L718.8 341.9 L725.0 341.5 L731.2 341.5 L737.5 341.1 L743.8 340.8 L750.0 340.1 L756.2 339.9 L762.5 339.1 L768.8 338.2 L775.0 337.0 L781.2 336.0 L787.5 335.2 L793.8 334.0 L800.0 332.6 L806.2 331.7 L812.5 330.5 L818.8 329.5 L825.0 328.4 L831.2 326.9 L837.5 325.4 L843.8 323.8 L850.0 322.4 L856.2 321.4 L862.5 320.5 L868.8 319.4 L875.0 318.5 L881.2 317.2 L887.5 316.2 L893.8 315.0 L900.0 313.6 L906.2 312.5 L912.5 311.6 L918.8 310.6 L925.0 309.4 L931.2 307.7 L937.5 306.5 L943.8 305.1 L950.0 303.4 L956.2 302.1 L962.5 300.5 L968.8 299.1 L975.0 297.3 L981.2 295.8 L987.5 294.0 L993.8 292.1 L1000.0 289.8 L1006.2 292.0 L1012.5 294.0 L1018.8 295.9 L1025.0 298.2 L1031.2 299.9 L1037.5 301.4 L1043.8 302.9 L1050.0 304.6 L1056.2 306.5 L1062.5 308.6 L1068.8 310.4 L1075.0 312.0 L1081.2 313.6 L1087.5 315.1 L1093.8 316.8 L1100.0 318.6 L1106.2 320.2 L1112.5 321.4 L1118.8 323.0 L1125.0 324.5 L1131.2 326.3 L1137.5 328.2 L1143.8 329.5 L1150.0 331.1 L1156.2 332.6 L1162.5 333.9 L1168.8 335.2 L1175.0 336.6 L1181.2 337.7 L1187.5 338.6 L1193.8 339.5 L1200.0 340.5 L1206.2 340.9 L1212.5 341.3 L1218.8 341.8 L1225.0 342.1 L1231.2 341.8 L1237.5 341.1 L1243.8 340.4 L1250.0 339.7 L1256.2 338.9 L1262.5 337.5 L1268.8 336.0 L1275.0 334.1 L1281.2 331.9 L1287.5 329.5 L1293.8 327.7 L1300.0 325.6 L1306.2 323.9 L1312.5 322.7 L1318.8 321.1 L1325.0 319.5 L1331.2 318.0 L1337.5 316.2 L1343.8 314.3 L1350.0 312.7 L1356.2 310.6 L1362.5 308.7 L1368.8 306.9 L1375.0 305.3 L1381.2 303.3 L1387.5 301.3 L1393.8 299.1 L1400.0 296.9 L1406.2 299.1 L1412.5 301.4 L1418.8 303.7 L1425.0 305.8 L1431.2 308.1 L1437.5 310.7 L1443.8 312.8 L1450.0 315.3 L1456.2 317.0 L1462.5 319.1 L1468.8 320.9 L1475.0 323.1 L1481.2 324.6 L1487.5 326.4 L1493.8 328.1 L1500.0 329.4 L1506.2 331.3 L1512.5 332.9 L1518.8 334.3 L1525.0 335.9 L1531.2 337.2 L1537.5 338.4 L1543.8 340.0 L1550.0 341.6 L1556.2 342.7 L1562.5 343.8 L1568.8 345.2 L1575.0 346.6 L1581.2 347.9 L1587.5 349.1 L1593.8 350.1 L1600.0 350.7" fill="none" stroke="#b9a6ff" stroke-opacity=".10" stroke-width="1.2"/>
+</svg>
+        </div>
+        <div class="home-head">
+          <h1 id="greeting">Music</h1>
+          <p class="home-sub">Your personal music library</p>
+        </div>
+        <div class="home-tabs-row">
+          <div class="home-tabs" id="homeTabs" role="tablist">
+            <button class="htab active" data-htab="albums">Albums</button>
+            <button class="htab" data-htab="songs">Songs</button>
+            <button class="htab" data-htab="artists">Artists</button>
+            <button class="htab" data-htab="playlists">Playlists</button>
+            <button class="htab" data-htab="recent">Recently Added</button>
+          </div>
+          <div class="lib-pill"><span class="icon"><svg class="logo" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 17h3l2.5-6 3 13 3.5-19 3.5 22 3-15 2.5 8 2-3h4"/></svg></span><span>Your library</span><b id="heroCount"></b></div>
+        </div>
 
-        
-
-        <section class="shelf">
-          <div class="shelf-head"><h2>Playlists</h2><button class="text-btn" data-action="show-all" data-for="made">Show all</button></div>
-          <div class="card-row" id="madeRow"></div>
+        <section class="m-lib">
+          <button class="m-lib-head" data-action="open-library"><h2>Your library</h2><span><b id="mLibCount"></b><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></span></span></button>
+          <div class="m-lib-cards">
+            <div class="m-card" data-action="liked-songs" role="button" tabindex="0">
+              <div class="m-card-ico liked"><span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 20.4 4.5 13a4.9 4.9 0 0 1 6.9-6.9l.6.6.6-.6A4.9 4.9 0 0 1 19.5 13Z"/></svg></span></div>
+              <div class="m-card-text"><b>Liked Songs</b><span id="mLikedCount">0 tracks</span></div>
+              <button class="m-card-play" data-action="play-liked" aria-label="Play liked songs"><span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5.2v13.6a.8.8 0 0 0 1.22.68l11-6.8a.8.8 0 0 0 0-1.36l-11-6.8A.8.8 0 0 0 8 5.2Z"/></svg></span></button>
+            </div>
+            <div class="m-card" data-action="open-downloads" role="button" tabindex="0">
+              <div class="m-card-ico"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg></span></div>
+              <div class="m-card-text"><b>Offline</b><span id="mOffCount">0 tracks</span></div>
+              <span class="icon m-card-go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m9 6 6 6-6 6"/></svg></span>
+            </div>
+          </div>
         </section>
 
-        <section class="shelf">
-          <div class="shelf-head"><h2>Tracks</h2><button class="text-btn" data-action="show-all" data-for="added">Show all</button></div>
-          <div class="track-list" id="recentTracks"></div>
-        </section>
+        <div class="home-grid">
+          <section class="panel home-main">
+            <div class="panel-head">
+              <h2 id="homeTitle">Albums</h2>
+              <div class="panel-tools">
+                <button class="view-all" data-action="view-all">View all <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></button>
+                <div class="layout-toggle">
+                  <button class="lt on" data-layout="grid" aria-label="Grid view"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="4" width="6.5" height="6.5" rx="1.5"/><rect x="4" y="13.5" width="6.5" height="6.5" rx="1.5"/><rect x="13.5" y="13.5" width="6.5" height="6.5" rx="1.5"/></svg></span></button>
+                  <button class="lt" data-layout="list" aria-label="List view"><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></svg></span></button>
+                </div>
+              </div>
+            </div>
+            <div id="homeBody"></div>
+          </section>
+          <aside class="panel quick-panel">
+            <div class="panel-head"><h2><span class="icon bolt"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span>Quick access</h2></div>
+            <div class="quick-list" id="quickGrid"></div>
+          </aside>
+        </div>
       </section>
 
       <!-- ───────────── SEARCH ───────────── -->
@@ -1199,6 +1606,9 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     <button class="p-like" id="pLike" aria-label="Like" title="Like">
       <span class="icon"></span>
     </button>
+    <button class="icon-btn p-more" id="pMore" aria-label="More options" title="More">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.7"/><circle cx="12" cy="12" r="1.7"/><circle cx="19" cy="12" r="1.7"/></svg></span>
+    </button>
   </div>
 
   <div class="p-center">
@@ -1221,7 +1631,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     </div>
     <div class="p-bar">
       <span class="time js-cur">0:00</span>
-      <div class="bar" data-seek><div class="bar-fill js-fill"><span class="bar-knob"></span></div></div>
+      <div class="bar wave" data-seek id="pWave"><div class="bar-fill js-fill"></div></div>
       <span class="time right js-dur">0:00</span>
     </div>
   </div>
@@ -1229,18 +1639,19 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
   <div class="p-right">
     <button class="pill-btn js-speed" title="Playback speed">1×</button>
     <button class="pill-btn js-sleep" title="Sleep timer">Sleep</button>
-    <button class="icon-btn" id="btnQueue" aria-label="Queue" title="Queue">
-      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h16M4 12h16M4 18h9"/><path d="M17.5 15v6M14.5 18h6"/></svg></span>
-    </button>
-    <button class="icon-btn" id="btnExpand" aria-label="Expand player" title="Now playing">
-      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 14v6h6"/><path d="M20 10V4h-6"/><path d="m4 20 6-6M20 4l-6 6"/></svg></span>
-    </button>
     <button class="icon-btn" id="btnMute" aria-label="Mute" title="Mute (M)">
       <span class="icon" id="muteIcon"></span>
     </button>
     <div class="vol" data-vol><i id="volFill"></i></div>
+    <button class="icon-btn" id="btnQueue" aria-label="Queue" title="Queue">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M4 6h12M4 12h12M4 18h8"/><circle cx="18" cy="17" r="2"/><path d="M20 17V9"/></svg></span>
+    </button>
+    <button class="icon-btn" id="btnExpand" aria-label="Expand player" title="Now playing">
+      <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M14 4h6v6M10 20H4v-6M20 4l-6.5 6.5M4 20l6.5-6.5"/></svg></span>
+    </button>
   </div>
 
+  <button class="p-like p-mini-like" id="miniLike" aria-label="Like"><span class="icon"></span></button>
   <button class="p-mini-play" id="miniPlay" aria-label="Play">
     <span class="icon" id="miniPlayIcon"></span>
   </button>
@@ -1257,8 +1668,12 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     Search
   </button>
   <button class="mnav" data-nav="library">
-    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3.5" y="4.5" width="4" height="15" rx="1"/><rect x="10" y="4.5" width="4" height="15" rx="1"/><path d="m17.4 5.6 3.4 13.2-2.2.6L15.2 6.2z"/></svg></span>
+    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4v16M9.5 4v16M14 4.5l4.5 15.2"/></svg></span>
     Library
+  </button>
+  <button class="mnav" data-action="open-playlists">
+    <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 6h12M4 11h12M4 16h7"/><circle cx="17.5" cy="17" r="2.5"/><path d="M20 17V8.5"/></svg></span>
+    Playlists
   </button>
 </nav>
 
@@ -1510,77 +1925,255 @@ function card(item, opts={}){
    ═══════════════════════════════════════════════════════════════ */
 function buildHome(){
   $('#greeting').textContent = 'Music';
+  renderHomeTab();
+  buildQuick();
+  paintHomeCounts();
+}
 
-  // Quick tiles: recent albums
-  const quickAlbums = [...new Set(TRACKS.map(t => t.album))].slice(0, 6);
-  $('#quickGrid').innerHTML = quickAlbums.map(name => {
-    const first = TRACKS.find(x => x.album === name);
+/* ─── Albums / songs / artists derived from the library ─── */
+function albumList(){
+  const map = new Map();
+  for (const t of TRACKS){
+    let a = map.get(t.album);
+    if (!a) map.set(t.album, a = { name:t.album, artist:t.artist, hue:t.hue, cover:t.cover, ids:[], dur:0, added:0 });
+    a.ids.push(t.id); a.dur += t.dur || 0; a.added = Math.max(a.added, addedRank(t));
+    if (!a.cover && t.cover) a.cover = t.cover;
+  }
+  return [...map.values()];
+}
+/* Release files are numbered in the order they were uploaded ("107.-.Artist.-.Song.m4a"). */
+function addedRank(t){
+  const m = assetName(t).match(/^(\d+)/);
+  return m ? +m[1] : 0;
+}
+const plural = (n, w) => `${n} ${w}${n === 1 ? '' : 's'}`;
+const mins = s => Math.max(1, Math.round(s / 60)) + ' min';
+const MORE_ICON = '<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="1.8"/><circle cx="12" cy="12" r="1.8"/><circle cx="12" cy="19" r="1.8"/></svg>';
+
+function albumCard(a){
+  return `
+    <div class="card acard" data-album="${a.name}" role="button" tabindex="0">
+      <div class="acard-art">
+        ${artMarkup({ name:a.name, hue:a.hue, cover:a.cover }, { size:400 })}
+        <button class="card-play" data-action="play-context" data-context-type="album" data-context-id="${a.name}" aria-label="Play ${a.name}"><span class="icon">${ICON.play}</span></button>
+      </div>
+      <div class="acard-meta">
+        <div class="acard-text">
+          <div class="card-name">${a.name}</div>
+          <div class="card-sub">${a.artist}<span class="m-only"> • ${plural(a.ids.length, 'track')}</span></div>
+          <div class="card-sub d-only">${plural(a.ids.length, 'track')} • ${mins(a.dur)}</div>
+        </div>
+        <button class="acard-more" data-action="album-more" data-album-name="${a.name}" aria-label="More">${MORE_ICON}</button>
+      </div>
+    </div>`;
+}
+function albumRow(a, i){
+  return `
+    <div class="arow" data-album="${a.name}" role="button" tabindex="0">
+      <span class="arow-n">${i + 1}</span>
+      ${artMarkup({ name:a.name, hue:a.hue, cover:a.cover }, { size:120, style:'width:48px;height:48px' })}
+      <div class="arow-text"><b>${a.name}</b><span>${a.artist}</span></div>
+      <span class="arow-info">${plural(a.ids.length, 'track')} • ${mins(a.dur)}</span>
+      <button class="q-playbtn" data-action="play-context" data-context-type="album" data-context-id="${a.name}" aria-label="Play"><span class="icon">${ICON.play}</span></button>
+    </div>`;
+}
+function artistCard(name){
+  const ts = TRACKS.filter(t => t.artist === name);
+  return `
+    <div class="card acard artist" data-artist="${name}" role="button" tabindex="0">
+      <div class="acard-art">${artMarkup({ name, hue:ts[0].hue, cover:ts.find(t => t.cover)?.cover }, { size:400 })}
+        <button class="card-play" data-action="play-context" data-context-type="artist" data-context-id="${name}" aria-label="Play ${name}"><span class="icon">${ICON.play}</span></button></div>
+      <div class="acard-meta"><div class="acard-text"><div class="card-name">${name}</div><div class="card-sub">${plural(ts.length, 'song')}</div></div></div>
+    </div>`;
+}
+function playlistCard(p){
+  const mins_ = Math.round(p.ids.reduce((a, id) => a + (byId(id)?.dur || 0), 0));
+  return `
+    <div class="card acard" data-playlist="${p.name}" role="button" tabindex="0">
+      <div class="acard-art">${artMarkup({ name:p.name, hue:p.hue, cover:p.cover }, { size:400 })}
+        <button class="card-play" data-action="play-context" data-context-type="playlist" data-context-id="${p.name}" aria-label="Play ${p.name}"><span class="icon">${ICON.play}</span></button></div>
+      <div class="acard-meta"><div class="acard-text"><div class="card-name">${p.name}</div><div class="card-sub">Playlist</div><div class="card-sub">${plural(p.ids.length, 'track')} • ${mins(mins_)}</div></div></div>
+    </div>`;
+}
+
+const home = { tab:'albums', layout:'grid', shown:60 };
+try { home.layout = localStorage.getItem('sangit:layout') || 'grid'; } catch(e){}
+
+function renderHomeTab(){
+  const box = $('#homeBody');
+  if (!box) return;
+  const titles = { albums:'Albums', songs:'Songs', artists:'Artists', playlists:'Playlists', recent:'Recently Added' };
+  $('#homeTitle').textContent = titles[home.tab];
+  $$('#homeTabs .htab').forEach(b => b.classList.toggle('active', b.dataset.htab === home.tab));
+  $$('.layout-toggle .lt').forEach(b => b.classList.toggle('on', b.dataset.layout === home.layout));
+  $('.layout-toggle').hidden = home.tab === 'songs';
+  const n = home.shown;
+  const more = total => total > n ? `<button class="show-more" data-action="home-more">Show more (${total - n})</button>` : '';
+  const grid = (items, fn) => home.layout === 'list' && fn === albumCard
+    ? `<div class="arow-list">${items.slice(0, n).map(albumRow).join('')}</div>${more(items.length)}`
+    : `<div class="acard-grid">${items.slice(0, n).map(fn).join('')}</div>${more(items.length)}`;
+
+  if (home.tab === 'albums'){
+    box.innerHTML = grid(albumList(), albumCard);
+  } else if (home.tab === 'recent'){
+    box.innerHTML = grid(albumList().sort((a, b) => b.added - a.added), albumCard);
+  } else if (home.tab === 'artists'){
+    const names = [...new Set(TRACKS.map(t => t.artist))].sort((a, b) => TRACKS.filter(t => t.artist === b).length - TRACKS.filter(t => t.artist === a).length);
+    box.innerHTML = grid(names, artistCard);
+  } else if (home.tab === 'playlists'){
+    box.innerHTML = PLAYLISTS.length ? grid(PLAYLISTS, playlistCard) : '<div class="empty"><div class="empty-sub">No playlists yet.</div></div>';
+  } else {
+    box.innerHTML = `<div class="track-list">${TRACKS.slice(0, n).map((t, i) => trackRow(t, i)).join('')}</div>${more(TRACKS.length)}`;
+  }
+  refreshDlUI();
+}
+
+/* Quick access: what you played last, topped up with recently added albums. */
+function rememberPlayed(album){
+  try {
+    const list = JSON.parse(localStorage.getItem('sangit:recentAlbums') || '[]').filter(a => a !== album);
+    list.unshift(album);
+    localStorage.setItem('sangit:recentAlbums', JSON.stringify(list.slice(0, 12)));
+  } catch(e){}
+}
+function buildQuick(){
+  const albums = albumList();
+  const byName = new Map(albums.map(a => [a.name, a]));
+  let names = [];
+  try { names = JSON.parse(localStorage.getItem('sangit:recentAlbums') || '[]').filter(n => byName.has(n)); } catch(e){}
+  for (const a of albums.slice().sort((x, y) => y.added - x.added)) if (names.length < 6 && !names.includes(a.name)) names.push(a.name);
+  $('#quickGrid').innerHTML = names.slice(0, 6).map(n => {
+    const a = byName.get(n);
     return `
-      <div class="quick" data-album="${name}" role="button" tabindex="0">
-        ${artMarkup({ name, hue: first.hue }, { size:180, style:'width:66px;height:66px;border-radius:0' })}
-        <div class="q-name">${name}</div>
-        <button class="q-play" data-play-id="${first.id}" data-play-context="${name}" aria-label="Play">
-          <span class="icon">${ICON.play}</span>
-        </button>
+      <div class="quick" data-album="${a.name}" role="button" tabindex="0">
+        ${artMarkup({ name:a.name, hue:a.hue, cover:a.cover }, { size:120, style:'width:52px;height:52px' })}
+        <div class="q-text"><div class="q-name">${a.name}</div><div class="q-sub">${a.artist}</div></div>
+        <button class="q-playbtn" data-action="play-context" data-context-type="album" data-context-id="${a.name}" aria-label="Play ${a.name}"><span class="icon">${ICON.play}</span></button>
       </div>`;
   }).join('');
-
-  // Recently played
-  const recent = [...new Map(TRACKS.map(t=>[t.album,t])).values()].slice(0,6);
-  $('#recentRow').innerHTML = recent.map(t =>
-    card({ name:t.album, sub:t.artist, hue:t.hue, album:t.album }, { album:true, id:t.id, context:t.album })
-  ).join('');
-
-  // Playlists
-  $('#madeRow').innerHTML = PLAYLISTS.slice(0,6).map(p =>
-    card({ name:p.name, sub:p.sub, hue:p.hue }, { playlist:true, id:p.ids[0], context:p.name })
-  ).join('');
-
-  // Tracks
-  const recentBox = $('#recentTracks');
-  const showSongs = n => {
-    recentBox.innerHTML = TRACKS.slice(0, n).map((t,i)=>trackRow(t,i)).join('') +
-      (n < TRACKS.length ? `<button class="chip" id="showMoreSongs" style="margin:16px">Show more (${TRACKS.length - n} left)</button>` : '');
-    const more = $('#showMoreSongs');
-    if (more) more.onclick = () => showSongs(n + 100);
-  };
-  showSongs(100);
 }
 
-function greeting(){
-  const h = new Date().getHours();
-  if (h < 5)  return 'Good night';
-  if (h < 12) return 'Good morning';
-  if (h < 18) return 'Good afternoon';
-  return 'Good evening';
+function paintHomeCounts(){
+  const count = plural(TRACKS.length, 'track');
+  if ($('#heroCount')) $('#heroCount').textContent = count;
+  if ($('#mLibCount')) $('#mLibCount').textContent = count;
+  if ($('#libCount')) $('#libCount').textContent = count;
+  if ($('#mLikedCount')) $('#mLikedCount').textContent = plural(state.liked.size, 'track');
+  const off = TRACKS.filter(t => OFF.have.has(t.key)).length;
+  if ($('#mOffCount')) $('#mOffCount').textContent = plural(off, 'track');
+  if ($('#offMeter')) $('#offMeter').style.width = (TRACKS.length ? off / TRACKS.length * 100 : 0) + '%';
+  if ($('#offCaption')) $('#offCaption').textContent = off ? `${off} offline · ${fmtBytes(dlBytes())}` : 'No songs downloaded yet';
+  $$('.side-pl[data-action="liked-songs"] small').forEach(el => el.textContent = plural(state.liked.size, 'track'));
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SIDEBAR
-   ═══════════════════════════════════════════════════════════════ */
 function buildSidebar(){
   const liked = `
     <button class="side-pl" data-action="liked-songs">
       <div class="liked-tile"><span class="icon">${ICON.heartFill}</span></div>
-      <span>Liked Songs</span>
+      <span class="lbl"><span>Liked Songs</span><small>${plural(state.liked.size, 'track')}</small></span>
     </button>`;
   const items = PLAYLISTS.map(p => `
-    <button class="side-pl" data-playlist="${p.name}">
-      ${artMarkup({ name:p.name, hue:p.hue }, { size:100, style:'width:28px;height:28px' })}
-      <span>${p.name}</span>
+    <button class="side-pl" data-playlist="${p.name}" title="${p.name}">
+      ${artMarkup({ name:p.name, hue:p.hue, cover:p.cover }, { size:120, style:'width:44px;height:44px' })}
+      <span class="lbl"><span>${p.name}</span><small>${plural(p.ids.length, 'track')}</small></span>
     </button>`).join('');
   $('#sidePlaylists').innerHTML = liked + items;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   SEARCH
-   ═══════════════════════════════════════════════════════════════ */
-const BROWSE = [
-  { name:'Electronic', hue:265 }, { name:'Indie',      hue:22 },
-  { name:'Ambient',    hue:195 }, { name:'Soul',       hue:35 },
-  { name:'Alternative',hue:320 }, { name:'Acoustic',   hue:145 },
-  { name:'Late night', hue:250 }, { name:'Focus',      hue:190 }
-];
+/* ─── Waveform progress bar: a fixed pattern per song ─── */
+let waveKey = null;
+function paintWave(t){
+  const el = $('#pWave');
+  if (!el || !t || waveKey === t.key) return;
+  waveKey = t.key;
+  let h = 0; for (const c of t.key) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+  const rnd = () => ((h = (h * 1664525 + 1013904223) >>> 0) / 4294967296);
+  const N = 120, W = 3, G = 2;
+  let bars = '';
+  for (let i = 0; i < N; i++){
+    const env = 0.35 + 0.65 * Math.sin(Math.PI * (i + 0.5) / N) ** 0.6;
+    const v = Math.max(0.12, Math.min(1, env * (0.45 + 0.55 * rnd()) + (rnd() > 0.92 ? 0.25 : 0)));
+    const bh = Math.round(v * 28);
+    bars += `<rect x="${i * (W + G)}" y="${(30 - bh) / 2}" width="${W}" height="${bh}" rx="1.5"/>`;
+  }
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${N * (W + G)} 30" preserveAspectRatio="none">${bars}</svg>`;
+  const url = `url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  el.style.webkitMaskImage = el.style.maskImage = url;
+}
+
+/* ─── Home interactions (run before the general click handler) ─── */
+document.addEventListener('click', e => {
+  const htab = e.target.closest('[data-htab]');
+  if (htab){ home.tab = htab.dataset.htab; home.shown = 60; renderHomeTab(); return; }
+  const lt = e.target.closest('[data-layout]');
+  if (lt){ home.layout = lt.dataset.layout; try { localStorage.setItem('sangit:layout', home.layout); } catch(e){} renderHomeTab(); return; }
+  if (e.target.closest('[data-action="home-more"]')){ home.shown += 60; renderHomeTab(); return; }
+
+  // Play buttons sitting on cards / rows: play the whole album, artist or playlist.
+  const pc = e.target.closest('.card [data-action="play-context"], .quick [data-action="play-context"], .arow [data-action="play-context"]');
+  if (pc){
+    e.stopPropagation(); e.preventDefault();
+    const ids = contextTracks(pc.dataset.contextType, pc.dataset.contextId);
+    if (pc.dataset.contextType === 'album') rememberPlayed(pc.dataset.contextId);
+    playContext(ids, 0, pc.dataset.contextId);
+    return;
+  }
+  const more = e.target.closest('[data-action="album-more"]');
+  if (more){ e.stopPropagation(); openAlbum(more.dataset.albumName); return; }
+  const arow = e.target.closest('.arow[data-album]');
+  if (arow){ e.stopPropagation(); openAlbum(arow.dataset.album); return; }
+
+  if (e.target.closest('[data-action="view-all"]')){
+    e.stopPropagation();
+    const tab = { albums:'albums', recent:'albums', artists:'artists', playlists:'playlists', songs:'liked' }[home.tab];
+    if (home.tab === 'songs'){ home.shown = TRACKS.length; renderHomeTab(); return; }
+    openLibraryTab(tab);
+    return;
+  }
+  if (e.target.closest('[data-action="play-liked"]')){
+    e.stopPropagation();
+    const ids = TRACKS.filter(t => state.liked.has(t.id)).map(t => t.id);
+    if (!ids.length) return toast('No liked songs yet');
+    playContext(ids, 0, 'Liked Songs');
+    return;
+  }
+  if (e.target.closest('[data-action="open-downloads"]')){ e.stopPropagation(); hideAcct(); openLibraryTab('downloads'); return; }
+  if (e.target.closest('[data-action="open-playlists"]')){ e.stopPropagation(); openLibraryTab('playlists'); $$('.mnav').forEach(b => b.classList.toggle('active', b.dataset.action === 'open-playlists')); return; }
+  if (e.target.closest('[data-action="open-library"]')){ e.stopPropagation(); openLibraryTab('playlists'); return; }
+  if (e.target.closest('[data-action="sign-out"]')){ e.stopPropagation(); signOut(); return; }
+
+  if (e.target.closest('#avatarBtn, #btnSettings')){ e.stopPropagation(); toggleAcct(e.target.closest('#avatarBtn, #btnSettings')); return; }
+  if (!e.target.closest('#acctMenu')) hideAcct();
+  if (e.target.closest('#sideCollapse')){
+    document.body.classList.toggle('side-mini');
+    try { localStorage.setItem('sangit:sidemini', document.body.classList.contains('side-mini') ? '1' : ''); } catch(e){}
+    return;
+  }
+  if (e.target.closest('#pMore')){
+    e.stopPropagation();
+    const r = $('#pMore').getBoundingClientRect();
+    if (current()) showContextMenu(r.left, r.top - 330, current().id);
+    return;
+  }
+  if (e.target.closest('#miniLike') && current()){ e.stopPropagation(); toggleLike(current().id); return; }
+}, true);
+
+function openLibraryTab(tab){
+  go('library');
+  $$('#libTabs .tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  buildLibrary(tab);
+}
+function toggleAcct(anchor){
+  const m = $('#acctMenu');
+  if (!m.hidden){ hideAcct(); return; }
+  m.hidden = false;
+  const r = anchor.getBoundingClientRect();
+  const w = m.offsetWidth || 230, h = m.offsetHeight || 140;
+  m.style.left = Math.max(10, Math.min(r.left, innerWidth - w - 12)) + 'px';
+  m.style.top = (r.top > innerHeight / 2 ? r.top - h - 8 : r.bottom + 8) + 'px';
+}
+function hideAcct(){ const m = $('#acctMenu'); if (m) m.hidden = true; }
+try { if (localStorage.getItem('sangit:sidemini')) document.body.classList.add('side-mini'); } catch(e){}
 
 function buildSearch(){
   $('#searchChips').innerHTML = ['All','Songs','Artists','Albums','Playlists']
@@ -1774,7 +2367,8 @@ function renderPlayer(){
 
   // Like buttons
   const liked = state.liked.has(t.id);
-  ['#pLike','#npLike'].forEach(sel => {
+  paintWave(t);
+  ['#pLike','#npLike','#miniLike'].forEach(sel => {
     const el = $(sel);
     el.classList.toggle('on', liked);
     el.querySelector('.icon').innerHTML = liked ? ICON.heartFill : ICON.heart;
@@ -2097,6 +2691,7 @@ function go(view, opts={}){
     state.histIdx = state.history.length - 1;
   }
   state.view = view;
+  document.body.dataset.view = view;
 
   $$('.view').forEach(v => v.hidden = v.dataset.view !== view);
   $$('.side-link').forEach(b => b.classList.toggle('active', b.dataset.nav === view));
@@ -2365,6 +2960,7 @@ function toggleLike(id){
   else state.liked.add(id);
   const on = state.liked.has(id);
   saveLikes();
+  paintHomeCounts();
   // Update all matching like buttons
   $$(`[data-like="${id}"]`).forEach(btn => {
     btn.classList.toggle('on', on);
@@ -2983,6 +3579,7 @@ function refreshDlUI(){
       row.classList.toggle('dl-wait', !!t && (OFF.active.has(t.key) || OFF.queue.includes(t.key)));
     });
     if (state.view === 'library' && $('#libTabs .tab.active')?.dataset.tab === 'downloads') paintDownloadsHead();
+    if (typeof paintHomeCounts === 'function' && TRACKS.length) paintHomeCounts();
     renderOfflineBadge();
   }, 250);
 }
@@ -3034,7 +3631,7 @@ function renderOfflineBadge(){
   }
   const off = isOffline();
   el.hidden = !off;
-  if (off) el.textContent = `Offline · ${TRACKS.filter(t => OFF.have.has(t.key)).length} downloaded songs`;
+  if (off) { const n = TRACKS.filter(t => OFF.have.has(t.key)).length; el.textContent = `Offline · ${n} downloaded song${n === 1 ? '' : 's'}`; }
 }
 
 document.addEventListener('click', e => {
@@ -3174,9 +3771,8 @@ function showGate(which){
 function startApp(email){
   $('#gate').hidden = true;
   $('#whoAmI').textContent = email;
-  const count = `${TRACKS.length} track${TRACKS.length === 1 ? '' : 's'}`;
-  $('#libCount').textContent = count;
-  $('#heroCount').textContent = `Your library · ${count}`;
+  $('#acctEmail').textContent = email;
+  $('#avatar').textContent = (email || '?').trim()[0].toUpperCase();
   buildSidebar();
   buildHome();
   buildSearch();
