@@ -3317,19 +3317,46 @@ function updateMediaSession(){
     }
   } catch(e){}
 }
-if ('mediaSession' in navigator){
+/* Lock screen / car / headphone buttons. Registered again every time a song starts, because iOS drops
+   them when the audio source changes and then falls back to "-10s / +10s" buttons. The seek-by-seconds
+   handlers are switched off explicitly so iPhones and CarPlay show previous / next song instead. */
+function bindMediaKeys(){
+  if (!('mediaSession' in navigator)) return;
   const set = (name, fn) => { try { navigator.mediaSession.setActionHandler(name, fn); } catch(e){} };
+  set('seekbackward', null);
+  set('seekforward', null);
   set('play',  () => { if (!audio.getAttribute('src')) return loadCurrent(); wantPlay = true; audio.play().catch(()=>{}); });
   set('pause', () => haltPlayback());
   set('stop',  () => haltPlayback());
   set('previoustrack', () => prevTrack());
   set('nexttrack',     () => nextTrack());
   set('seekto', d => { if (d.seekTime != null) audio.currentTime = d.seekTime; });
-  // Deliberately NOT registering seekbackward / seekforward: iPhones (and CarPlay) would then show
-  // "-10s / +10s" buttons in place of previous / next song.
+}
+if ('mediaSession' in navigator){
+  bindMediaKeys();
+  ['play','playing','loadedmetadata'].forEach(ev => audio.addEventListener(ev, bindMediaKeys));
   ['play','pause','playing','emptied','loadedmetadata','durationchange','seeked','ratechange'].forEach(ev => audio.addEventListener(ev, updateMediaSession));
   audio.addEventListener('timeupdate', () => { if (audio.currentTime % 5 < 0.3) updateMediaSession(); });
 }
+
+/* Start the next song a moment BEFORE this one ends. If a song is allowed to finish while SangIT is in
+   the background or the screen is off, iOS sees the audio stop and freezes the app before it can start
+   the next song. Switching while the audio is still playing keeps iOS from ever pausing it. */
+let earlyFor = -1;
+audio.addEventListener('seeked', () => { earlyFor = -1; });
+audio.addEventListener('timeupdate', () => {
+  const d = audio.duration;
+  if (!wantPlay || audio.paused || !isFinite(d) || d < 8 || earlyFor === loadToken) return;
+  const left = (d - audio.currentTime) / (audio.playbackRate || 1);
+  if (left > 1.6) return;
+  earlyFor = loadToken;
+  const tok = loadToken;
+  setTimeout(() => {
+    if (tok !== loadToken || audio.paused || !wantPlay) return;
+    if (state.repeat === 'one'){ audio.currentTime = 0; return; }
+    nextTrack(true);
+  }, Math.max(0, (left - 0.15) * 1000));
+});
 
 /* ═══════════════════════════════════════════════════════════════
    OFFLINE — downloaded songs live in IndexedDB on this device, so they play with no signal
