@@ -171,22 +171,29 @@ function distance(a: string, b: string): number {
   return row[b.length] ?? 0;
 }
 
+/** GitHub drops non-ASCII letters from uploaded file names ("Tiësto" -> "Tisto", "GIVĒON" -> "GIVON"). */
+const ascii = (s: string) => s.replace(/[^\x00-\x7F]/g, "");
+
 const entries = catalog.tracks as CatalogTrack[];
-const byArtist = new Map<string, { entry: CatalogTrack; key: string }[]>();
+type Candidate = { entry: CatalogTrack; key: string; full: string; asciiKey: string };
+const byArtist = new Map<string, Candidate[]>();
 for (const entry of entries) {
-  const key = titleKey(entry.t);
+  const cand = { entry, key: titleKey(entry.t), full: squash(entry.t), asciiKey: titleKey(ascii(entry.t)) };
   for (const artist of entry.a) {
-    const ak = squash(artist);
-    byArtist.set(ak, [...(byArtist.get(ak) ?? []), { entry, key }]);
+    for (const ak of new Set([squash(artist), squash(ascii(artist))])) {
+      if (ak) byArtist.set(ak, [...(byArtist.get(ak) ?? []), cand]);
+    }
   }
 }
 
 function matchCatalog(artist: string, title: string): CatalogTrack | undefined {
-  const pool = byArtist.get(squash(artist));
+  const pool = byArtist.get(squash(artist)) ?? byArtist.get(squash(ascii(artist)));
   const key = titleKey(title);
+  const full = squash(title);
   if (!pool || key.length < 2) return undefined;
   return (
     pool.find((c) => c.key === key) ??
+    pool.find((c) => c.full === full || c.asciiKey === key) ?? // "D T B Interlude" = "D.T.B. (Interlude)"
     pool.find((c) => key.length >= 4 && c.key.length >= 4 && (c.key.startsWith(key) || key.startsWith(c.key))) ??
     pool.find((c) => key.length >= 6 && distance(c.key, key) <= Math.max(1, Math.floor(key.length * 0.2)))
   )?.entry;
