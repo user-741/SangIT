@@ -110,7 +110,7 @@ async function gh<T>(path: string): Promise<T> {
   return (await res.json()) as T;
 }
 
-async function fetchAssets(): Promise<Asset[]> {
+export async function fetchAssets(): Promise<Asset[]> {
   const release = await gh<{ id: number }>(`/repos/${REPO}/releases/tags/${TAG}`);
   // The release object can truncate big asset lists, so page through the assets endpoint (100 per page).
   const all: Asset[] = [];
@@ -119,7 +119,25 @@ async function fetchAssets(): Promise<Asset[]> {
     all.push(...batch);
     if (batch.length < 100) break;
   }
-  return all.filter((a) => AUDIO.test(a.name));
+  return all;
+}
+
+const PLAYLIST_FILE = /\.m3u8?$/i;
+
+/** Text of the .m3u / .m3u8 playlist files uploaded to the release. */
+export async function fetchPlaylistFiles(assets: Asset[]): Promise<{ name: string; text: string }[]> {
+  const files = assets.filter((a) => PLAYLIST_FILE.test(a.name));
+  const out = await Promise.all(
+    files.map(async (a) => {
+      try {
+        const res = await fetch(a.browser_download_url);
+        return res.ok ? { name: a.name, text: await res.text() } : null;
+      } catch {
+        return null;
+      }
+    }),
+  );
+  return out.filter((f): f is { name: string; text: string } => Boolean(f));
 }
 
 /**
@@ -204,9 +222,17 @@ function sameSong(hit: CatalogTrack, key: string): CatalogTrack[] {
   return (byArtist.get(artist) ?? []).filter((c) => c.key === key && squash(c.entry.a[0] ?? "") === artist).map((c) => c.entry);
 }
 
-function build(assets: Asset[]): Snapshot {
+/** "Artist|Title" key that is the same for "03 - J. Cole - Work Out.m4a" and "03.-.J.Cole.-.Work.Out.m4a". */
+const fileKey = (name: string) => {
+  const { artist, title } = parseName(name);
+  return `${squash(ascii(artist))}|${squash(ascii(title))}`;
+};
+
+export function build(allAssets: Asset[], playlistFiles: { name: string; text: string }[] = []): Snapshot {
+  const assets = allAssets.filter((a) => AUDIO.test(a.name));
   const sources = new Map<string, Source>();
   const bySpotifyId = new Map<string, string>(); // catalog track id -> our track id
+  const byFile = new Map<string, string>(); // fileKey -> our track id (for .m3u8 playlists)
   const tracks: Track[] = [];
 
   for (const a of [...assets].sort((x, y) => x.name.localeCompare(y.name))) {
@@ -214,9 +240,15 @@ function build(assets: Asset[]): Snapshot {
     const ext = (a.name.match(AUDIO)?.[1] ?? "m4a").toLowerCase();
     const parsed = parseName(a.name);
     const hit = matchCatalog(parsed.artist, parsed.title);
+    const fk = fileKey(a.name);
 
     // The same song twice (e.g. it was in both playlists): keep the first file only.
-    if (hit && bySpotifyId.has(hit.k)) continue;
+    if (hit && bySpotifyId.has(hit.k)) {
+      if (!byFile.has(fk)) byFile.set(fk, bySpotifyId.get(hit.k) as string);
+      continue;
+    }
+    if (byFile.has(fk)) continue; // exact same file name uploaded twice
+    byFile.set(fk, id);
     if (hit) {
       // Playlists can hold the same song under several Spotify entries (single vs album version):
       // point all of them at this file.
@@ -255,6 +287,30 @@ function build(assets: Asset[]): Snapshot {
     }))
     .filter((p) => p.trackIds.length);
 
+  // ... plus playlists uploaded to the release as .m3u8 files, in the file's order.
+  // Upload the songs and "My Playlist.m3u8" and the playlist appears on its own.
+  const m3uMissing: MissingTrack[] = [];
+  for (const f of playlistFiles) {
+    const name = f.name.replace(PLAYLIST_FILE, "").replace(/[._]+/g, " ").replace(/\s+/g, " ").trim();
+    if (!name || playlists.some((p) => squash(p.name) === squash(name))) continue; // already imported from Spotify
+    const lines = f.text
+      .split(/\r?\n/)
+      .map((l) => l.trim())
+      .filter((l) => l && !l.startsWith("#"))
+      .map((l) => l.split(/[\\/]/).pop() as string);
+    const trackIds: string[] = [];
+    for (const line of lines) {
+      const id = byFile.get(fileKey(line));
+      if (id) {
+        if (!trackIds.includes(id)) trackIds.push(id);
+      } else {
+        const { artist, title } = parseName(line);
+        m3uMissing.push({ id: `m3u:${md5(line).slice(0, 10)}`, title, artist, album: "", cover: null, popularity: 0, playlists: [name] });
+      }
+    }
+    if (trackIds.length) playlists.push({ id: md5(`m3u:${name}`).slice(0, 8), name, trackIds, total: lines.length });
+  }
+
   // ... plus automatic ones for artists whose files didn't match any export.
   const unmatched = new Map<string, string[]>();
   for (const t of tracks) {
@@ -279,6 +335,7 @@ function build(assets: Asset[]): Snapshot {
       playlists: inPlaylists.get(e.k) ?? [],
     }))
     .sort((a, b) => b.popularity - a.popularity);
+  missing.push(...m3uMissing);
 
   return { at: Date.now(), tracks, playlists, missing, sources };
 }
@@ -290,7 +347,7 @@ let inflight: Promise<Snapshot> | null = null;
 async function snapshot(): Promise<Snapshot> {
   if (cache && Date.now() - cache.at < CACHE_MS) return cache;
   inflight ??= fetchAssets()
-    .then((assets) => (cache = build(assets)))
+    .then(async (assets) => (cache = build(assets, await fetchPlaylistFiles(assets))))
     .catch((err) => {
       if (!cache) throw err;
       cache.at = Date.now() - CACHE_MS + 60_000; // keep serving the old list, retry in a minute
