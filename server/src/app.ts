@@ -6,6 +6,7 @@ import helmet from "helmet";
 import { z } from "zod";
 import { credentialsValid, endSession, requireAuth, startSession } from "./auth";
 import { directSource, library, sourceFor } from "./library";
+import { queueSync, recentSyncs, SPOTIFY_LINK, syncConfigured } from "./sync";
 
 const loginBody = z.object({ email: z.string().email(), password: z.string().min(1) });
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false });
@@ -43,6 +44,20 @@ const wrap = (fn: (req: Request, res: Response) => Promise<unknown>) => (req: Re
 api.get("/library/tracks", requireAuth, wrap(async (_req, res) => res.json(await library.tracks())));
 api.get("/library/playlists", requireAuth, wrap(async (_req, res) => res.json(await library.playlists())));
 api.get("/library/missing", requireAuth, wrap(async (_req, res) => res.json(await library.missing())));
+
+// Phone -> laptop playlist sync (see sync.ts).
+const syncBody = z.object({ url: z.string().max(500).regex(SPOTIFY_LINK) });
+const syncLimiter = rateLimit({ windowMs: 60 * 60 * 1000, limit: 30, standardHeaders: true, legacyHeaders: false });
+api.get("/sync", requireAuth, wrap(async (_req, res) => {
+  if (!syncConfigured()) return void res.json({ configured: false, items: [] });
+  res.json({ configured: true, items: await recentSyncs() });
+}));
+api.post("/sync", requireAuth, syncLimiter, wrap(async (req, res) => {
+  if (!syncConfigured()) return void res.status(503).json({ error: "not-configured" });
+  const parsed = syncBody.safeParse(req.body);
+  if (!parsed.success) return void res.status(400).json({ error: "That doesn't look like a Spotify playlist or album link." });
+  res.json(await queueSync(parsed.data.url));
+}));
 
 // Streams a GitHub release file through this server with audio headers and Range support.
 // Only URLs that came from the release listing can be fetched, so this is not an open proxy.

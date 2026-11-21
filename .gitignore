@@ -7,3 +7,4 @@ dist
 *.log
 .mega-cache
 env
+sangit_token.txt

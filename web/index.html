@@ -1386,6 +1386,15 @@ h1{font-weight:750;letter-spacing:-.035em}
 .sync-msg.ok{color:var(--success)}.sync-msg.err{color:var(--danger)}
 .sync-note{font-size:12px!important;color:var(--text-3)!important}
 .sync-note code{background:var(--bg);padding:1px 5px;border-radius:4px}
+.sync-list:empty{display:none}
+.sync-list{display:grid;gap:6px;border-top:1px solid var(--border);padding-top:12px}
+.sync-list-h{font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em}
+.sync-item{display:flex;align-items:center;gap:10px;font-size:13px}
+.sync-dot{width:8px;height:8px;border-radius:50%;background:var(--text-3);flex:none}
+.sync-dot.waiting{background:#f5b84a;animation:dlpulse 1s ease-in-out infinite alternate}
+.sync-dot.sent{background:var(--success)}
+.sync-link{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-2)}
+.sync-state{color:var(--text-3);font-size:12px;white-space:nowrap}
 </style>
 </head>
 <body data-view="home">
@@ -1497,6 +1506,7 @@ h1{font-weight:750;letter-spacing:-.035em}
     </header>
     <div class="acct-menu" id="acctMenu" hidden>
       <div class="acct-email" id="acctEmail"></div>
+      <button data-action="new-playlist">Add a playlist</button>
       <button data-action="open-downloads">Downloads &amp; offline</button>
       <button data-action="sign-out" class="danger">Sign out</button>
     </div>
@@ -1772,14 +1782,15 @@ h1{font-weight:750;letter-spacing:-.035em}
 <div class="sync-wrap" id="syncWrap" hidden>
   <form class="sync-card" id="syncForm">
     <h3>Add a playlist</h3>
-    <p>Paste a Spotify playlist link. <b>local_sync.py</b> on your laptop downloads the songs and uploads them to GitHub; they show up here a few minutes later.</p>
+    <p>Paste a Spotify playlist link. Your laptop (<b>local_sync.py</b>) downloads the songs and uploads them; they show up here a few minutes later. Works from your phone too while the laptop is on.</p>
     <input id="syncUrl" type="url" inputmode="url" placeholder="https://open.spotify.com/playlist/…" autocomplete="off" required>
     <p class="sync-msg" id="syncMsg" role="status"></p>
     <div class="sync-actions">
       <button type="button" class="btn-ghost" id="syncCancel">Close</button>
       <button type="submit" class="btn-primary" id="syncGo">Sync to laptop</button>
     </div>
-    <p class="sync-note">Works on the laptop running <code>python local_sync.py</code>. On your phone, open this on the laptop instead.</p>
+    <div class="sync-list" id="syncList"></div>
+    <p class="sync-note">The laptop needs <code>python local_sync.py</code> and <code>python sangit_watch.py</code> running.</p>
   </form>
 </div>
 
@@ -3895,42 +3906,72 @@ $('#loginForm').addEventListener('submit', async e => {
    you're using, so this only works on the laptop that runs the script.
    ═══════════════════════════════════════════════════════════════ */
 const SYNC_URL = 'http://localhost:8080/sync';
+const SPOTIFY_LINK = /^https:\/\/open\.spotify\.com\/(intl-[a-z]+\/)?(playlist|album)\/[A-Za-z0-9]+/;
+let syncPoll = null;
 function openSync(){
+  hideAcct();
   $('#syncWrap').hidden = false;
-  $('#syncMsg').textContent = ''; $('#syncMsg').className = 'sync-msg';
+  syncMsg('');
+  loadSyncList();
+  clearInterval(syncPoll); syncPoll = setInterval(loadSyncList, 6000);
   setTimeout(() => $('#syncUrl').focus(), 50);
 }
-function closeSync(){ $('#syncWrap').hidden = true; }
+function closeSync(){ $('#syncWrap').hidden = true; clearInterval(syncPoll); }
 function syncMsg(text, kind){ const m = $('#syncMsg'); m.textContent = text; m.className = 'sync-msg ' + (kind || ''); }
+async function loadSyncList(){
+  try {
+    const r = await api('/sync');
+    const box = $('#syncList');
+    if (!r.configured || !r.items.length){ box.innerHTML = ''; return; }
+    box.innerHTML = '<div class="sync-list-h">Recent</div>' + r.items.map(i => `
+      <div class="sync-item"><span class="sync-dot ${i.state}"></span>
+        <span class="sync-link">${esc(i.url.replace('https://open.spotify.com/', ''))}</span>
+        <span class="sync-state">${i.state === 'sent' ? 'Sent to laptop' : 'Waiting for laptop'}</span></div>`).join('');
+  } catch(e){}
+}
+/* Straight to local_sync.py on this computer (used when phone sync isn't set up). */
+async function sendToLaptopDirect(body){
+  try {
+    const res = await fetch(SYNC_URL, { method:'POST', headers:{ 'Content-Type':'application/json' }, body, signal: AbortSignal.timeout(8000) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    return true;
+  } catch (err) {
+    if (err && /^HTTP/.test(err.message)) throw err;
+    // The script may not send CORS headers: send it as a "simple" request (the reply can't be read).
+    await fetch(SYNC_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain' }, body, signal: AbortSignal.timeout(8000) });
+    return true;
+  }
+}
 $('#syncCancel').addEventListener('click', closeSync);
 $('#syncWrap').addEventListener('click', e => { if (e.target.id === 'syncWrap') closeSync(); });
 $('#syncForm').addEventListener('submit', async e => {
   e.preventDefault();
   const url = $('#syncUrl').value.trim();
-  if (!/^https:\/\/open\.spotify\.com\/(intl-[a-z]+\/)?(playlist|album)\/[A-Za-z0-9]+/.test(url)){
-    return syncMsg('That doesn\'t look like a Spotify playlist or album link.', 'err');
-  }
+  if (!SPOTIFY_LINK.test(url)) return syncMsg("That doesn't look like a Spotify playlist or album link.", 'err');
   const go = $('#syncGo');
   go.disabled = true; go.textContent = 'Sending…'; syncMsg('');
-  const body = JSON.stringify({ url });
   try {
-    let res;
+    let queued = false;
     try {
-      res = await fetch(SYNC_URL, { method:'POST', headers:{ 'Content-Type':'application/json' }, body, signal: AbortSignal.timeout(8000) });
+      await api('/sync', { method:'POST', body:JSON.stringify({ url }) });
+      queued = true;
     } catch (err) {
-      // The script may not send CORS headers: send it anyway as a "simple" request (the reply can't be read).
-      await fetch(SYNC_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain' }, body, signal: AbortSignal.timeout(8000) });
-      res = null;
+      if (err.message !== 'not-configured') throw err;
     }
-    if (res && !res.ok) throw new Error('HTTP ' + res.status);
-    syncMsg(res ? 'Sent! Your laptop is downloading the songs — watch the PowerShell window. New songs appear here a few minutes after it says they\'re uploaded.'
-                : 'Sent to your laptop — check the PowerShell window to see it downloading.', 'ok');
+    if (queued){
+      syncMsg('Sent! Your laptop picks it up within about 20 seconds, then the songs show up here a few minutes after they finish uploading.', 'ok');
+      loadSyncList();
+    } else if (matchMedia('(hover: none)').matches){
+      throw Object.assign(new Error('phone'), { setup:true });
+    } else {
+      await sendToLaptopDirect(JSON.stringify({ url }));
+      syncMsg('Sent to local_sync.py — watch the PowerShell window.', 'ok');
+    }
     $('#syncUrl').value = '';
   } catch (err) {
-    const phone = matchMedia('(hover: none)').matches;
-    syncMsg(phone
-      ? 'Couldn\'t reach your laptop. This only works when SangIT is open on the laptop running local_sync.py.'
-      : 'Couldn\'t reach local_sync.py. Make sure it\'s running in PowerShell (python local_sync.py), then try again.', 'err');
+    syncMsg(err.setup
+      ? "Sending from your phone isn't set up yet (the site needs GITHUB_SYNC_TOKEN). Use the laptop for now."
+      : (err.status ? (err.message || 'Something went wrong') : "Couldn't reach local_sync.py. Make sure it's running in PowerShell (python local_sync.py), then try again."), 'err');
   } finally {
     go.disabled = false; go.textContent = 'Sync to laptop';
   }
