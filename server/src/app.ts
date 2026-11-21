@@ -5,7 +5,7 @@ import rateLimit from "express-rate-limit";
 import helmet from "helmet";
 import { z } from "zod";
 import { credentialsValid, endSession, requireAuth, startSession } from "./auth";
-import { library, sourceFor } from "./library";
+import { directSource, library, sourceFor } from "./library";
 
 const loginBody = z.object({ email: z.string().email(), password: z.string().min(1) });
 const loginLimiter = rateLimit({ windowMs: 15 * 60 * 1000, limit: 10, standardHeaders: true, legacyHeaders: false });
@@ -50,7 +50,9 @@ api.get(
   "/stream/:id",
   requireAuth,
   wrap(async (req, res) => {
-    const source = await sourceFor(String(req.params.id));
+    const id = String(req.params.id);
+    const name = typeof req.query.f === "string" ? req.query.f : "";
+    const source = directSource(id, name) ?? (await sourceFor(id));
     if (!source) return void res.status(404).json({ error: "Track not found" });
 
     const ctrl = new AbortController();
