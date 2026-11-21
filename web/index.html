@@ -1371,6 +1371,21 @@ h1{font-weight:750;letter-spacing:-.035em}
   .home-head h1{font-size:44px}
   .m-lib-cards{grid-template-columns:1fr}
 }
+
+/* Sync to laptop dialog */
+.sync-wrap{position:fixed;inset:0;z-index:400;display:grid;place-items:center;padding:20px;background:rgba(5,4,10,.6);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.sync-card{width:100%;max-width:460px;background:var(--bg-3);border:1px solid var(--border-2);border-radius:20px;padding:24px;display:grid;gap:14px;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.sync-card h3{font-size:21px;letter-spacing:-.02em}
+.sync-card p{color:var(--text-2);font-size:13.5px;line-height:1.5}
+.sync-card b{color:var(--text)}
+.sync-card input{background:var(--bg);border:1px solid var(--border-2);border-radius:12px;padding:12px 14px;font-size:15px;color:var(--text);outline:0;width:100%}
+.sync-card input:focus{border-color:var(--accent-2);box-shadow:0 0 0 3px rgba(139,92,246,.25)}
+.sync-actions{display:flex;justify-content:flex-end;gap:10px}
+.sync-actions .btn-primary,.sync-actions .btn-ghost{padding:11px 20px;font-size:14px}
+.sync-msg:empty{display:none}
+.sync-msg.ok{color:var(--success)}.sync-msg.err{color:var(--danger)}
+.sync-note{font-size:12px!important;color:var(--text-3)!important}
+.sync-note code{background:var(--bg);padding:1px 5px;border-radius:4px}
 </style>
 </head>
 <body data-view="home">
@@ -1429,7 +1444,7 @@ h1{font-weight:750;letter-spacing:-.035em}
     <div class="side-sep"></div>
     <div class="side-head">
       <span class="lbl">Playlists</span>
-      <button aria-label="Create playlist" data-action="new-playlist">
+      <button aria-label="Add a playlist from Spotify" title="Add a playlist from Spotify" data-action="new-playlist">
         <span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg></span>
       </button>
     </div>
@@ -1752,6 +1767,21 @@ h1{font-weight:750;letter-spacing:-.035em}
 
 <!-- Context menu -->
 <div class="ctx" id="ctx"></div>
+
+<!-- Sync a Spotify playlist to the laptop (local_sync.py) -->
+<div class="sync-wrap" id="syncWrap" hidden>
+  <form class="sync-card" id="syncForm">
+    <h3>Add a playlist</h3>
+    <p>Paste a Spotify playlist link. <b>local_sync.py</b> on your laptop downloads the songs and uploads them to GitHub; they show up here a few minutes later.</p>
+    <input id="syncUrl" type="url" inputmode="url" placeholder="https://open.spotify.com/playlist/…" autocomplete="off" required>
+    <p class="sync-msg" id="syncMsg" role="status"></p>
+    <div class="sync-actions">
+      <button type="button" class="btn-ghost" id="syncCancel">Close</button>
+      <button type="submit" class="btn-primary" id="syncGo">Sync to laptop</button>
+    </div>
+    <p class="sync-note">Works on the laptop running <code>python local_sync.py</code>. On your phone, open this on the laptop instead.</p>
+  </form>
+</div>
 
 <!-- Toast -->
 <div class="toast" id="toast"></div>
@@ -2918,7 +2948,7 @@ document.addEventListener('click', e => {
 
   /* Create playlist */
   if (e.target.closest('[data-action="new-playlist"]')){
-    toast('Playlist creation coming soon');
+    openSync();
     return;
   }
 
@@ -3858,6 +3888,54 @@ $('#loginForm').addEventListener('submit', async e => {
     else { $('#skeleton').classList.add('gone'); toast('Could not reach the server', 'error'); }
   }
 })();
+
+/* ═══════════════════════════════════════════════════════════════
+   SYNC TO LAPTOP — sends a Spotify playlist link to local_sync.py (http://localhost:8080/sync),
+   which downloads the songs and uploads them to the GitHub release. "localhost" is the device
+   you're using, so this only works on the laptop that runs the script.
+   ═══════════════════════════════════════════════════════════════ */
+const SYNC_URL = 'http://localhost:8080/sync';
+function openSync(){
+  $('#syncWrap').hidden = false;
+  $('#syncMsg').textContent = ''; $('#syncMsg').className = 'sync-msg';
+  setTimeout(() => $('#syncUrl').focus(), 50);
+}
+function closeSync(){ $('#syncWrap').hidden = true; }
+function syncMsg(text, kind){ const m = $('#syncMsg'); m.textContent = text; m.className = 'sync-msg ' + (kind || ''); }
+$('#syncCancel').addEventListener('click', closeSync);
+$('#syncWrap').addEventListener('click', e => { if (e.target.id === 'syncWrap') closeSync(); });
+$('#syncForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const url = $('#syncUrl').value.trim();
+  if (!/^https:\/\/open\.spotify\.com\/(intl-[a-z]+\/)?(playlist|album)\/[A-Za-z0-9]+/.test(url)){
+    return syncMsg('That doesn\'t look like a Spotify playlist or album link.', 'err');
+  }
+  const go = $('#syncGo');
+  go.disabled = true; go.textContent = 'Sending…'; syncMsg('');
+  const body = JSON.stringify({ url });
+  try {
+    let res;
+    try {
+      res = await fetch(SYNC_URL, { method:'POST', headers:{ 'Content-Type':'application/json' }, body, signal: AbortSignal.timeout(8000) });
+    } catch (err) {
+      // The script may not send CORS headers: send it anyway as a "simple" request (the reply can't be read).
+      await fetch(SYNC_URL, { method:'POST', mode:'no-cors', headers:{ 'Content-Type':'text/plain' }, body, signal: AbortSignal.timeout(8000) });
+      res = null;
+    }
+    if (res && !res.ok) throw new Error('HTTP ' + res.status);
+    syncMsg(res ? 'Sent! Your laptop is downloading the songs — watch the PowerShell window. New songs appear here a few minutes after it says they\'re uploaded.'
+                : 'Sent to your laptop — check the PowerShell window to see it downloading.', 'ok');
+    $('#syncUrl').value = '';
+  } catch (err) {
+    const phone = matchMedia('(hover: none)').matches;
+    syncMsg(phone
+      ? 'Couldn\'t reach your laptop. This only works when SangIT is open on the laptop running local_sync.py.'
+      : 'Couldn\'t reach local_sync.py. Make sure it\'s running in PowerShell (python local_sync.py), then try again.', 'err');
+  } finally {
+    go.disabled = false; go.textContent = 'Sync to laptop';
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#syncWrap').hidden) closeSync(); });
 </script>
 </body>
 </html>
