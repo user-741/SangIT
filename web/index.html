@@ -1026,6 +1026,18 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
 .toadd-row .t-meta{flex:1;min-width:0}
 .toadd-row .toadd-pl{font-size:11.5px;color:var(--text-3);text-align:right;max-width:30%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .toadd-row .toadd-n{width:26px;text-align:right;color:var(--text-3);font-size:12px;font-variant-numeric:tabular-nums}
+/* Offline / downloads */
+.track{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.track.dl .t-artist::before,.track.dl-wait .t-artist::before{content:"";display:inline-block;width:8px;height:8px;margin-right:6px;vertical-align:1px;border-radius:50%;background:var(--accent)}
+.track.dl-wait:not(.dl) .t-artist::before{background:var(--text-3);animation:dlpulse 1s ease-in-out infinite alternate}
+@keyframes dlpulse{from{opacity:.3}to{opacity:1}}
+.js-dl.on{border-color:var(--accent);color:var(--accent)}
+.dl-head{margin:0 0 18px;display:flex;flex-direction:column;gap:10px;color:var(--text-2);font-size:13.5px}
+.dl-head strong{color:var(--text)}
+.dl-progress{color:var(--accent)}
+.dl-actions{display:flex;gap:10px;flex-wrap:wrap}
+.off-badge{position:fixed;top:calc(env(safe-area-inset-top,0px) + 8px);left:50%;transform:translateX(-50%);z-index:90;background:#2b2f33;color:var(--text);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:12px;pointer-events:none;box-shadow:0 6px 20px #0006}
+.off-badge[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -1160,6 +1172,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
           <button class="tab" data-tab="liked">Liked songs</button>
           <button class="tab" data-tab="albums">Albums</button>
           <button class="tab" data-tab="artists">Artists</button>
+          <button class="tab" data-tab="downloads">Downloads</button>
           <button class="tab" data-tab="toadd">To add</button>
         </div>
         <div id="libraryContent"></div>
@@ -1345,7 +1358,7 @@ body{font-family:Arial,Helvetica,sans-serif}body::after{display:none}.app{paddin
     <button class="go" id="emptySignOut">Sign out</button>
   </div>
 </div>
-<audio id="audio" preload="none"></audio>
+<audio id="audio" preload="auto" playsinline></audio>
 
 <script>
 /* ═══════════════════════════════════════════════════════════════
@@ -1460,7 +1473,7 @@ function trackRow(t, i, opts={}){
   const liked = state.liked.has(t.id);
   const isCurrent = current() && current().id === t.id;
   return `
-    <div class="track ${isCurrent?'playing':''}" data-track-id="${t.id}" role="button" tabindex="0">
+    <div class="track ${isCurrent?'playing':''} ${OFF.have.has(t.key)?'dl':''}" data-track-id="${t.id}" role="button" tabindex="0">
       <div class="t-idx">
         <span class="idx-num">${i+1}</span>
         <span class="idx-play">${ICON.play}</span>
@@ -1646,6 +1659,8 @@ function buildLibrary(tab='playlists'){
     ).join('')}</div>`;
   } else if (tab === 'toadd'){
     buildToAdd();
+  } else if (tab === 'downloads'){
+    buildDownloads();
   } else if (tab === 'artists'){
     const artists = [...new Set(TRACKS.map(t => t.artist))].map(a => {
       const t = TRACKS.find(x => x.artist === a);
@@ -1689,10 +1704,12 @@ function openAlbum(albumName){
         <span class="icon" style="width:15px;height:15px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M16 4h4v4"/><path d="M20 4 4 20"/><path d="M16 20h4v-4"/><path d="m14.5 14.5 5.5 5.5"/><path d="M4 4l5 5"/></svg></span>
         Shuffle
       </button>
+      ${dlButton('album', albumName)}
     </div>
     <div class="track-list">
       ${tracks.map((t,i)=>trackRow(t,i)).join('')}
     </div>`;
+  refreshDlUI();
 
   go('album');
 }
@@ -1818,6 +1835,10 @@ function updateVolumeIcon(){
    PLAYBACK LOGIC
    ═══════════════════════════════════════════════════════════════ */
 let loadToken = 0;
+let wantPlay = false;        // true while the listener wants music playing (survives song changes)
+let curURL = null;           // what the <audio> element is playing right now
+let lastSwitch = 0;
+let skipRun = 0;             // songs skipped in a row because of errors
 
 function playTrackById(id, ctx={}){
   const idx = state.queue.indexOf(id);
@@ -1827,99 +1848,142 @@ function playTrackById(id, ctx={}){
     state.queue = [id, ...state.queue];
     state.qIndex = 0;
   }
+  state.pick = null;
   if (ctx.from) state.playingFrom = ctx.from;
-  loadCurrent();
+  loadCurrent({ userPicked:true });
 }
 
 function playContext(trackIds, startIdx=0, fromLabel=null){
   state.queue = trackIds.slice();
   state.qIndex = Math.max(0, Math.min(startIdx, trackIds.length-1));
+  state.pick = null;
   if (fromLabel) state.playingFrom = fromLabel;
-  loadCurrent();
+  loadCurrent({ userPicked:true });
 }
 
-function loadCurrent(){
-  const t = current();
-  if (!t) return;
-  const token = ++loadToken;
-  state.time = 0;
-  state.loadedDuration = null;
-
+function haltPlayback(){
+  wantPlay = false;
   audio.pause();
-  audio.src = t.src;
-  audio.load();
+}
 
-  audio.onloadedmetadata = () => {
-    if (token !== loadToken) return;
-    state.loadedDuration = audio.duration || t.dur;
-    renderProgress();
-    // Actually start playing
-    audio.play().then(() => {
-      state.playing = true;
-      renderPlayer();
-      renderProgress();
-    }).catch(() => {
-      state.playing = false;
-      renderPlayer();
+function setAudioSrc(url){
+  if (curURL && curURL !== url && curURL.startsWith('blob:')) URL.revokeObjectURL(curURL);
+  curURL = url;
+  lastSwitch = Date.now();
+  audio.src = url;
+}
+
+/* Point the element at a song and start it straight away. There is deliberately no pause() and no
+   waiting for metadata first: on iPhones, pausing between songs while the app is in the background
+   or the screen is off lets iOS suspend the page, which is why the next song sometimes never started. */
+function startSrc(url, token, opts={}){
+  if (token !== loadToken) return;
+  setAudioSrc(url);
+  if (opts.at > 1){
+    audio.addEventListener('loadedmetadata', () => {
+      if (token !== loadToken) return;
+      try { audio.currentTime = Math.max(0, Math.min(opts.at, (audio.duration || opts.at + 1) - 1)); } catch(e){}
+    }, { once:true });
+  }
+  if (wantPlay){
+    audio.play().catch(err => {
+      if (token === loadToken && err && err.name === 'NotAllowedError'){ wantPlay = false; renderPlayer(); }
     });
-  };
+  }
+}
 
-  audio.onerror = () => {
-    if (token !== loadToken) return;
-    if (t.fallback && !t.triedFallback) {
-      t.triedFallback = true;
-      audio.src = t.fallback;
-      audio.load();
+function loadCurrent(opts={}){
+  let t = current();
+  if (!t) return;
+
+  // No signal: jump to the next song that is saved on this device.
+  if (isOffline() && !hasLocal(t)){
+    const j = nextPlayableIndex(state.qIndex);
+    if (j < 0){
+      haltPlayback();
+      renderPlayer();
+      toast('You are offline and none of these songs are downloaded', 'error');
       return;
     }
-    toast('Stream unavailable — skipping', 'error');
-    state.playing = false;
-    renderPlayer();
-  };
+    if (opts.userPicked) toast("Offline: skipped songs that aren't downloaded");
+    state.qIndex = j;
+    t = current();
+  }
+
+  const token = ++loadToken;
+  state.time = opts.at || 0;
+  state.loadedDuration = null;
+  t.errs = 0;
+  wantPlay = opts.autoplay !== false;
+
+  const ready = takeReady(t.key);
+  if (ready) startSrc(ready, token, opts);
+  else if (OFF.have.has(t.key)){
+    songGet(t.key)
+      .then(rec => startSrc(rec && rec.blob ? URL.createObjectURL(rec.blob) : streamURL(t), token, opts))
+      .catch(() => startSrc(streamURL(t), token, opts));
+  }
+  else startSrc(streamURL(t), token, opts);
 
   renderPlayer();
   renderProgress();
   buildQueue();
+  updateMediaSession();
 }
 
+function streamURL(t){ return t.src; }
+
 function togglePlay(){
-  if (!audio.src){
-    // Nothing loaded yet — load first track
+  if (!audio.getAttribute('src')){
     loadCurrent();
     return;
   }
   if (audio.paused){
+    wantPlay = true;
     audio.play().then(() => {
       state.playing = true;
       renderPlayer();
     }).catch(()=>{});
   } else {
-    audio.pause();
+    haltPlayback();
     state.playing = false;
     renderPlayer();
   }
 }
 
+/* The song that "next" will play. Shuffle picks it in advance so it can be loaded ahead of time. */
+function peekNextIndex(){
+  const n = state.queue.length;
+  if (!n) return -1;
+  if (state.shuffle && n > 1){
+    if (state.pick == null || state.pick >= n || state.pick === state.qIndex){
+      let k = state.qIndex;
+      while (k === state.qIndex) k = Math.floor(Math.random() * n);
+      state.pick = k;
+    }
+    return state.pick;
+  }
+  if (state.qIndex < n - 1) return state.qIndex + 1;
+  if (state.repeat === 'all') return 0;
+  return -1;
+}
+
 function nextTrack(auto=false){
   if (state.repeat === 'one' && auto){
     audio.currentTime = 0;
+    wantPlay = true;
     audio.play().catch(()=>{});
     return;
   }
-  if (state.shuffle && state.queue.length > 1){
-    let n = state.qIndex;
-    while (n === state.qIndex) n = Math.floor(Math.random()*state.queue.length);
-    state.qIndex = n;
-  } else if (state.qIndex < state.queue.length - 1){
-    state.qIndex++;
-  } else if (state.repeat === 'all'){
-    state.qIndex = 0;
-  } else {
+  const i = peekNextIndex();
+  state.pick = null;
+  if (i < 0){
+    haltPlayback();
     state.playing = false;
-    audio.pause();
     renderPlayer();
     return;
   }
+  state.qIndex = i;
   loadCurrent();
 }
 
@@ -1936,12 +2000,13 @@ function prevTrack(){
     audio.currentTime = 0;
     return;
   }
+  state.pick = null;
   loadCurrent();
 }
 
 function seekTo(fraction){
   const dur = state.loadedDuration || (current()?.dur || 0);
-  if (!dur || !audio.src) return;
+  if (!dur || !audio.getAttribute('src')) return;
   audio.currentTime = Math.max(0, Math.min(dur, fraction * dur));
   state.time = audio.currentTime;
   renderProgress();
@@ -1953,14 +2018,73 @@ audio.addEventListener('timeupdate', () => {
   state.time = audio.currentTime;
   renderProgress();
 });
+audio.addEventListener('loadedmetadata', () => {
+  state.loadedDuration = audio.duration || current()?.dur || null;
+  renderProgress();
+});
 audio.addEventListener('ended', () => nextTrack(true));
-audio.addEventListener('play',  () => { state.playing = true;  renderPlayer(); });
-audio.addEventListener('pause', () => { state.playing = false; renderPlayer(); });
+audio.addEventListener('play',  () => { wantPlay = true; state.playing = true; renderPlayer(); });
+audio.addEventListener('pause', () => {
+  // A pause from the system (headphones out, phone call) counts as the listener's choice,
+  // but not the brief one that happens while switching songs or at the end of a song.
+  if (!audio.ended && Date.now() - lastSwitch > 1500) wantPlay = false;
+  state.playing = false;
+  renderPlayer();
+});
+audio.addEventListener('playing', () => {
+  skipRun = 0;
+  clearTimeout(stallTimer); stallTimer = null;
+  clearTimeout(prepTimer);
+  prepTimer = setTimeout(prepareNext, 1500);   // load the next song while this one plays
+});
 audio.addEventListener('volumechange', () => {
   state.muted = audio.muted;
   state.volume = audio.volume;
   updateVolumeIcon();
 });
+
+/* Something went wrong with the file. GitHub's download links expire after 30 minutes, so the
+   first retry simply asks for a fresh link at the same position; then the other route; then skip. */
+audio.addEventListener('error', () => {
+  const t = current();
+  if (!t || !audio.getAttribute('src')) return;
+  const token = loadToken;
+  const at = audio.currentTime || state.time || 0;
+  t.errs = (t.errs || 0) + 1;
+  const local = curURL && curURL.startsWith('blob:');
+  if (!local && !isOffline()){
+    if (t.errs === 1) return startSrc(streamURL(t), token, { at });
+    if (t.errs === 2 && t.fallback) return startSrc(t.fallback, token, { at });
+  }
+  if (local && t.errs === 1){
+    // Saved copy would not play: fall back to streaming if there is signal.
+    if (!isOffline()) return startSrc(streamURL(t), token, { at });
+  }
+  if (!wantPlay){ state.playing = false; renderPlayer(); return; }
+  if (++skipRun > 4){
+    haltPlayback(); renderPlayer();
+    toast('Several songs in a row would not play — stopped', 'error');
+    return;
+  }
+  toast(`Couldn't play "${t.title}" — skipping`, 'error');
+  nextTrack();
+});
+
+/* Stuck buffering (weak signal, expired link): after 8 s without progress, reload at the same spot,
+   or skip to a downloaded song if there's no signal at all. */
+let stallTimer = null, prepTimer = null;
+['waiting','stalled'].forEach(ev => audio.addEventListener(ev, () => {
+  if (!wantPlay || stallTimer) return;
+  const at = audio.currentTime, token = loadToken;
+  stallTimer = setTimeout(() => {
+    stallTimer = null;
+    if (token !== loadToken || !wantPlay || audio.paused || audio.readyState >= 3 || audio.currentTime !== at) return;
+    const t = current();
+    if (!t || (curURL && curURL.startsWith('blob:'))) return;
+    if (isOffline()) { toast('Lost signal — jumping to a downloaded song'); nextTrack(); }
+    else startSrc(streamURL(t), token, { at });
+  }, 8000);
+}));
 
 /* ═══════════════════════════════════════════════════════════════
    NAVIGATION
@@ -2004,6 +2128,7 @@ function showContextMenu(x, y, trackId){
     <button data-ctx-action="like"><span class="icon">${liked?ICON.heartFill:ICON.heart}</span>${liked?'Remove from Liked Songs':'Save to Liked Songs'}</button>
     <button data-ctx-action="artist"><span class="icon">${ICON.artist}</span>Go to artist</button>
     <button data-ctx-action="album"><span class="icon">${ICON.artist}</span>Go to album</button>
+    <button data-ctx-action="download"><span class="icon">${OFF.have.has(t.key) ? ICON.remove : DL_ICON}</span>${OFF.have.has(t.key) ? 'Remove download' : 'Download'}</button>
     <div class="ctx-sep"></div>
     <button data-ctx-action="remove" class="danger"><span class="icon">${ICON.remove}</span>Remove from queue</button>
   `;
@@ -2063,6 +2188,11 @@ document.addEventListener('click', e => {
     if (action === 'like'){ toggleLike(t.id); }
     if (action === 'artist'){ openArtist(t.artist); }
     if (action === 'album'){ openAlbum(t.album); }
+    if (action === 'download'){
+      if (OFF.have.has(t.key)) removeDownloads([t.key]).then(() => toast('Removed from this device'));
+      else if (isOffline()) toast("You're offline — connect to download", 'error');
+      else { downloadKeys([t.key]); toast('Downloading'); }
+    }
     if (action === 'remove'){
       const i = state.queue.indexOf(t.id);
       if (i >= 0 && state.queue.length > 1){
@@ -2269,10 +2399,12 @@ function openArtist(name){
       <button class="btn-primary" data-action="play-context" data-context-type="artist" data-context-id="${name}">
         <span class="icon">${ICON.play}</span> Play
       </button>
+      ${dlButton('artist', name)}
     </div>
     <h2 style="margin:0 0 16px">Popular</h2>
     <div class="track-list">${tracks.map(trackRow).join('')}</div>`;
   go('album');
+  refreshDlUI();
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -2448,13 +2580,13 @@ function setSleep(i){
   });
   if (v === -1){ sleepAtEnd = true; toast('Will stop after this song'); }
   else if (v > 0){
-    sleepTimer = setTimeout(() => { audio.pause(); setSleep(0); toast('Sleep timer: paused'); }, v * 60000);
+    sleepTimer = setTimeout(() => { haltPlayback(); setSleep(0); toast('Sleep timer: paused'); }, v * 60000);
     toast('Pausing in ' + v + ' min');
   }
 }
 const _nextTrack = nextTrack;
 nextTrack = function(auto=false){
-  if (auto && sleepAtEnd){ setSleep(0); audio.pause(); toast('Sleep timer: stopped'); return; }
+  if (auto && sleepAtEnd){ setSleep(0); haltPlayback(); toast('Sleep timer: stopped'); return; }
   return _nextTrack(auto);
 };
 document.addEventListener('click', e => {
@@ -2479,12 +2611,9 @@ function resumeLast(){
   if (i < 0) return;
   state.queue = TRACKS.map(t => t.id);
   state.qIndex = i;
-  state.time = saved.time || 0;
-  audio.src = TRACKS[i].src;
-  audio.addEventListener('loadedmetadata', () => { if (saved.time > 1) audio.currentTime = Math.max(0, Math.min(saved.time, (audio.duration || saved.time) - 1)); }, { once:true });
-  renderPlayer();
-  renderProgress();
-  buildQueue();
+  // Loads the song paused at the saved spot. (The old version attached the seek to whatever loaded
+  // next, so a different song could start half-way through.)
+  loadCurrent({ autoplay:false, at:saved.time || 0 });
 }
 
 /* Songs from your Spotify playlists that you don't have a file for yet */
@@ -2542,10 +2671,12 @@ function openPlaylist(name){
         <span class="icon">${ICON.play}</span> Play
       </button>
       <button class="btn-ghost" data-action="shuffle-context" data-context-type="playlist" data-context-id="${esc(p.name)}">Shuffle</button>
+      ${dlButton('playlist', p.name)}
     </div>
     <div class="track-list">${tracks.map((t, i) => trackRow(t, i)).join('')}</div>
     <div id="plMissing"></div>`;
   go('album');
+  refreshDlUI();
 
   // Songs that are in the original Spotify playlist but have no file yet
   api('/library/missing').then(list => {
@@ -2583,7 +2714,7 @@ function updateMediaSession(){
         : [{ src:'/icons/icon-512.png', sizes:'512x512', type:'image/png' }];
       ms.metadata = new MediaMetadata({ title:t.title, artist:t.artist, album:t.album, artwork:art });
     }
-    ms.playbackState = audio.paused ? 'paused' : 'playing';
+    ms.playbackState = (wantPlay || !audio.paused) ? 'playing' : 'paused';
     const d = audio.duration;
     if (isFinite(d) && d > 0 && ms.setPositionState){
       ms.setPositionState({ duration:d, position:Math.min(audio.currentTime, d), playbackRate:audio.playbackRate || 1 });
@@ -2592,37 +2723,429 @@ function updateMediaSession(){
 }
 if ('mediaSession' in navigator){
   const set = (name, fn) => { try { navigator.mediaSession.setActionHandler(name, fn); } catch(e){} };
-  set('play',  () => audio.play().catch(()=>{}));
-  set('pause', () => audio.pause());
-  set('stop',  () => audio.pause());
+  set('play',  () => { if (!audio.getAttribute('src')) return loadCurrent(); wantPlay = true; audio.play().catch(()=>{}); });
+  set('pause', () => haltPlayback());
+  set('stop',  () => haltPlayback());
   set('previoustrack', () => prevTrack());
   set('nexttrack',     () => nextTrack());
   set('seekto', d => { if (d.seekTime != null) audio.currentTime = d.seekTime; });
   // Deliberately NOT registering seekbackward / seekforward: iPhones (and CarPlay) would then show
   // "-10s / +10s" buttons in place of previous / next song.
-  ['play','pause','loadedmetadata','durationchange','seeked','ratechange'].forEach(ev => audio.addEventListener(ev, updateMediaSession));
+  ['play','pause','playing','emptied','loadedmetadata','durationchange','seeked','ratechange'].forEach(ev => audio.addEventListener(ev, updateMediaSession));
   audio.addEventListener('timeupdate', () => { if (audio.currentTime % 5 < 0.3) updateMediaSession(); });
 }
 
+/* ═══════════════════════════════════════════════════════════════
+   OFFLINE — downloaded songs live in IndexedDB on this device, so they play with no signal
+   (camping, flights, car parks). Downloads go through /api/stream in 2 MB pieces because GitHub's
+   download links can't be fetched straight from the browser and Vercel caps responses at 4.5 MB.
+   ═══════════════════════════════════════════════════════════════ */
+const OFF = { db:null, have:new Set(), sizes:{}, queue:[], active:new Set(), busy:0, done:0, failed:0, serverDown:false, wake:null };
+const DL_CHUNK = 2 * 1024 * 1024;
+const DL_PARALLEL = 3;
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function idb(){
+  return OFF.db ||= new Promise((resolve, reject) => {
+    const r = indexedDB.open('sangit-offline', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('songs');
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+}
+async function idbDo(mode, fn){
+  const db = await idb();
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('songs', mode);
+    const req = fn(tx.objectStore('songs'));
+    tx.oncomplete = () => resolve(req && req.result);
+    tx.onerror = () => reject(tx.error);
+    tx.onabort = () => reject(tx.error);
+  });
+}
+const songGet = key => idbDo('readonly', s => s.get(key));
+const songPut = (key, val) => idbDo('readwrite', s => s.put(val, key));
+const songDel = key => idbDo('readwrite', s => s.delete(key));
+const saveSizes = () => { try { localStorage.setItem('sangit:dlsizes', JSON.stringify(OFF.sizes)); } catch(e){} };
+
+const offlineReady = (async () => {
+  try { OFF.sizes = JSON.parse(localStorage.getItem('sangit:dlsizes') || '{}'); } catch(e){}
+  try {
+    const keys = await idbDo('readonly', s => s.getAllKeys());
+    OFF.have = new Set(keys);
+    for (const k of Object.keys(OFF.sizes)) if (!OFF.have.has(k)) delete OFF.sizes[k];
+  } catch(e){ console.warn('Offline storage unavailable', e); }
+})();
+
+function isOffline(){ return !navigator.onLine || OFF.serverDown; }
+function hasLocal(t){ return !!t && (OFF.have.has(t.key) || READY.key === t.key && !!READY.url); }
+function nextPlayableIndex(from){
+  const n = state.queue.length;
+  for (let s = 0; s < n; s++){            // starts with the current song itself, then wraps round
+    const i = (from + s) % n;
+    if (hasLocal(byId(state.queue[i]))) return i;
+  }
+  return -1;
+}
+addEventListener('online',  () => { OFF.serverDown = false; renderOfflineBadge(); pumpDownloads(); });
+addEventListener('offline', () => { renderOfflineBadge(); });
+
+/* Release file name, taken from the direct GitHub link; lets the server skip the GitHub API. */
+function assetName(t){
+  for (const u of [t.src, t.fallback]){
+    if (u && /^https:\/\/github\.com\//.test(u)){
+      try { return decodeURIComponent(new URL(u).pathname.split('/').pop()); } catch(e){}
+    }
+  }
+  return '';
+}
+function mimeOf(t, type){
+  if (type && /^audio\//.test(type)) return type;
+  const ext = (assetName(t).match(/\.(\w+)$/) || [])[1] || 'm4a';
+  return { mp3:'audio/mpeg', aac:'audio/aac', ogg:'audio/ogg', opus:'audio/ogg', wav:'audio/wav', flac:'audio/flac' }[ext.toLowerCase()] || 'audio/mp4';
+}
+
+async function fetchTrackBlob(t, signal){
+  const name = assetName(t);
+  let url = '/api/stream/' + encodeURIComponent(t.key) + (name ? '?f=' + encodeURIComponent(name) : '');
+  const parts = [];
+  let start = 0, total = null, type = '';
+  while (total === null || start < total){
+    let res, tries = 0;
+    for (;;){
+      try {
+        res = await fetch(url, { credentials:'include', headers:{ Range:`bytes=${start}-${start + DL_CHUNK - 1}` }, signal });
+        if (res.ok) break;
+        if (res.status === 401) throw Object.assign(new Error('Signed out'), { fatal:true });
+        if (res.status === 416 && total === null) { total = start; break; }
+        if (name && url.includes('?f=') && (res.status === 404 || res.status === 502)) { url = '/api/stream/' + encodeURIComponent(t.key); continue; }
+        throw new Error('HTTP ' + res.status);
+      } catch(e){
+        if (e.fatal || (signal && signal.aborted) || ++tries >= 4) throw e;
+        await sleep(1200 * tries);
+      }
+    }
+    if (total !== null && start >= total) break;
+    type = type || res.headers.get('content-type') || '';
+    const piece = await res.blob();
+    parts.push(piece);
+    if (res.status === 200){ total = piece.size; break; }          // server sent the whole file
+    const m = (res.headers.get('content-range') || '').match(/\/(\d+)\s*$/);
+    start += piece.size;
+    total = m ? +m[1] : start;
+    if (!piece.size) break;
+  }
+  const blob = new Blob(parts, { type: mimeOf(t, type) });
+  if (!blob.size) throw new Error('Empty file');
+  return blob;
+}
+
+function warmCover(t){
+  if (!t.cover) return;
+  for (const px of [120, 300]) fetch(coverSized(t.cover, px), { mode:'no-cors' }).catch(() => {});
+}
+
+/* ─── Download queue ─── */
+function downloadKeys(keys){
+  let added = 0;
+  for (const k of keys){
+    if (OFF.have.has(k) || OFF.active.has(k) || OFF.queue.includes(k)) continue;
+    OFF.queue.push(k); added++;
+  }
+  if (!added) return 0;
+  try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch(e){}
+  pumpDownloads();
+  refreshDlUI();
+  return added;
+}
+function cancelDownloads(){
+  OFF.queue = [];
+  refreshDlUI();
+}
+async function holdWake(on){
+  try {
+    if (on && !OFF.wake && navigator.wakeLock) OFF.wake = await navigator.wakeLock.request('screen');
+    if (!on && OFF.wake){ OFF.wake.release(); OFF.wake = null; }
+  } catch(e){ OFF.wake = null; }
+}
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible' && (OFF.busy || OFF.queue.length)){ OFF.wake = null; holdWake(true); } });
+
+function pumpDownloads(){
+  if (!navigator.onLine) return;
+  while (OFF.busy < DL_PARALLEL && OFF.queue.length){
+    const key = OFF.queue.shift();
+    const t = TRACKS.find(x => x.key === key);
+    if (!t) continue;
+    OFF.busy++; OFF.active.add(key);
+    holdWake(true);
+    (async () => {
+      try {
+        const blob = await fetchTrackBlob(t);
+        await songPut(key, { blob, title:t.title, artist:t.artist, at:Date.now() });
+        OFF.have.add(key); OFF.sizes[key] = blob.size; saveSizes();
+        OFF.done++;
+        warmCover(t);
+      } catch(e){
+        OFF.failed++;
+        if (e && (e.name === 'QuotaExceededError' || /quota/i.test(e.message || ''))){
+          OFF.queue = [];
+          toast('Phone storage is full — downloads stopped', 'error');
+        } else if (e && e.fatal){
+          OFF.queue = [];
+          toast('Signed out — sign in again to keep downloading', 'error');
+        }
+      } finally {
+        OFF.busy--; OFF.active.delete(key);
+        if (!OFF.busy && !OFF.queue.length){
+          holdWake(false);
+          if (OFF.done || OFF.failed) toast(OFF.failed ? `Downloads finished · ${OFF.failed} failed (tap Download again to retry)` : `Downloads finished · ${OFF.done} song${OFF.done === 1 ? '' : 's'}`, OFF.failed ? 'error' : 'ok');
+          OFF.done = OFF.failed = 0;
+        }
+        refreshDlUI();
+        pumpDownloads();
+      }
+    })();
+  }
+}
+
+async function removeDownloads(keys){
+  for (const k of keys){
+    OFF.queue = OFF.queue.filter(q => q !== k);
+    if (!OFF.have.has(k)) continue;
+    try { await songDel(k); } catch(e){}
+    OFF.have.delete(k); delete OFF.sizes[k];
+  }
+  saveSizes();
+  refreshDlUI();
+}
+
+/* ─── Load the next song ahead of time so it starts instantly (also works with the screen off) ─── */
+const READY = { key:null, url:null, ctrl:null };
+function clearReady(){
+  if (READY.ctrl) READY.ctrl.abort();
+  if (READY.url) URL.revokeObjectURL(READY.url);
+  READY.key = READY.url = READY.ctrl = null;
+}
+function takeReady(key){
+  if (READY.key === key && READY.url){
+    const u = READY.url;
+    READY.key = READY.url = READY.ctrl = null;   // now owned by the player (revoked when replaced)
+    return u;
+  }
+  if (READY.key && READY.key !== key) clearReady();
+  return null;
+}
+async function prepareNext(){
+  const i = peekNextIndex();
+  if (i < 0) return;
+  const t = byId(state.queue[i]);
+  if (!t || t === current() || READY.key === t.key) return;
+  clearReady();
+  const ctrl = new AbortController();
+  READY.key = t.key; READY.ctrl = ctrl;
+  try {
+    let blob = null;
+    if (OFF.have.has(t.key)) blob = (await songGet(t.key))?.blob || null;
+    else if (!isOffline()) blob = await fetchTrackBlob(t, ctrl.signal);
+    if (!blob || ctrl.signal.aborted || READY.key !== t.key) return;
+    READY.url = URL.createObjectURL(blob);
+  } catch(e){
+    if (READY.key === t.key && !READY.url){ READY.key = null; READY.ctrl = null; }
+  }
+}
+
+/* ─── UI ─── */
+const fmtBytes = b => b >= 1e9 ? (b / 1e9).toFixed(2) + ' GB' : b >= 1e6 ? Math.round(b / 1e6) + ' MB' : Math.max(0, Math.round(b / 1e3)) + ' KB';
+const dlBytes = () => Object.values(OFF.sizes).reduce((a, b) => a + b, 0);
+const DL_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 4v11"/><path d="m7 10 5 5 5-5"/><path d="M5 20h14"/></svg>';
+
+function dlButton(type, id){
+  return `<button class="btn-ghost js-dl" data-action="download-context" data-context-type="${type}" data-context-id="${esc(id)}"></button>`;
+}
+function paintDlButton(btn){
+  const keys = contextTracks(btn.dataset.contextType, btn.dataset.contextId).map(id => byId(id)?.key).filter(Boolean);
+  const have = keys.filter(k => OFF.have.has(k)).length;
+  const pending = keys.filter(k => OFF.queue.includes(k) || OFF.active.has(k)).length;
+  btn.classList.toggle('on', have === keys.length && keys.length > 0);
+  btn.innerHTML = `<span class="icon" style="width:15px;height:15px">${have === keys.length ? ICON.check : DL_ICON}</span> ` +
+    (pending ? `Downloading ${have}/${keys.length}` : have === keys.length ? 'Downloaded' : have ? `Download (${have}/${keys.length})` : 'Download');
+}
+
+let dlUITimer = null;
+function refreshDlUI(){
+  if (dlUITimer) return;
+  dlUITimer = setTimeout(() => {
+    dlUITimer = null;
+    $$('.js-dl').forEach(paintDlButton);
+    $$('.track[data-track-id]').forEach(row => {
+      const t = byId(+row.dataset.trackId);
+      row.classList.toggle('dl', !!t && OFF.have.has(t.key));
+      row.classList.toggle('dl-wait', !!t && (OFF.active.has(t.key) || OFF.queue.includes(t.key)));
+    });
+    if (state.view === 'library' && $('#libTabs .tab.active')?.dataset.tab === 'downloads') paintDownloadsHead();
+    renderOfflineBadge();
+  }, 250);
+}
+
+function buildDownloads(){
+  const box = $('#libraryContent');
+  const list = TRACKS.filter(t => OFF.have.has(t.key));
+  box.innerHTML = `
+    <div class="dl-head" id="dlHead"></div>
+    ${list.length
+      ? `<div class="track-list">${list.map(trackRow).join('')}</div>`
+      : `<div class="empty"><div class="empty-icon">${DL_ICON}</div><div class="empty-title">No downloads yet</div>
+         <div class="empty-sub">Download songs here, or with the Download button on any playlist, album or artist, to play them with no signal.</div></div>`}`;
+  paintDownloadsHead();
+  refreshDlUI();
+}
+async function paintDownloadsHead(){
+  const head = $('#dlHead');
+  if (!head) return;
+  const n = TRACKS.filter(t => OFF.have.has(t.key)).length;
+  const pending = OFF.queue.length + OFF.active.size;
+  const liked = TRACKS.filter(t => state.liked.has(t.id) && !OFF.have.has(t.key)).length;
+  let free = '';
+  try {
+    if (navigator.storage && navigator.storage.estimate){
+      const e = await navigator.storage.estimate();
+      if (e.quota) free = ` · about ${fmtBytes(Math.max(0, e.quota - (e.usage || 0)))} free`;
+    }
+  } catch(e){}
+  if (!$('#dlHead')) return;
+  $('#dlHead').innerHTML = `
+    <div class="dl-stats"><strong>${n} of ${TRACKS.length} songs on this device</strong> · ${fmtBytes(dlBytes())}${free}</div>
+    ${pending ? `<div class="dl-progress">Downloading… ${pending} left. Keep SangIT open on screen until it finishes.</div>` : ''}
+    <div class="dl-actions">
+      ${n < TRACKS.length ? `<button class="btn-primary" data-action="dl-all"><span class="icon" style="width:15px;height:15px">${DL_ICON}</span> Download all songs</button>` : ''}
+      ${liked ? `<button class="btn-ghost" data-action="dl-liked">Download liked songs (${liked})</button>` : ''}
+      ${pending ? `<button class="btn-ghost" data-action="dl-cancel">Stop downloading</button>` : ''}
+      ${n ? `<button class="btn-ghost" data-action="dl-clear">Remove all downloads</button>` : ''}
+    </div>`;
+}
+
+function renderOfflineBadge(){
+  let el = $('#offBadge');
+  if (!el){
+    el = document.createElement('div');
+    el.id = 'offBadge';
+    el.className = 'off-badge';
+    document.body.appendChild(el);
+  }
+  const off = isOffline();
+  el.hidden = !off;
+  if (off) el.textContent = `Offline · ${TRACKS.filter(t => OFF.have.has(t.key)).length} downloaded songs`;
+}
+
+document.addEventListener('click', e => {
+  const dl = e.target.closest('[data-action="download-context"]');
+  if (dl){
+    const keys = contextTracks(dl.dataset.contextType, dl.dataset.contextId).map(id => byId(id)?.key).filter(Boolean);
+    const missing = keys.filter(k => !OFF.have.has(k));
+    if (missing.length){
+      if (isOffline()) return toast("You're offline — connect to download", 'error');
+      downloadKeys(missing);
+      toast(`Downloading ${missing.length} song${missing.length === 1 ? '' : 's'}`);
+    } else if (keys.length && confirm(`Remove ${keys.length} downloaded song${keys.length === 1 ? '' : 's'} from this device?`)){
+      removeDownloads(keys).then(() => toast('Removed from this device'));
+    }
+    return;
+  }
+  if (e.target.closest('[data-action="dl-all"]')){
+    if (isOffline()) return toast("You're offline — connect to download", 'error');
+    const n = downloadKeys(TRACKS.map(t => t.key));
+    toast(`Downloading ${n} songs — keep SangIT open`);
+  }
+  else if (e.target.closest('[data-action="dl-liked"]')){
+    downloadKeys(TRACKS.filter(t => state.liked.has(t.id)).map(t => t.key));
+  }
+  else if (e.target.closest('[data-action="dl-cancel"]')){ cancelDownloads(); toast('Downloads stopped'); }
+  else if (e.target.closest('[data-action="dl-clear"]')){
+    if (confirm('Remove every downloaded song from this device?')) removeDownloads([...OFF.have]).then(() => { buildDownloads(); toast('Downloads removed'); });
+  }
+});
+
+/* Long-press a song on a phone to open its menu (phones don't send right-clicks). */
+let lpTimer = null, lpStart = null, lpFired = false;
+document.addEventListener('touchstart', e => {
+  const row = e.target.closest('.track[data-track-id]');
+  if (!row || e.touches.length !== 1) return;
+  lpStart = [e.touches[0].clientX, e.touches[0].clientY];
+  lpFired = false;
+  clearTimeout(lpTimer);
+  lpTimer = setTimeout(() => {
+    lpFired = true;
+    if (navigator.vibrate) navigator.vibrate(12);
+    showContextMenu(lpStart[0], lpStart[1], +row.dataset.trackId);
+  }, 520);
+}, { passive:true });
+document.addEventListener('touchmove', e => {
+  if (!lpStart) return;
+  const t = e.touches[0];
+  if (Math.abs(t.clientX - lpStart[0]) > 10 || Math.abs(t.clientY - lpStart[1]) > 10) clearTimeout(lpTimer);
+}, { passive:true });
+document.addEventListener('touchend', () => { clearTimeout(lpTimer); lpStart = null; }, { passive:true });
+document.addEventListener('click', e => {
+  if (lpFired){ lpFired = false; e.stopPropagation(); e.preventDefault(); }
+}, true);
+
+if ('serviceWorker' in navigator){
+  addEventListener('load', () => navigator.serviceWorker.register('/sw.js').catch(() => {}));
+}
+
+/* Library and sign-in replies are kept on the device so the app opens with no signal. */
+const API_CACHE = ['/auth/me', '/library/tracks', '/library/playlists'];
+const apiCacheKey = p => 'sangit:api:' + p;
+function apiCacheClear(){ try { API_CACHE.forEach(p => localStorage.removeItem(apiCacheKey(p))); } catch(e){} }
+function apiCached(path){
+  try { const v = localStorage.getItem(apiCacheKey(path)); return v ? JSON.parse(v) : null; } catch(e){ return null; }
+}
 async function api(path, opts = {}){
-  const res = await fetch('/api' + path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, ...opts });
+  const cacheable = !opts.method && API_CACHE.includes(path);
+  if (cacheable && !navigator.onLine){
+    const c = apiCached(path);
+    if (c){ OFF.serverDown = true; return c; }
+  }
+  if (!opts.method && path === '/library/missing' && isOffline()) return [];
+  let res;
+  try {
+    const ctrl = new AbortController();
+    const timer = cacheable ? setTimeout(() => ctrl.abort(), 9000) : null;
+    res = await fetch('/api' + path, { credentials:'include', headers:{ 'Content-Type':'application/json' }, signal:ctrl.signal, ...opts });
+    clearTimeout(timer);
+  } catch(e){
+    const c = cacheable && apiCached(path);
+    if (c){ OFF.serverDown = true; return c; }
+    throw e;
+  }
+  if (!res.ok && cacheable && res.status >= 500){
+    const c = apiCached(path);
+    if (c){ OFF.serverDown = true; return c; }
+  }
   if (!res.ok){
     const body = await res.json().catch(() => ({}));
     const err = new Error(body.error || res.statusText);
     err.status = res.status;
     throw err;
   }
-  return res.json();
+  const data = await res.json();
+  if (cacheable){ try { localStorage.setItem(apiCacheKey(path), JSON.stringify(data)); } catch(e){} }
+  return data;
 }
-
 async function loadLibrary(){
-  const [tracks, playlists] = await Promise.all([api('/library/tracks'), api('/library/playlists')]);
+  const [tracks, playlists] = await Promise.all([api('/library/tracks'), api('/library/playlists'), offlineReady]);
   const clean = v => String(v).replace(/"/g, '\u201d');   // names are used inside HTML attributes
   const idOf = new Map();
   TRACKS = tracks.filter(t => t.src).map((t, i) => {
     idOf.set(t.id, i + 1);
     return { id:i + 1, key:t.id, title:t.title, artist:clean(t.artist), album:clean(t.album), dur:t.duration || 0, hue:t.hue, src:t.src, fallback:t.fallbackSrc, cover:t.cover, year:t.year, explicit:t.explicit };
   });
+  if (isOffline()){
+    // No signal: only show what can actually play.
+    TRACKS = TRACKS.filter(t => OFF.have.has(t.key));
+    idOf.clear();
+    TRACKS.forEach((t, i) => { t.id = i + 1; idOf.set(t.key, i + 1); });
+  }
   PLAYLISTS = playlists.map(p => {
     const ids = p.trackIds.map(k => idOf.get(k)).filter(Boolean);
     const first = byId(ids[0]);
@@ -2662,17 +3185,25 @@ function startApp(email){
   renderPlayer();
   updateBackFwd();
   try { resumeLast(); } catch(e){}
+  renderOfflineBadge();
+  if (OFF.serverDown) toast('Offline — playing your downloads');
   setTimeout(() => $('#skeleton').classList.add('gone'), 300);
 }
 
 async function enter(email){
   await loadLibrary();
+  if (!TRACKS.length && isOffline()){
+    $('#emptyCard h1').textContent = "You're offline";
+    $('#emptyCard p').textContent = 'No songs are downloaded on this device yet. Connect to the internet, open Library → Downloads and download some songs.';
+    return showGate('empty');
+  }
   if (!TRACKS.length) return showGate('empty');
   startApp(email);
 }
 
 async function signOut(){
-  audio.pause();
+  haltPlayback();
+  apiCacheClear();
   try { await api('/auth/logout', { method:'POST' }); } catch(e){}
   location.reload();
 }
@@ -2685,6 +3216,7 @@ $('#loginForm').addEventListener('submit', async e => {
   go.disabled = true; err.hidden = true;
   try {
     const user = await api('/auth/login', { method:'POST', body:JSON.stringify({ email:String(f.get('email')), password:String(f.get('password')) }) });
+    try { localStorage.setItem(apiCacheKey('/auth/me'), JSON.stringify({ email:user.email })); } catch(e){}
     await enter(user.email);
   } catch(ex){
     err.textContent = ex.message || 'Could not sign in';

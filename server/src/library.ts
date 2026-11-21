@@ -291,6 +291,20 @@ export const library: LibrarySource = {
   missing: async () => (await snapshot()).missing,
 };
 
+/**
+ * Fast path for /api/stream: the client also sends the release file name, so the URL can be built
+ * without listing the release through the GitHub API (60 requests/hour without a token). The name must
+ * hash to the track id, and the URL is always inside this repo's release, so this is still not an open proxy.
+ */
+export function directSource(id: string, name: string): Source | undefined {
+  if (!name || name.length > 300 || /[\\/]/.test(name) || !AUDIO.test(name) || md5(name).slice(0, 10) !== id) return undefined;
+  const ext = (name.match(AUDIO)?.[1] ?? "m4a").toLowerCase();
+  return {
+    url: `https://github.com/${REPO}/releases/download/${encodeURIComponent(TAG)}/${encodeURIComponent(name)}`,
+    mime: MIME[ext] ?? "audio/mp4",
+  };
+}
+
 /** Look up the GitHub URL for a track id (used by the /api/stream proxy; only known URLs are ever fetched). */
 export async function sourceFor(id: string): Promise<Source | undefined> {
   return (await snapshot()).sources.get(id);
